@@ -1,0 +1,99 @@
+.bg{
+	background: url('../img/pexels-photo-259132.jpeg') no-repeat;
+	width: 100%;
+	height: 100vh;
+	background-size:100%;
+}
+
+/*Log-in form*/
+.form-logowanie{
+	background-color:#F1F9D2;
+	border-radius:10px;
+	max-width:300px;
+}
+
+.user_img{
+	margin-top:0px;
+	margin-bottom:30px;
+}
+
+.user_img img{
+	opacity: 0.5;
+	border-radius:5px;
+}
+
+.form-text{
+	text-align:center;
+}
+
+.form-group{
+	margin-bottom:20px;
+}
+
+.form-group input{
+	padding-left:35px;
+}
+
+.form-group::before{
+	position:absolute;
+	left:25px;
+	padding-top:37px;
+	font-size:18px;
+	font-family: "Font Awesome 5 Free";
+	font-weight: 400;
+	color:#778BF8;
+}
+
+.logowanie .form-group:first-of-type::before{
+	content: "\f007";
+}
+
+.logowanie .form-group:nth-of-type(2)::before{
+	content: "\f13e";
+}
+
+.logowanie .form-group:last-of-type::before{
+	content:"";
+}
+
+/*Registration form*/
+.rejestracja .form-group:first-of-type::before{
+	content: "\f007";
+}
+
+.rejestracja .form-group:nth-of-type(2)::before{
+	content: "\f13e";
+}
+
+.rejestracja .form-group:nth-of-type(3)::before{
+	content: "\f13e";
+}
+
+.rejestracja .form-group:nth-of-type(4)::before{
+	content: "\f2bb";
+}
+
+.rejestracja .form-group:last-of-type::before{
+	content:"\f0e0";
+}
+
+.btn-block{
+	width:250px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.start-buttons{
+	margin-top:30vh;
+}
+
+#registerModal{
+	overflow-y: auto;
+}
+
+
+@media only screen and (max-width: 678px){
+	.bg{
+		background-size: 300%;
+	}	
+}

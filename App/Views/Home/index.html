@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid bg">
+	<div class="row d-flex justify-content-center">
+
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<div class="start-buttons">
+					<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#loginModal"><i class="fas fa-user"></i> Zaloguj</button>
+					<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#registerModal"><i class="fas fa-caret-square-right"></i> Rejestracja</button>
+				</div>	
+
+			
+				<!--Modal Logowanie-->
+				<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog  form-logowanie">
+					<div class="modal-content">					
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Logowanie użytkownika</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						 </div>
+						 
+						<div class="modal-body logowanie">
+							<form action="zaloguj.php" method="post">
+								<div class="text-center">
+									<img src="img/user_img/user_img.png" class="rounded user_img" alt="">
+								</div>
+								<div>
+								  <div class="form-group login-form">
+									<label for="login">Twój Login:</label>
+									<input type="text" class="form-control" name="login" id="login" placeholder="Twój Login">			
+								  </div>
+								  <div class="form-group login-form">
+									<label for="haslo">Hasło</label>
+									<input type="password" class="form-control" name="haslo" id="haslo" placeholder="Twoje Hasło">
+									<small id="emailHelp" class="form-text text-muted">Rekomendujemy wpisywać hasło zasłonięte gwiazdkami.</small>
+								  </div>
+								  <div class="form-group login-form form-check">
+									<input type="checkbox" class="form-check-input" onclick="showHidePassword()" id="showPassword">
+									<label class="form-check-label" for="showPassword">Pokaż Hasło</label>
+								  </div>
+								 </div>		 
+
+								  <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-sign-in-alt"></i> Zaloguj</button>
+								  <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Anuluj</button>
+							</form>
+						</div>
+						
+	
+						<div class="modal-footer">
+							<small id="logingHelp" class="form-text text-muted">Problemy z logowaniem?</small>
+						  </div>
+						</div>
+						
+					</div>
+				  </div>
+
+				<!--Modal Rejestracja-->
+				<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog form-logowanie">
+					<div class="modal-content">					
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Rejestracja użytkownika</h5>
+							<button type="button" class="close" onclick = "$('.modal').removeClass('show d-block').addClass('fade');" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						 </div>
+						<div class="modal-body rejestracja">					
+							<form method="post" id='formularz_rej'>
+								<div>
+								
+								<!--Login-->
+								  <div class="form-group">
+									<label for="register_login">Login:</label>
+									<input type="text" class="form-control" name="nick" id="register_login" value="" placeholder="Twój Login">													
+								  </div>
+								  
+								  <!--Hasło1-->
+								  <div class="form-group">
+									<label for="reg_exampleInputPassword1">Hasło:</label>
+									<input type="password" class="form-control" name="haslo1" id="reg_exampleInputPassword1" value="" placeholder="Twoje Hasło">
+									<small id="register_passwordHelp" class="form-text text-muted text-justify">Hasło powinno składać się conajmniej z 6 znaków, powinno zawierać conajmniej jedną wielka literę oraz cyfrę.</small>
+								  </div>
+								  
+								  <!--Hasło2-->
+								  <div class="form-group">
+									<label for="reg_exampleInputPassword2">Powtórz Hasło:</label>
+									<input type="password" class="form-control" name="haslo2" id="reg_exampleInputPassword2" value=""placeholder="Twoje Hasło">
+								
+
+								  </div>
+								  
+								 <!--Imię-->
+								 <div class="form-group">
+									<label for="register_name">Imię:</label>
+									<input type="text" class="form-control" name="imie" id="register_name" value="" placeholder="Twoje Imię">							
+								  </div>
+								  
+								  <!--Email-->
+								  <div class="form-group">
+									<label for="register_email">Email:</label>
+									<input type="text" class="form-control" name="email" id="register_email" value="" placeholder="Adres poczty elektronicznej">				
+		
+								  </div>
+								  <!--Recaptcha-->
+								  <div class="form=group"><div class="g-recaptcha d-flex" data-sitekey="6LdEmLAZAAAAAE9dRZIUDMJkNs3Avgm7C6LCBm3z"></div></div>
+
+								</div>
+	
+								
+								  <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-sign-in-alt"></i> Zarejestruj</button>
+								  <button type="button" class="btn btn-secondary btn-block" onclick = "$('.modal').removeClass('show d-block').addClass('fade');" data-dismiss="modal">Anuluj</button>
+							</form>
+						</div>
+						</div>			
+					</div>		
+				</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
