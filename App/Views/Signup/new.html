@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Rejestracja{% endblock %}
 
 {% block body %}
 
@@ -10,10 +10,10 @@
 			<div class="col-md-3 col-sm-6 col-xs-12">
 				<form>
 					<div class="start-buttons">
-							<button type="submit" formaction="login/new" class="btn btn-primary btn-block" data-toggle="modal"><i class="fas fa-user"></i> Zaloguj</button>
-							<button type="submit" formaction="signup/new" class="btn btn-primary btn-block" data-toggle="modal"><i class="fas fa-caret-square-right"></i> Rejestracja</button>
+							<button type="submit" formaction="/login/new" class="btn btn-primary btn-block" data-toggle="modal"><i class="fas fa-user"></i> Zaloguj</button>
+							<button type="submit" formaction="/signup/new" class="btn btn-primary btn-block" data-toggle="modal"><i class="fas fa-caret-square-right"></i> Rejestracja</button>
 					</div>	
-				</form>
+				</form>	
 
 			
 				<!--Modal Logowanie-->
@@ -63,7 +63,7 @@
 				  </div>
 
 				<!--Modal Rejestracja-->
-				<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade show d-block" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				  <div class="modal-dialog form-logowanie">
 					<div class="modal-content">					
 						<div class="modal-header">
@@ -107,10 +107,9 @@
 								  <div class="form-group">
 									<label for="register_email">Email:</label>
 									<input type="text" class="form-control" name="email" id="register_email" value="" placeholder="Adres poczty elektronicznej">				
-		
 								  </div>
 								  <!--Recaptcha-->
-								  <div class="form=group"><div class="g-recaptcha d-flex" data-sitekey="6LdEmLAZAAAAAE9dRZIUDMJkNs3Avgm7C6LCBm3z"></div></div>
+								  <div class="text-center"><div class="g-recaptcha d-inline-block" data-size="compact" data-sitekey="6LdEmLAZAAAAAE9dRZIUDMJkNs3Avgm7C6LCBm3z"></div></div>
 
 								</div>
 	
