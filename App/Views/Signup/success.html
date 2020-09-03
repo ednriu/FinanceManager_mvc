@@ -4,13 +4,13 @@
 
 {% block body %}
 
-
-
     <div class="container-fluid bg">
 	<div class="row d-flex justify-content-center">
 
-			<div class="col-md-3 col-sm-6 col-xs-12">	
-			
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<div class="alert alert-success mt-5" role="alert">
+				  Zarejestrowano Nowego Użytkownika
+				</div>
 				<form>
 					<div class="start-buttons">
 							<button type="submit" formaction="/login/new" class="btn btn-primary btn-block" data-toggle="modal"><i class="fas fa-user"></i> Zaloguj</button>
@@ -66,7 +66,7 @@
 				  </div>
 
 				<!--Modal Rejestracja-->
-				<div class="modal fade show d-block" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				  <div class="modal-dialog form-logowanie">
 					<div class="modal-content">					
 						<div class="modal-header">
@@ -82,12 +82,7 @@
 								<!--Login-->
 								  <div class="form-group">
 									<label for="register_login">Login:</label>
-									<input type="text" class="form-control" name="login" id="register_login" value="{{user.login}}" placeholder="Twój Login">
-									{% if user.errors['error_login'] is not empty %}
-									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">
-									  {{ user.errors['error_login'] }}
-									</div>
-									{% endif %}								
+									<input type="text" class="form-control" name="login" id="register_login" value="" placeholder="Twój Login">													
 								  </div>
 								  
 								  <!--Hasło1-->
@@ -101,41 +96,22 @@
 								  <div class="form-group">
 									<label for="reg_exampleInputPassword2">Powtórz Hasło:</label>
 									<input type="password" class="form-control" name="password_confirmation" id="reg_exampleInputPassword2" value=""placeholder="Twoje Hasło">
-									{% if user.errors['error_password'] is not empty %}
-									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">
-									  {{ user.errors['error_password'] }}
-									</div>
-									{% endif %}	
 								  </div>
 								  
 								 <!--Imię-->
 								 <div class="form-group">
 									<label for="register_name">Imię:</label>
-									<input type="text" class="form-control" name="name" id="register_name" value="{{user.name}}" placeholder="Twoje Imię">
-									{% if user.errors['error_name'] is not empty %}
-									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">
-									  {{ user.errors['error_name'] }}
-									</div>
-									{% endif %}	
+									<input type="text" class="form-control" name="name" id="register_name" value="" placeholder="Twoje Imię">							
 								  </div>
 								  
 								  <!--Email-->
 								  <div class="form-group">
 									<label for="register_email">Email:</label>
-									<input type="text" class="form-control" name="email" id="register_email" value="{{user.email}}" placeholder="Adres poczty elektronicznej">
-									{% if user.errors['error_email'] is not empty %}
-									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">
-									  {{ user.errors['error_email'] }}
-									</div>
-									{% endif %}	
+									<input type="text" class="form-control" name="email" id="register_email" value="" placeholder="Adres poczty elektronicznej">				
 								  </div>
 								  <!--Recaptcha-->
 								  <div class="text-center"><div class="g-recaptcha d-inline-block" data-size="compact" data-sitekey="6LdEmLAZAAAAAE9dRZIUDMJkNs3Avgm7C6LCBm3z"></div></div>
-									{% if user.errors['error_recaptcha'] is not empty %}
-									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">
-									  {{ user.errors['error_recaptcha'] }}
-									</div>
-									{% endif %}	
+
 								</div>	
 
 								  <button type="submit" formaction="/signup/create" class="btn btn-primary btn-block"><i class="fas fa-sign-in-alt"></i> Zarejestruj</button>
@@ -151,3 +127,5 @@
 </div>
 
 {% endblock %}
+
+
