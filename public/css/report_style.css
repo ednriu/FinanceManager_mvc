@@ -1,0 +1,366 @@
+body {
+  padding-top: 4rem;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.bg{
+	background: url('img/pexels-photo-259132.jpeg') no-repeat;
+	max-width: 100%;
+	min-height: 100vh;	
+	background-attachment: fixed;  
+	background-size: cover;
+}
+/*
+ * Graph
+ */
+.wykres{
+	background-color: rgba(240, 233, 216, 0.7);
+	padding:10px;
+	margin-top:5px;	
+	border-radius: 10px;
+}
+
+
+/*
+ * GTable With Data
+ */
+.inc-exp-area{
+
+	background-color: rgba(240, 233, 216, 0.7);
+	text-align:center;
+	padding:1rem;
+	border-radius: 10px;
+	height:400px;
+}
+
+table.table-bordered{
+    border:1px solid grey!important;
+    margin-top:20px;
+  }
+table.table-bordered > thead > tr > th, td{
+    border:1px solid grey!important;
+}
+
+.table-responsive.inc-exp-area h1{
+	color:#2C1B6F;
+}
+
+table.table-bordered > thead{
+	display:block;
+}
+
+table.table-bordered > tbody{
+	display:block;
+	overflow-y:scroll;
+	max-height:240px;
+}
+
+table.table-bordered > tbody > tr > td:last-child {
+	width:83px;
+}
+
+table.table-bordered > tbody > tr > td, th {
+	width:100px;
+}
+
+table.table td a {
+	cursor: pointer;
+	display: inline-block;
+	margin: 0 2px;
+	min-width: 10px;
+}   
+
+table.table td a.edit {
+	color: #FFC107;
+}
+table.table td a.delete {
+	color: #E34724;
+}
+table.table td i {
+	font-size: 19px;
+}
+ 
+table.table .form-control {
+	height: 32px;
+	line-height: 32px;
+	box-shadow: none;
+	border-radius: 2px;
+}
+table.table .form-control.error {
+	border-color: #f50000;
+}
+
+
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+.user-menu, .sidebar-sticky{
+	
+	background-color:#7dbbf5;
+}
+
+.nav .nav-link, .sidebar .nav-link {
+  font-weight: 500;
+  color: #411161;
+}
+
+.nav .nav-link .feather, .sidebar .nav-link .feather {
+  margin-right: 8px;
+  color:#606A7B;
+  position:relative;
+  top:5px;
+}
+
+.nav .nav-link.active, .sidebar .nav-link.active {
+  color: #0521B3;
+  background-color:#6caae4;
+  border:none;
+}
+
+.nav .nav-link:hover .feather,
+.nav .nav-link.active .feather,
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;  
+}
+
+/*
+ * TOP Navbar Horizontal
+ */
+
+.navbar .navbar-toggler {
+  top: .25rem;
+  right: 1rem;  
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.navbar .navbar-text{
+	color:#FAF70C;
+	line-height:1rem;
+	font-size:1.2rem;
+	font-weight:bold;
+	letter-spacing:0.1rem;
+}
+
+.navbar .active .navbar-text{
+	text-decoration: underline;
+}
+
+.navbar .navbar-text:hover{
+	transform: scale(1.1);
+}
+
+.navbar .nav-item
+{
+	margin-left:10px;
+	margin-right:10px;
+}
+
+.navbar .form-control{
+	border-radius:5px;
+}
+
+.navbar .search-btn{
+	display:inline-block;
+	height:2.5rem;
+}
+
+.navbar .search-input{
+	display:inline-block;
+	height:2.5rem;
+}
+
+/*
+ * Modals for Adding Expences and Incomes
+ */
+
+.modal{
+	color: #0521B3;
+}
+
+.modal-header{
+	background-color:#0b1570;
+	color:white;
+}
+
+.modal-footer{
+	background-color: #EEEDE0;
+}
+
+.modal-body{
+	padding: 0.5rem 1.5rem;
+}
+
+h5.modal-title{
+	font-size:1.8rem;
+}
+
+.modalAnotherRangeOfDate h5.modal-title{
+	font-size:1.4rem;
+}
+
+.modal label{
+	font-size:1.4rem;
+}
+
+label.form-check-label{
+	font-size:1rem;
+}
+
+input[type:number]{
+	background-color:red;
+}
+
+/*
+ * User Settings Cards
+ * Aplication Settings Cards
+ */
+ 
+ .card-header{
+	background-color:#0b1570;
+	color:white;
+	font:1rem;
+ }
+ 
+ .card-body{
+	background-color:#e4e4eb;
+	color:#36364d;
+	font-size:1rem;
+ }
+ 
+ .card{
+	 border:1px solid #0b1570;
+	 	opacity:0.9;
+ }
+ .user-menu.card{
+	 opacity:1;
+ }
+ 
+.card label{
+	 font-size:20px;
+ }
+ 
+ .card input:disabled{
+	background-color:white;
+ }
+ 
+ /*
+ * INFO BOX
+ */
+ 
+ .info-box{
+	 background-color:#CAD0D4;
+	 width:12rem;
+	 height:8rem;
+	 border-radius:15px;
+	 border:#498192 solid 1px;
+	 text-align:center;
+	 font-size:1rem;
+	 vertical-align:middle;
+ }
+ 
+p.balance{
+	color:#47865A;
+	font-size:1.2rem;
+}
+ 
+.info-box .feather{
+	color:#1336F8;
+	font-size:1.2rem;
+	position:relative;
+	top:3px;
+}
+ 
+.info-box.balance{
+	border:red solid 1px;
+ }
+ 
+.info-box h1{
+	 font-size:1.2rem;
+	 color:white;
+	 background-color:#498192;
+	 margin-left:0;
+	 margin-right:0;
+	 overflow:hidden;
+	 border-radius: 15px 15px 0 0;
+	 padding-bottom:0.3rem;
+ }
+ 
+ .info-box.balance h1{
+	 background-color:red;
+ }
+ 
+  /*
+ * EXTRAS
+ */
+ 
+ button.close {
+        color: #fff7cc;
+        display: inline-block;
+        float: right;
+        font-size: 34px;
+        height: 40px;
+        line-height: 1;
+        margin: 0px 1px;
+        opacity: 1;
+        text-align: center;
+        text-shadow: none;
+        -webkit-transition: background 0.2s ease-in-out;
+        transition: background 0.2s ease-in-out;
+        vertical-align: top;
+        width: 46px;
+    }
+ 
+
+
+
+@media only screen and (max-width: 767.98px){
+	.bg{
+		background-size: 300%;
+	}
+	body{
+		padding-top:3rem;		
+	}
+}

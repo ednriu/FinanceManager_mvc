@@ -33,8 +33,8 @@ class Login extends \Core\Controller
         $user = User::authenticate($_POST['login'], $_POST['password']);
 		
 		if ($user) {
-			header('Location: http://'.$_SERVER['HTTP_HOST'].'/login/success', true, 303);
-			exit;
+			$_SESSION['name'] = $user->name;
+			$this->redirect('/Login/success');
 		} else {
 			View::renderTemplate('Login/new.html',[
 			'login'=>$_POST['login']],);

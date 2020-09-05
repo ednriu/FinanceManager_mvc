@@ -28,10 +28,12 @@
        <a class="nav-link" href="UstawieniaUzytkownika-dane.html"><span class="navbar-text">Użytkownik</span><span class="sr-only"></span></a>
       </li>
 	  <li class="nav-item">
-        <a class="nav-link" href="logout.php"><span class="navbar-text">Wyloguj</span><span class="sr-only"></span></a>
+        <a class="nav-link" href="/Login/create"><span class="navbar-text">Wyloguj</span><span class="sr-only"></span></a>
       </li>
     </ul>
-	<?php echo '<span class="badge badge-success mx-2">Jesteś zalogowany jako: '.$_SESSION['name'].'</span>'; ?>
+	{% if session.user_id %}
+	<span class="badge badge-success mx-2">Jesteś zalogowany jako: {{ session.name }}</span>
+	{% endif %}
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2 search-input" type="text" placeholder="Search" aria-label="Search">
       <button class="btn btn-secondary my-2 my-sm-0 search-btn" type="submit">Search</button>
