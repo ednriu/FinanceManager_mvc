@@ -30,20 +30,15 @@ class Login extends \Core\Controller
      */
     public function createAction()
     {
-        $user = new User($_POST);
-
-        if ($user->save()) {
-
-            header('Location: http://' . $_SERVER['HTTP_HOST'] . '/signup/success', true, 303);
-            exit;
-
-        } else {
-
-            View::renderTemplate('Signup/new.html', [
-                'user' => $user
-            ]);
-
-        }
+        $user = User::authenticate($_POST['login'], $_POST['password']);
+		
+		if ($user) {
+			header('Location: http://'.$_SERVER['HTTP_HOST'].'/login/success', true, 303);
+			exit;
+		} else {
+			View::renderTemplate('Login/new.html',[
+			'login'=>$_POST['login']],);
+		}
     }
 
     /**
