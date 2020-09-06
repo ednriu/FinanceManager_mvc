@@ -2,8 +2,18 @@
 
 {% block title %}Moje Finanse{% endblock %}
 
-{% block body %} 
-  
+{% block style %}
+	<!-- FontAwesome CSS -->
+	<script src="https://kit.fontawesome.com/9427ffaa84.js" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap core CSS -->
+	<link href="/bootstrap-4.0.0-dist/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/report_style.css" rel="stylesheet">
+	<link href="/bootstrap-4.0.0-dist/css/dashboard.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
+{% block body %}  
   
 <body>
 <!-- top nawigation bar-->
@@ -28,10 +38,10 @@
        <a class="nav-link" href="UstawieniaUzytkownika-dane.html"><span class="navbar-text">Użytkownik</span><span class="sr-only"></span></a>
       </li>
 	  <li class="nav-item">
-        <a class="nav-link" href="/Login/create"><span class="navbar-text">Wyloguj</span><span class="sr-only"></span></a>
+        <a class="nav-link" href="/Login/logout"><span class="navbar-text">Wyloguj</span><span class="sr-only"></span></a>
       </li>
     </ul>
-	{% if session.user_id %}
+	{% if session.name %}
 	<span class="badge badge-success mx-2">Jesteś zalogowany jako: {{ session.name }}</span>
 	{% endif %}
     <form class="form-inline my-2 my-lg-0">
@@ -96,20 +106,10 @@
 	<!--Right Panel-->
 		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pt-lg-3 pt-md-5">
 			<!--Komunikat jeśli dodano wydatek-->
-			<?php
-				if (isset($_SESSION['dodano_wydatek']) && $_SESSION['dodano_wydatek']){
-					echo '<div class="row d-flex justify-content-center mt-3"><div class="alert alert-success" role="alert">Twój wydatek został dodany!</div></div>';
-					unset($_SESSION['dodano_wydatek']);
-				};
-			?>
+
 			
 			<!--Komunikat jeśli dodano wpływ-->
-			<?php
-				if (isset($_SESSION['dodano_wplyw']) && $_SESSION['dodano_wplyw']){
-					echo '<div class="row d-flex justify-content-center mt-3"><div class="alert alert-success" role="alert">Twój przychód został dodany!</div></div>';
-					unset($_SESSION['dodano_wplyw']);
-				};
-			?>
+
 			<!--okienka z sumami i bilansem-->
 			<div class="row d-flex justify-content-center mt-3">
 			<div class="row d-flex justify-content-center mt-3">

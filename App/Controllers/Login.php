@@ -48,6 +48,12 @@ class Login extends \Core\Controller
      */
     public function successAction()
     {
-        View::renderTemplate('Login/success.html');
+        View::renderTemplate('Report/main.html');
+    }
+	
+	public function logoutAction()
+    {
+		unset($_SESSION['name']);
+        View::renderTemplate('login/new.html');
     }
 }
