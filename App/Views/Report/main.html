@@ -15,7 +15,6 @@
 
 {% block body %}  
   
-<body>
 <!-- top nawigation bar-->
 <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top top-navbar">  
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +85,7 @@
 				  Poprzedni Miesiąc
 				</a>
 			  </li>
-			  <li class="nav-item" href="#" data-toggle="modal" data-target="#modalAnotherRangeOfDate"">
+			  <li class="nav-item" data-toggle="modal" data-target="#modalAnotherRangeOfDate">
 				<a class="nav-link" href="#">
 				  <span data-feather="filter"></span>
 				  Dowolny okres
@@ -116,33 +115,21 @@
 				<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
 					<div class="info-box">			
 						<h1 class="text-center py-1">Suma Wydatków</h1>							
-							<div class="row justify-content-center mt-4"><span data-feather="plus-square"></span> <p class="balance font-weight-bold">
-								<?php 
-									echo $_SESSION['suma_wydatkow'].'zł';
-									unset($_SESSION['suma_wydatkow']);
-								?>
+							<div class="row justify-content-center mt-4"><span data-feather="plus-square"></span> <p class="balance font-weight-bold">								
 							</p></div>							
 					</div>
 				</div>
 				<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
 					<div class="info-box balance">
 						<h1 class="text-center py-1">Bilans</h1>
-							<div class="row justify-content-center mt-4"><span data-feather="info"></span> <p class="balance font-weight-bold">
-								<?php 
-									echo $_SESSION['bilans'].'zł';
-									unset($_SESSION['bilans']);
-								?>
+							<div class="row justify-content-center mt-4"><span data-feather="info"></span> <p class="balance font-weight-bold">								
 							</p></div>
 					</div>
 				</div>
 				<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
 					<div class="info-box">
 						<h1 class="text-center py-1">Suma Przychodów</h1>
-						<div class="row justify-content-center mt-4"><span data-feather="plus-square"></span> <p class="balance font-weight-bold">
-								<?php 
-									echo $_SESSION['suma_przychodow'].'zł';
-									unset($_SESSION['suma_przychodoww']);
-								?>
+						<div class="row justify-content-center mt-4"><span data-feather="plus-square"></span> <p class="balance font-weight-bold">								
 						</p></div>	
 					</div>
 				</div>
@@ -437,5 +424,5 @@
     <script src="bootstrap-4.0.0-dist/js/dashboard.js"></script>
 
 
-<?php $polaczenie->close(); ?>
+
 {% endblock %}

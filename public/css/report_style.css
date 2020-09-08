@@ -7,7 +7,7 @@ body {
 }
 
 .bg{
-	background: url('../img/pexels-photo-259132.jpeg') no-repeat;
+	background: url('img/pexels-photo-259132.jpeg') no-repeat;
 	max-width: 100%;
 	min-height: 100vh;	
 	background-attachment: fixed;  
