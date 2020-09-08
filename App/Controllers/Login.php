@@ -20,7 +20,7 @@ class Login extends \Core\Controller
      */
     public function newAction()
     {
-        View::renderTemplate('login/new.html');
+        View::renderTemplate('Login/New.html');
     }
 
     /**
@@ -34,9 +34,9 @@ class Login extends \Core\Controller
 		
 		if ($user) {
 			$_SESSION['name'] = $user->name;
-			$this->redirect('/Login/success');
+			$this->redirect('/Login/Success');
 		} else {
-			View::renderTemplate('Login/new.html',[
+			View::renderTemplate('Login/New.html',[
 			'login'=>$_POST['login']],);
 		}
     }
@@ -48,12 +48,12 @@ class Login extends \Core\Controller
      */
     public function successAction()
     {
-        View::renderTemplate('Report/main.html');
+        View::renderTemplate('Report/Main.html');
     }
 	
 	public function logoutAction()
     {
 		unset($_SESSION['name']);
-        View::renderTemplate('login/new.html');
+        View::renderTemplate('Login/New.html');
     }
 }

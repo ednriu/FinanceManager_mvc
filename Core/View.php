@@ -2,6 +2,12 @@
 
 namespace Core;
 
+require_once '../vendor/autoload.php';
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+
+
+
 /**
  * View
  *
@@ -44,8 +50,8 @@ class View
         static $twig = null;
 
         if ($twig === null) {
-            $loader = new \Twig\Loader\Filesystemloader(dirname(__DIR__) . '/App/Views');
-            $twig = new \Twig\Environment($loader);
+            $loader = new Filesystemloader(dirname(__DIR__).'/App/Views');
+            $twig = new Environment($loader);
 			$twig->addGlobal('session',$_SESSION);
         }
 

@@ -20,7 +20,7 @@ class Signup extends \Core\Controller
      */
     public function newAction()
     {
-        View::renderTemplate('signup/new.html');
+        View::renderTemplate('Signup/New.html');
     }
 
     /**
@@ -34,11 +34,11 @@ class Signup extends \Core\Controller
 
         if ($user->save()) {
 
-            $this->redirect('/signup/success');
+            $this->redirect('/Signup/Success');
 
         } else {
 
-            View::renderTemplate('Signup/new.html', [
+            View::renderTemplate('Signup/New.html', [
                 'user' => $user
             ]);
 
@@ -52,6 +52,6 @@ class Signup extends \Core\Controller
      */
     public function successAction()
     {
-        View::renderTemplate('Signup/success.html');
+        View::renderTemplate('Signup/Success.html');
     }
 }

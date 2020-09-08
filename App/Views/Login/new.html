@@ -19,8 +19,8 @@
 			<div class="col-md-3 col-sm-6 col-xs-12">
 				<form>
 					<div class="start-buttons">
-							<button type="submit" formaction="/login/new" class="btn btn-primary btn-block" data-toggle="modal"><i class="fas fa-user"></i> Zaloguj</button>
-							<button type="submit" formaction="/signup/new" class="btn btn-primary btn-block" data-toggle="modal"><i class="fas fa-caret-square-right"></i> Rejestracja</button>
+							<button type="submit" formaction="/Login/New" class="btn btn-primary btn-block" data-toggle="modal"><i class="fas fa-user"></i> Zaloguj</button>
+							<button type="submit" formaction="/Signup/New" class="btn btn-primary btn-block" data-toggle="modal"><i class="fas fa-caret-square-right"></i> Rejestracja</button>
 					</div>	
 				</form>
 
@@ -58,7 +58,7 @@
 								 </div>		 
 
 								  <button type="submit" class="btn btn-primary btn-block" formaction="/login/create"<i class="fas fa-sign-in-alt"></i> Zaloguj</button>
-								  <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Anuluj</button>
+								  <button type="button" class="btn btn-secondary btn-block" onclick = "$('.modal').removeClass('show d-block').addClass('fade');" data-dismiss="modal">Anuluj</button>
 							</form>
 						</div>
 						
