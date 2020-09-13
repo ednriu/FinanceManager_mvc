@@ -3,13 +3,13 @@
 {% block title %}Moje Finanse{% endblock %}
 
 {% block style %}
-	<!-- FontAwesome CSS -->
-	<script src="https://kit.fontawesome.com/9427ffaa84.js" crossorigin="anonymous"></script>
 
     <!-- Bootstrap core CSS -->
 	<link href="/bootstrap-4.0.0-dist/css/bootstrap.css" rel="stylesheet">
+	<!-- Report Style CSS -->
 	<link href="/css/report_style.css" rel="stylesheet">
 	<link href="/bootstrap-4.0.0-dist/css/dashboard.css" rel="stylesheet">
+	<!--Dodatkowe Fonty -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 {% endblock %}
 
@@ -59,8 +59,7 @@
 	<!--side Bar Menu-->
 		<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
 		  <div class="sidebar-sticky pt-lg-3 pt-md-5">		  
-			<ul class="nav flex-column pt-2">	
-			
+			<ul class="nav flex-column pt-2">			
 			  <li class="nav-item">
 				<a class="nav-link" href="#" data-toggle="modal" data-target="#modalExpense">
 				  <span data-feather="credit-card"></span>
@@ -85,7 +84,7 @@
 				  Poprzedni Miesiąc
 				</a>
 			  </li>
-			  <li class="nav-item" data-toggle="modal" data-target="#modalAnotherRangeOfDate">
+			  <li class="nav-item" href="#" data-toggle="modal" data-target="#modalAnotherRangeOfDate"">
 				<a class="nav-link" href="#">
 				  <span data-feather="filter"></span>
 				  Dowolny okres
@@ -419,10 +418,8 @@
     <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap-4.0.0-dist/js/bootstrap.bundle.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap-4.0.0-dist/js/bundle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
     <script src="bootstrap-4.0.0-dist/js/dashboard.js"></script>
-
-
-
+	<!--Feather Icons -->
+	<script>feather.replace()</script>
 {% endblock %}
