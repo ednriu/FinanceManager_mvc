@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_report.html' %}
 
 {% block title %}Moje Finanse{% endblock %}
 
@@ -15,59 +15,25 @@
 
 {% block body %}  
   
-<!-- top nawigation bar-->
-<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top top-navbar">  
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span data-feather="list"></span>
-  </button>
-  
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="Report.html"><span class="navbar-text">Moje Finanse</span><span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="UstawieniaAplikacji-kategorie-wydatkow.html"><span class="navbar-text">Aplikacja</span><span class="sr-only"></span></a>
-      </li>
-      <li class="nav-item">
-       <a class="nav-link" href="UstawieniaUzytkownika-dane.html"><span class="navbar-text">Użytkownik</span><span class="sr-only"></span></a>
-      </li>
-	  <li class="nav-item">
-        <a class="nav-link" href="/Login/Logout"><span class="navbar-text">Wyloguj</span><span class="sr-only"></span></a>
-      </li>
-    </ul>
-	{% if session.name %}
-	<span class="badge badge-success mx-2">Jesteś zalogowany jako: {{ session.name }}</span>
-	{% endif %}
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2 search-input" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-secondary my-2 my-sm-0 search-btn" type="submit">Search</button>
-    </form>
-  </div>
-</nav>
-<!-- END top nawigation bar-->
-
 <!-- Finance Manager Content-->
 <div class="container-fluid bg">
 
 	<div class="row position-relative">
-
+	
 	<!--side Bar Menu-->
 		<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
 		  <div class="sidebar-sticky pt-lg-3 pt-md-5">		  
 			<ul class="nav flex-column pt-2">			
 			  <li class="nav-item">
-				<a class="nav-link" href="#" data-toggle="modal" data-target="#modalExpense">
-				  <span data-feather="credit-card"></span>
-				  Dodaj Wydatek <span class="sr-only">(current)</span>
-				</a>
+				<form>
+					<a class="nav-link" href='/Main/Report?id=1'>
+					  <span data-feather="credit-card"></span>
+					  Dodaj Wydatek <span class="sr-only">(current)</span>
+					</a>
+				</form>
 			  </li>
 			  <li class="nav-item">
-				<a class="nav-link" href="#" data-toggle="modal" data-target="#modalIncome">
+				<a class="nav-link" href='/Main/Report?id=2' >
 				  <span data-feather="dollar-sign"></span>
 				  Dodaj Przychód
 				</a>
@@ -104,12 +70,12 @@
 	<!--Right Panel-->
 		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pt-lg-3 pt-md-5">
 			<!--Komunikat jeśli dodano wydatek-->
-
+			
 			
 			<!--Komunikat jeśli dodano wpływ-->
 
 			<!--okienka z sumami i bilansem-->
-			<div class="row d-flex justify-content-center mt-3">
+			<div class="row d-flex justify-content-center mt-3">			
 			<div class="row d-flex justify-content-center mt-3">
 				<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
 					<div class="info-box">			
@@ -265,13 +231,6 @@
 						  <div class="form-group">
 								<label for="kwotaInput">Kwota:</label>
 								<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" name="incomeAmmount" id="incomeAmmount"/>
-								<?php
-										if (isset($_SESSION['e_incomeAmmount']))
-										{											
-											echo '<div class="alert alert-warning mt-1" role="alert"><small>'.$_SESSION['e_incomeAmmount'].'</small></div>';
-											unset($_SESSION['e_incomeAmmount']);
-										}
-								?>	
 						  </div>
 						  <div class="form-group">
 							<label for="incomeDatePicker">Data:</label>
@@ -281,11 +240,7 @@
 						  <div class="form-group">
 							<label for="kategoriaInput">Kategoria:</label>
 							<select multiple class="form-control" name="kategoriaIncInput" id="kategoriaIncome">						
-								<?php
-									foreach ($inc_cat_names as $inc_cat_name){
-									echo "<option value=\"".$inc_cat_name."\" >$inc_cat_name </option>";
-									}
-								?>
+
 							</select>
 						  </div>
 						  <div class="form-group">
@@ -318,13 +273,7 @@
 						  <div class="form-group">
 							<label for="kwotaInput">Kwota:</label>
 							<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" name="expenceAmmount" id="expenceAmmount" />
-								<?php
-									if (isset($_SESSION['e_expenceAmmount']))
-									{											
-										echo '<div class="alert alert-warning mt-1" role="alert"><small>'.$_SESSION['e_expenceAmmount'].'</small></div>';
-										unset($_SESSION['e_expenceAmmount']);
-									}
-								?>		
+	
 						  </div>
 						  <div class="form-group">
 							<label for="expenceDatePicker">Data:</label>
@@ -353,12 +302,12 @@
 										</div>
 						  </div>
 						  <div class="form-group">
-							<label for="kategoriaInput">Kategoria:</label>
+							<label for="kategoriaInput">Kategoria:</label>							
 							<select multiple class="form-control" name="kategoriaExpInput" id="kategoriaInput">
 								<?php
-								foreach ($exp_cat_names as $exp_cat_name){
-								echo "<option value=\"".$exp_cat_name."\" >$exp_cat_name </option>";
-								}
+									foreach ($exp_cat_names as $exp_cat_name){
+									echo "<option value=\"".$exp_cat_name."\" >$exp_cat_name </option>";
+									}
 								?>
 							</select>
 						  </div>
@@ -368,8 +317,8 @@
 						  </div>						
 					  </div>
 					  <div class="modal-footer d-flex justify-content-center">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-						<button type="submit" class="btn btn-primary">Dodaj</button>
+						<button type="button"  class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+						<button type="submit" formaction="Home/Index" class="btn btn-primary">Dodaj</button>
 					  </div>
 					</form>
 				</div>
