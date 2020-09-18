@@ -1,6 +1,6 @@
 {% extends 'base_report.html' %}
 
-{% block title %}Moje Finanse{% endblock %}
+{% block title %}Dodaj Wydatek{% endblock %}
 
 {% block style %}
 
@@ -11,30 +11,13 @@
 	<link href="/bootstrap-4.0.0-dist/css/dashboard.css" rel="stylesheet">
 	<!--Dodatkowe Fonty -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	
-
 {% endblock %}
 
 {% block body %}  
-
-	<script type="text/javascript">
-    function showIncome() {
-		$(document).ready($('#modalIncome').modal('show'));	
-    }
-	</script>
-	
-	<script type="text/javascript">
-    function showExpense() {
-		$('#modalExpense').modal('show');
-    }
-	</script>
-
-
+  
 <!-- Finance Manager Content-->
 <div class="container-fluid bg">
+
 	<div class="row position-relative">
 	
 	<!--side Bar Menu-->
@@ -43,14 +26,14 @@
 			<ul class="nav flex-column pt-2">			
 			  <li class="nav-item">
 				<form>
-					<a class="nav-link" onclick = "showExpense();" href='/Main/addExpense'> 
+					<a class="nav-link" href='/Main/Report?id=1'>
 					  <span data-feather="credit-card"></span>
 					  Dodaj Wydatek <span class="sr-only">(current)</span>
 					</a>
 				</form>
 			  </li>
 			  <li class="nav-item">
-				<a class="nav-link" href='/Main/addIncome'>
+				<a class="nav-link" href='/Main/addIncome?id=2' >
 				  <span data-feather="dollar-sign"></span>
 				  Dodaj Przychód
 				</a>
@@ -91,7 +74,6 @@
 			
 			<!--Komunikat jeśli dodano wpływ-->
 
-
 			<!--okienka z sumami i bilansem-->
 			<div class="row d-flex justify-content-center mt-3">			
 			<div class="row d-flex justify-content-center mt-3">
@@ -117,9 +99,6 @@
 					</div>
 				</div>
 			</div>
-			
-			
-		
 		<!--Tabela wydatków-->
 		<div class="row mt-3">
 			<div class="col-lg-6">
@@ -235,16 +214,15 @@
 					</div>
 
 			</div>
-				
-			
+
 
 			<!-- Modal Add INCOME -->
-			<div class="modal bd-example-modal-sm" id="modalIncome" tabindex="-1" role="dialog" aria-labelledby="modalIncome" aria-hidden="true">
+			<div class="modal fade show d-block bd-example-modal-sm" id="modalIncome" tabindex="-1" role="dialog" aria-labelledby="modalIncome" aria-hidden="true">
 			  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
 				<div class="modal-content">
 				  <div class="modal-header">
 					<h5 class="modal-title" id="modalIncomeTitle">Dodaj Przychód</h5>
-					<button type="button" class="close" onclick = "$('#modalIncome').modal('hide');" data-dismiss="modal" aria-label="Close">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					  <span aria-hidden="true">&times;</span>
 					</button>
 				  </div>
@@ -272,7 +250,7 @@
 						  </div>						
 					  </div>
 					  <div class="modal-footer d-flex justify-content-center">
-						<button type="button" class="btn btn-secondary"  onclick = "$('#modalIncome').modal('hide');" data-dismiss="modal">Anuluj</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
 						<button type="submit" class="btn btn-primary">Dodaj</button>
 					  </div>
 				  </form>
@@ -280,15 +258,14 @@
 			  </div>
 			</div>
 			<!-- End Modal Add INCOME -->
-
-		
+			
 			<!-- Modal Add EXPENSE -->
-			<div class="modal bd-example-modal-sm" id="modalExpense" tabindex="-1" role="dialog" aria-labelledby="modalExpense" aria-hidden="true">
+			<div class="modal fade  bd-example-modal-sm" id="modalExpense" tabindex="-1" role="dialog" aria-labelledby="modalExpense" aria-hidden="true">
 			  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
 				<div class="modal-content">
 				  <div class="modal-header">
 					<h5 class="modal-title" id="modalExpenceTitle">Dodaj Wydatek</h5>
-					<button type="button" class="close" onclick = "$('#modalExpense').modal('hide');" data-dismiss="modal" aria-label="Close">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					  <span aria-hidden="true">&times;</span>
 					</button>
 				  </div>
@@ -341,7 +318,7 @@
 						  </div>						
 					  </div>
 					  <div class="modal-footer d-flex justify-content-center">
-						<button type="button"  class="btn btn-secondary" onclick = "$('#modalExpense').modal('hide');" data-dismiss="modal">Anuluj</button>
+						<button type="button"  class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
 						<button type="submit" formaction="Home/Index" class="btn btn-primary">Dodaj</button>
 					  </div>
 					</form>
@@ -386,25 +363,11 @@
 	</div>
 </div><!-- /.container -->
 
-		{% if incomeForm == true %}
-			<script>
-				$(document).ready(function(){					
-					showIncome();
-				});
-			</script>
-		{% endif %}
-		
-		{% if expenseForm == true %}
-			<script>
-				$(document).ready(function(){					
-					showExpense();
-				});
-			</script>
-		{% endif %}
-			
-
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap-4.0.0-dist/js/bootstrap.bundle.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap-4.0.0-dist/js/bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
     <script src="bootstrap-4.0.0-dist/js/dashboard.js"></script>
 	<!--Feather Icons -->

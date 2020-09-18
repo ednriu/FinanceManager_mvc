@@ -17,8 +17,21 @@ class Main extends \Core\Controller
      *
      * @return void
      */
-    public function reportAction()
+    public function addIncomeCategoriesAction()
     {
-        View::renderTemplate('Report/Main.html');
+        
+    }
+	
+
+	    public function addIncomeAction()
+    {
+		$incomeForm = true;
+        View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm]);
+    }
+	
+		public function addExpenseAction()
+    {
+		$expenseForm = true;
+        View::renderTemplate('Report/Main.html',['expenseForm'=>$expenseForm]);
     }
 }
