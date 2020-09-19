@@ -43,7 +43,7 @@
 			<ul class="nav flex-column pt-2">			
 			  <li class="nav-item">
 				<form>
-					<a class="nav-link" onclick = "showExpense();" href='/Main/addExpense'> 
+					<a class="nav-link" href='/Main/addExpense'> 
 					  <span data-feather="credit-card"></span>
 					  Dodaj Wydatek <span class="sr-only">(current)</span>
 					</a>
@@ -93,7 +93,8 @@
 
 
 			<!--okienka z sumami i bilansem-->
-			<div class="row d-flex justify-content-center mt-3">			
+			<div class="row d-flex justify-content-center mt-3">
+				{{ incomeForm }} 			
 			<div class="row d-flex justify-content-center mt-3">
 				<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
 					<div class="info-box">			
@@ -261,10 +262,13 @@
 						  </div>
 						  <div class="form-group">
 							<label for="kategoriaInput">Kategoria:</label>
+							
 							<select multiple class="form-control" name="kategoriaIncInput" id="kategoriaIncome">
-							@Html.DropDownListFor(model => model.DepartmentId, ViewBag.DepartmentList as SelectList, "--select--", new { @class = "form-control" })
-
+								{% for item in items %}
+									<option value="{{ item.id }}">{{ item.name }}</option>
+								{% endfor %}
 							</select>
+							
 						  </div>
 						  <div class="form-group">
 							<label for="komentarzInput">Komentarz:</label>
@@ -328,11 +332,9 @@
 						  <div class="form-group">
 							<label for="kategoriaInput">Kategoria:</label>							
 							<select multiple class="form-control" name="kategoriaExpInput" id="kategoriaInput">
-								<?php
-									foreach ($exp_cat_names as $exp_cat_name){
-									echo "<option value=\"".$exp_cat_name."\" >$exp_cat_name </option>";
-									}
-								?>
+								{% for item in items %}
+									<option value="{{ item.id }}">{{ item.name }}</option>
+								{% endfor %}
 							</select>
 						  </div>
 						  <div class="form-group">
@@ -401,9 +403,7 @@
 				});
 			</script>
 		{% endif %}
-			
-
-
+		
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
     <script src="bootstrap-4.0.0-dist/js/dashboard.js"></script>

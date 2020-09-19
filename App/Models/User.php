@@ -158,7 +158,8 @@ class User extends \Core\Model
         return $stmt->fetch() !== false;
     }
 	
-	    public static function findByLogin($login)
+	    
+		public static function findByLogin($login)
     {
         $sql = 'SELECT * FROM users WHERE login = :login';
 

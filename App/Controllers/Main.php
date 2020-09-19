@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Models\Categories;
 
 /**
  * Home controller
@@ -25,13 +26,15 @@ class Main extends \Core\Controller
 
 	    public function addIncomeAction()
     {
-		$incomeForm = true;
-        View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm]);
+		$incomeForm = true;		
+		$incomeCategories = Categories::getIncomeCategories();
+        View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'items'=>$incomeCategories],);
     }
 	
 		public function addExpenseAction()
     {
 		$expenseForm = true;
-        View::renderTemplate('Report/Main.html',['expenseForm'=>$expenseForm]);
+		$expenseCategories = Categories::getExpenseCategories();
+        View::renderTemplate('Report/Main.html',['expenseForm'=>$expenseForm, 'items'=>$expenseCategories]);
     }
 }

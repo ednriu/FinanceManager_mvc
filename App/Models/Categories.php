@@ -34,16 +34,24 @@ class Categories extends \Core\Model
      */
 
 	
-	public function getAllExpenceCategories()
+	public static function getExpenseCategories()
     {
         $sql = 'SELECT * FROM `expence_categories` WHERE 1';
 
         $db = static::getDB();
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetch() !== false;
+        $stmt = $db->query($sql);
+		$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
     }
 	
+	public static function getIncomeCategories()
+    {
+        $sql = 'SELECT * FROM `income_categories` WHERE 1';
 
+        $db = static::getDB();
+        $stmt = $db->query($sql);
+		$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $results;  
+	}
 
 }
