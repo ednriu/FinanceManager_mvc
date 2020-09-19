@@ -43,14 +43,14 @@
 			<ul class="nav flex-column pt-2">			
 			  <li class="nav-item">
 				<form>
-					<a class="nav-link" href='/Main/addExpense'> 
+					<a class="nav-link" href='/Main/addExpenseForm'> 
 					  <span data-feather="credit-card"></span>
 					  Dodaj Wydatek <span class="sr-only">(current)</span>
 					</a>
 				</form>
 			  </li>
 			  <li class="nav-item">
-				<a class="nav-link" href='/Main/addIncome'>
+				<a class="nav-link" href='/Main/addIncomeForm'>
 				  <span data-feather="dollar-sign"></span>
 				  Dodaj Przychód
 				</a>
@@ -277,7 +277,7 @@
 					  </div>
 					  <div class="modal-footer d-flex justify-content-center">
 						<button type="button" class="btn btn-secondary"  onclick = "$('#modalIncome').modal('hide');" data-dismiss="modal">Anuluj</button>
-						<button type="submit" class="btn btn-primary">Dodaj</button>
+						<button type="submit" formaction="/Main/submitIncome" class="btn btn-primary">Dodaj</button>
 					  </div>
 				  </form>
 				</div>
