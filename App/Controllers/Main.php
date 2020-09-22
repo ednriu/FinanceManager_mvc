@@ -41,14 +41,17 @@ class Main extends \Core\Controller
 	
 	public function submitIncomeAction()
 	{
+			$income = new Incomes($_POST);
 
-		$incomeAdded = Incomes::saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'], $_POST['kategoriaIncomeInput'], $_POST['commentInput']);
-		if($incomeAdded)
-		{
-			$feedback = "Dodano Wydatek";
-			View::renderTemplate('Report/Main.html',['feedback'=>$feedback]);
-		}
-		
+			if($income -> saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'], $_POST['kategoriaIncomeInput'], $_POST['commentInput']))
+			{
+				$feedback = "Dodano Wydatek";
+				View::renderTemplate('Report/Main.html',['feedback'=>$feedback]);
+			} else {
+				$incomeForm = true;
+				View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'income'=>$income]);
+			}
+
 		
 
 	}
