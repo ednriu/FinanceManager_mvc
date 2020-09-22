@@ -34,6 +34,7 @@ class Login extends \Core\Controller
 		
 		if ($user) {
 			$_SESSION['name'] = $user->name;
+			$_SESSION['user_id'] = $user->user_id;
 			$this->redirect('/Login/Success');
 		} else {
 			View::renderTemplate('Login/New.html',[
@@ -54,6 +55,7 @@ class Login extends \Core\Controller
 	public function logoutAction()
     {
 		unset($_SESSION['name']);
+		unset($_SESSION['user_id']);
         View::renderTemplate('Login/New.html');
     }
 }

@@ -86,11 +86,13 @@
 		
 	<!--Right Panel-->
 		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pt-lg-3 pt-md-5">
-			<!--Komunikat jeśli dodano wydatek-->
 			
 			
-			<!--Komunikat jeśli dodano wpływ-->
-
+			<!--Komunikat zwrotny dla użytkownika-->
+			{% if feedback == true %}
+				<div class="row d-flex justify-content-center mt-3"><div class="alert alert-success" role="alert">{{ feedback }}</div></div>
+			{% endif %}
+			
 
 			<!--okienka z sumami i bilansem-->
 			<div class="row d-flex justify-content-center mt-3">
@@ -263,7 +265,7 @@
 						  <div class="form-group">
 							<label for="kategoriaInput">Kategoria:</label>
 							
-							<select multiple class="form-control" name="kategoriaIncInput" id="kategoriaIncome">
+							<select multiple class="form-control" name="kategoriaIncomeInput" id="kategoriaIncome">
 								{% for item in items %}
 									<option value="{{ item.id }}">{{ item.name }}</option>
 								{% endfor %}
@@ -272,7 +274,7 @@
 						  </div>
 						  <div class="form-group">
 							<label for="komentarzInput">Komentarz:</label>
-							<textarea class="form-control" name="komentarzIncInput" id="komentarzInput" rows="3"></textarea>
+							<textarea class="form-control" name="commentInput" id="komentarzInput" rows="3"></textarea>
 						  </div>						
 					  </div>
 					  <div class="modal-footer d-flex justify-content-center">

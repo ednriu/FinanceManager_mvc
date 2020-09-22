@@ -20,15 +20,19 @@ class Main extends \Core\Controller
      * @return void
      */
 
+	public function showMainReportAction()
+	{
+		View::renderTemplate('Report/Main.html');
+	}
 
-	    public function addIncomeFormAction()
+	public function addIncomeFormAction()
     {
 		$incomeForm = true;		
 		$incomeCategories = Categories::getIncomeCategories();
         View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'items'=>$incomeCategories],);
     }
 	
-		public function addExpenseFormAction()
+	public function addExpenseFormAction()
     {
 		$expenseForm = true;
 		$expenseCategories = Categories::getExpenseCategories();
@@ -37,7 +41,15 @@ class Main extends \Core\Controller
 	
 	public function submitIncomeAction()
 	{
-		$incomeAdded = Incomes::addIncome(5, "2020-04-05", 4, "komencik");
-		View::renderTemplate('Report/Main.html',['incomeAdded'=>$incomeAdded]);
+
+		$incomeAdded = Incomes::saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'], $_POST['kategoriaIncomeInput'], $_POST['commentInput']);
+		if($incomeAdded)
+		{
+			$feedback = "Dodano Wydatek";
+			View::renderTemplate('Report/Main.html',['feedback'=>$feedback]);
+		}
+		
+		
+
 	}
 }

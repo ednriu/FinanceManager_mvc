@@ -26,7 +26,7 @@ class Categories extends \Core\Model
             $this->$key = $value;
         };
     }
-
+	
     /**
      * Save the user model with the current property values
      *
@@ -36,23 +36,30 @@ class Categories extends \Core\Model
 	
 	public static function getExpenseCategories()
     {
-        $sql = 'SELECT * FROM `expence_categories` WHERE 1';
-
-        $db = static::getDB();
-        $stmt = $db->query($sql);
-		$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
+		try
+		{
+			$sql = 'SELECT * FROM `expence_categories` WHERE 1';
+			$db = static::getDB();
+			$stmt = $db->query($sql);
+			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+        }
     }
 	
 	public static function getIncomeCategories()
     {
-        $sql = 'SELECT * FROM `income_categories` WHERE 1';
-
-        $db = static::getDB();
-        $stmt = $db->query($sql);
-		$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $results;  
+		try
+		{
+			$sql = 'SELECT * FROM `income_categories` WHERE 1';
+			$db = static::getDB();
+			$stmt = $db->query($sql);
+			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+        }
 	}
 	
-
 }
