@@ -255,31 +255,36 @@
 						<div class="modal-body">
 						  <div class="form-group">
 								<label for="kwotaInput">Kwota:</label>
-								<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" name="incomeAmmount" id="incomeAmmount"/>
-
+								<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency"  value = "{{income.ammount}}" name="incomeAmmount" id="incomeAmmount"/>
 									{% if income.incomeErrors['error_ammount'] is not empty %}
-										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">
-										{{ income.incomeErrors['error_ammount'] }}
+										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ income.incomeErrors['error_ammount'] }}</div>
 									{% endif %}	
 						  </div>
 						  <div class="form-group">
-							<label for="incomeDatePicker">Data:</label>
-							<input type="date" class="form-control" name="incomeDatePicker" id="incomeDatePicker" placeholder="dd-mm-yyyy">
-							<script>TodayDate();</script>
+								<label for="incomeDatePicker">Data:</label>
+								<input type="date" class="form-control" value = "{{income.datePicker}}" name="incomeDatePicker" id="incomeDatePicker" placeholder="dd-mm-yyyy">
+								<script>TodayDate();</script>
+									{% if income.incomeErrors['error_date'] is not empty %}
+										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ income.incomeErrors['error_date'] }}</div>
+									{% endif %}	
 						  </div>
 						  <div class="form-group">
-							<label for="kategoriaInput">Kategoria:</label>
-							
-							<select multiple class="form-control" name="kategoriaIncomeInput" id="kategoriaIncome">
-								{% for item in items %}
-									<option value="{{ item.id }}">{{ item.name }}</option>
-								{% endfor %}
-							</select>
-							
+								<label for="kategoriaInput">Kategoria:</label>							
+								<select multiple class="form-control" name="kategoriaIncomeInput" id="kategoriaIncome">
+									{% for item in items %}
+										<option value="{{ item.id }}">{{ item.name }}</option>
+									{% endfor %}
+								</select>
+									{% if income.incomeErrors['error_category'] is not empty %}
+										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ income.incomeErrors['error_category'] }}</div>
+									{% endif %}											
 						  </div>
 						  <div class="form-group">
-							<label for="komentarzInput">Komentarz:</label>
-							<textarea class="form-control" name="commentInput" id="komentarzInput" rows="3"></textarea>
+								<label for="komentarzInput">Komentarz:</label>
+								<textarea class="form-control" name="commentInput" id="komentarzInput" rows="3">{{income.comment}}</textarea>
+									{% if income.incomeErrors['error_comment'] is not empty %}
+										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ income.incomeErrors['error_comment'] }}</div>
+									{% endif %}		
 						  </div>						
 					  </div>
 					  <div class="modal-footer d-flex justify-content-center">
