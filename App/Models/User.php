@@ -162,15 +162,11 @@ class User extends \Core\Model
 		public static function findByLogin($login)
     {
         $sql = 'SELECT * FROM users WHERE login = :login';
-
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':login', $login, PDO::PARAM_STR);
-
-        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
-
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
-
         return $stmt->fetch();
     }
 	

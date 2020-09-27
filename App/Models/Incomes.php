@@ -35,7 +35,7 @@ class Incomes extends \Core\Model
      *
      * @return bool
      */   
-	public function validate()
+	private function validate()
 	{
 		//Ammount
 		if ($this->ammount == '') {
@@ -83,4 +83,26 @@ class Incomes extends \Core\Model
 		}
 		return false;
 	}
+	
+	public static function getIncomes($userId)
+    {		
+
+			try
+			{
+				$sql = 'SELECT * FROM incomes, income_categories WHERE incomes.category_id=income_categories.category_id AND incomes.user_id=:numer';				
+				$db = static::getDB();
+				$stmt = $db->prepare($sql);
+				$stmt->bindValue(':numer', $userId, PDO::PARAM_INT);
+				$stmt->execute();
+				$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results;
+			} catch (PDOException $e) {
+				echo $e->getMessage();
+			}
+		return false;
+	}
+	
 }
+
+
+

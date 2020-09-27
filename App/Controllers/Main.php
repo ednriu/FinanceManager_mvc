@@ -20,9 +20,17 @@ class Main extends \Core\Controller
      * @return void
      */
 
-	public function showMainReportAction()
+	public static function showMainReportAction()
 	{
-		View::renderTemplate('Report/Main.html');
+		$incomes = Incomes::getIncomes($_SESSION['user_id']);
+		if ($incomes)
+		{
+			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes]);
+		}
+		else
+		{
+			echo 'Nie pobrano przychodów';
+		};
 	}
 
 	public function addIncomeFormAction()
@@ -41,20 +49,21 @@ class Main extends \Core\Controller
 	
 	public function submitIncomeAction()
 	{
-			$income = new Incomes($_POST);
+			$incomeToBeAdded = new Incomes($_POST);
 			if (isset($_POST['kategoriaIncomeInput']))
 			{
+				$kategoriaIncomeInput = $_POST['kategoriaIncomeInput'];
 				$kategoriaIncomeInput = $_POST['kategoriaIncomeInput'];
 			} else {
 				$kategoriaIncomeInput = 0;
 			}
-			if($income -> saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'],$kategoriaIncomeInput, $_POST['commentInput']))
+			if($incomeToBeAdded -> saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'],$kategoriaIncomeInput, $_POST['commentInput']))
 			{
 				$feedback = "Dodano Wydatek";
 				View::renderTemplate('Report/Main.html',['feedback'=>$feedback]);
 			} else {
 				$incomeForm = true;
-				View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'income'=>$income]);
+				View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'incomeToBeAdded'=>$income]);
 			}
 
 		

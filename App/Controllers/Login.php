@@ -49,7 +49,8 @@ class Login extends \Core\Controller
      */
     public function successAction()
     {
-        View::renderTemplate('Report/Main.html');
+		Main::showMainReportAction();
+        //View::renderTemplate('Report/Main.html');		
     }
 	
 	public function logoutAction()
