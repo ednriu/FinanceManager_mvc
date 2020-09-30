@@ -35,7 +35,7 @@ class Login extends \Core\Controller
 		if ($user) {
 			$_SESSION['name'] = $user->name;
 			$_SESSION['user_id'] = $user->user_id;
-			$this->redirect('/Login/Success');
+			$this->redirect('/Main/showMainReport');
 		} else {
 			View::renderTemplate('Login/New.html',[
 			'login'=>$_POST['login']],);
@@ -43,15 +43,10 @@ class Login extends \Core\Controller
     }
 
     /**
-     * Show the signup success page
+     * Logout User
      *
      * @return void
      */
-    public function successAction()
-    {
-		Main::showMainReportAction();
-        //View::renderTemplate('Report/Main.html');		
-    }
 	
 	public function logoutAction()
     {
