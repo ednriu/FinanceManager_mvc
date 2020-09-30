@@ -83,10 +83,29 @@ class Incomes extends \Core\Model
 		}
 		return false;
 	}
+
+    /**
+     * Function
+     *
+     * @param array $incomes 
+     *
+     * @return sum of property 'ammount'
+     */
+	
+	public static function getSumOfAmmount($incomes)
+	{
+		$sum = 0;
+
+		foreach($incomes as $key=>$value)
+		{
+			if(isset($value['ammount']))   
+			$sum += $value['ammount'];
+		}
+		return $sum;
+	}
 	
 	public static function getIncomes($userId)
     {		
-
 			try
 			{
 				$sql = 'SELECT * FROM incomes, income_categories WHERE incomes.category_id=income_categories.category_id AND incomes.user_id=:numer';				

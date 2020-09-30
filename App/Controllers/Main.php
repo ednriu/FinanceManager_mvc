@@ -25,11 +25,12 @@ class Main extends \Core\Controller
 		$incomes = Incomes::getIncomes($_SESSION['user_id']);
 		if ($incomes)
 		{
-			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes]);
+			$suma = Incomes::getSumOfAmmount($incomes);
+			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'sumOfIncomes'=>$suma]);
 		}
 		else
 		{
-			echo 'Nie pobrano przychodów';
+			$error = "błąd"; //to nie może być tak, ponieważ w przypadku braku rekordów w bazie danych jest wyrzucany błąd.
 		};
 	}
 
@@ -53,20 +54,19 @@ class Main extends \Core\Controller
 			if (isset($_POST['kategoriaIncomeInput']))
 			{
 				$kategoriaIncomeInput = $_POST['kategoriaIncomeInput'];
-				$kategoriaIncomeInput = $_POST['kategoriaIncomeInput'];
 			} else {
 				$kategoriaIncomeInput = 0;
-			}
+			};
+			
+			
 			if($incomeToBeAdded -> saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'],$kategoriaIncomeInput, $_POST['commentInput']))
 			{
 				$feedback = "Dodano Wydatek";
-				View::renderTemplate('Report/Main.html',['feedback'=>$feedback]);
+				//View::renderTemplate('Report/Main.html',['feedback'=>$feedback]);
+				Main::showMainReport();
 			} else {
 				$incomeForm = true;
-				View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'incomeToBeAdded'=>$income]);
+				View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'incomeToBeAdded'=>$incomeToBeAdded]);
 			}
-
-		
-
 	}
 }
