@@ -253,10 +253,10 @@
 									{% endif %}	
 						  </div>
 						  <div class="form-group">
-								<label for="kategoriaInput">Kategoria:</label>							
-								<select multiple class="form-control" name="kategoriaIncomeInput" id="kategoriaIncome">
+								<label for="kategoriaIncomeInput">Kategoria:</label>							
+								<select multiple class="form-control" name="kategoriaIncomeInput" id="kategoriaIncomeInput">
 									{% for item in items %}
-										<option value="{{ item.id }}">{{ item.name }}</option>
+										<option value="{{ item.category_id }}">{{ item.name }}</option>
 									{% endfor %}
 								</select>
 									{% if incomeToBeAdded.incomeErrors['error_category'] is not empty %}
