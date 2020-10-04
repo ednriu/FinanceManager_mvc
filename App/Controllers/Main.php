@@ -28,11 +28,13 @@ class Main extends \Core\Controller
 		{
 			$suma = Incomes::getSumOfAmmount($incomes);
 			
-			$kategoriePrzychodowNiezerowych = new Categories();
-			$kategoriePrzychodowNiezerowych->getNotEmptyIncomeCategories(5);
+
+			$kategoriePrzychodowNiezerowych= Categories::getNotEmptyIncomeCategories(5);
+			$kategorieUnikalne = array_unique($kategoriePrzychodowNiezerowych);
+			$daneWykresuPrzychodow = Incomes::getGraphDate($kategorieUnikalne, 179, 5);
+
 			
-			
-			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'sumOfIncomes'=>$suma, 'feedback'=>$feedback]);
+			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'sumOfIncomes'=>$suma, 'feedback'=>$feedback, 'graphDate'=>$daneWykresuPrzychodow]);
 		}
 		else
 		{
@@ -43,7 +45,7 @@ class Main extends \Core\Controller
 	public function addIncomeFormAction()
     {
 		$incomeForm = true;		
-		$incomeCategories = Categories::getIncomeCategories($_POST['user_id']);
+		$incomeCategories = Categories::getIncomeCategories($_SESSION['user_id']);
         View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'items'=>$incomeCategories],);
     }
 	

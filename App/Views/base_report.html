@@ -40,46 +40,7 @@
 			$(".add-new").removeAttr("disabled");
 		});
 	</script>
-	<script>
-		window.onload = function rysuj_wykresy_wydatkow_przychodow() {	
-		var chart = new CanvasJS.Chart("chartContainer_wydatki", {
-			animationEnabled: true,
-			title: {
-				text: "Wydatki"
-			},
-			subtitles: [{
-				text: "Cały Okres"
-			}],
-			data: [{
-				type: "pie",
-				yValueFormatString: "#,##0.00\"%\"",
-				indexLabel: "{label} ({y})",
-				dataPoints: <?php echo json_encode($daneWykresuWydatkow, JSON_NUMERIC_CHECK); ?>
-			}]
-		});
-		chart.render();
-		
-		var chart2 = new CanvasJS.Chart("chartContainer_przychody", {
-			animationEnabled: true,
-			title: {
-				text: "Przychody"
-			},
-			subtitles: [{
-				text: "Cały Okres"
-			}],
-			data: [{
-				type: "pie",
-				yValueFormatString: "#,##0.00\"%\"",
-				indexLabel: "{label} ({y})",
-				dataPoints: <?php echo json_encode($daneWykresuPrzychodow, JSON_NUMERIC_CHECK); ?>
-			}]
-		});
-		chart2.render();
-	 
-	};
-	
 
-	</script>
 	
 </head>
 <body>

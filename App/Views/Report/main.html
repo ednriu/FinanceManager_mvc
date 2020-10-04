@@ -31,6 +31,53 @@
 		$('#modalExpense').modal('show');
     }
 	</script>
+	
+	<script>
+		window.onload = function rysuj_wykresy_wydatkow_przychodow() 
+		{
+		  alert( 'Loaded' );
+			  var chart = new CanvasJS.Chart("chartContainer_wydatki", {
+				animationEnabled: true,
+				title: {
+					text: "Wydatki"
+				},
+				subtitles: [{
+					text: "Cały Okres"
+				}],
+				data: [{
+					type: "pie",
+					yValueFormatString: "#,##0.00\"%\"",
+					indexLabel: "{label} ({y})",
+					dataPoints: [
+						{y: 79.45, label: "Google"},
+						{y: 7.31, label: "Bing"},
+						{y: 7.06, label: "Baidu"},
+						{y: 4.91, label: "Yahoo"},
+						{y: 1.26, label: "Others"}
+					]
+				}]
+			});
+			chart.render();
+			
+			var chart2 = new CanvasJS.Chart("chartContainer_przychody", {
+				animationEnabled: true,
+				title: {
+					text: "Przychody"
+				},
+				subtitles: [{
+					text: "Cały Okres"
+				}],
+				data: [{
+					type: "pie",
+					yValueFormatString: "#,##0.00\"%\"",
+					indexLabel: "{label} ({y})",
+					dataPoints: {{ graphDate|json_encode(constant('JSON_NUMERIC_CHECK'))|raw }}
+				}]
+			});
+			chart2.render();
+			  
+		};
+	</script>
 
 
 <!-- Finance Manager Content-->
@@ -93,37 +140,38 @@
 				<div class="row d-flex justify-content-center mt-3"><div class="alert alert-success" role="alert">{{ feedback }}</div></div>
 			{% endif %}
 			
-			
-			
+	
 
 			<!--okienka z sumami i bilansem-->
 			<div class="row d-flex justify-content-center mt-3">
-				{{ incomeForm }} 			
-			<div class="row d-flex justify-content-center mt-3">
-				<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
-					<div class="info-box">			
-						<h1 class="text-center py-1">Suma Wydatków</h1>							
+					{{ incomeForm }} 			
+				<div class="row d-flex justify-content-center mt-3">
+					<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
+						<div class="info-box">			
+							<h1 class="text-center py-1">Suma Wydatków</h1>							
+								<div class="row justify-content-center mt-4"><span data-feather="plus-square"></span> <p class="balance font-weight-bold">								
+								{{sumOfExpences}}</p></div>							
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
+						<div class="info-box balance">
+							<h1 class="text-center py-1">Bilans</h1>
+								<div class="row justify-content-center mt-4"><span data-feather="info"></span> <p class="balance font-weight-bold">								
+								</p></div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
+						<div class="info-box">
+							<h1 class="text-center py-1">Suma Przychodów</h1>
 							<div class="row justify-content-center mt-4"><span data-feather="plus-square"></span> <p class="balance font-weight-bold">								
-							{{sumOfExpences}}</p></div>							
+							{{sumOfIncomes}}</p></div>	
+						</div>
 					</div>
+					{{ graphDate|json_encode(constant('JSON_NUMERIC_CHECK'))|raw }}
+
+
 				</div>
-				<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
-					<div class="info-box balance">
-						<h1 class="text-center py-1">Bilans</h1>
-							<div class="row justify-content-center mt-4"><span data-feather="info"></span> <p class="balance font-weight-bold">								
-							</p></div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
-					<div class="info-box">
-						<h1 class="text-center py-1">Suma Przychodów</h1>
-						<div class="row justify-content-center mt-4"><span data-feather="plus-square"></span> <p class="balance font-weight-bold">								
-						{{sumOfIncomes}}</p></div>	
-					</div>
-				</div>
-			</div>
-			
-			
+		
 		
 		<!--Tabela wydatków-->
 		<div class="row mt-3">
@@ -182,6 +230,8 @@
 				</div>				  
 			</div>
 			<!--Koniec Tabeli Wydatków-->
+			
+			
 			<!--Tabela przychodów-->
 			<div class="col-lg-6">
 				  <div class="table-responsive inc-exp-area mt-3">

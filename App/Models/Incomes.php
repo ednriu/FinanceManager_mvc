@@ -123,7 +123,41 @@ class Incomes extends \Core\Model
 	
 	public static function graphIncomes()
 	{
+		$this->ammount;
+	}
+	//*************************************
+	//returns array for the data of Graph
+	//*************************************
+	public static function getGraphDate($unikalneKategoriePrzychodowNiezerowych, $sumaPrzychodow, $userId)
+	{
 		
+		$daneWykresuPrzychodow = array();
+		
+			foreach ($unikalneKategoriePrzychodowNiezerowych as $k => $etykietaPrzychodow) {
+				try
+				{
+					
+					$sql = 'SELECT SUM(incomes.ammount) as total FROM incomes, income_categories WHERE incomes.user_id=:userId  AND income_categories.name=:category AND income_categories.category_id=incomes.category_id';
+					$db = static::getDB();
+					$stmt = $db->prepare($sql);
+					$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+					$stmt->bindValue(':category', $etykietaPrzychodow, PDO::PARAM_STR);  //zmienić inwestycje na numer etykiety
+					$stmt->execute();
+					$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+					$sumaPrzychodowDanejKategorii = $results;
+					foreach($results as $key=>$value)
+						{
+							if(isset($value['total']))   
+							$sum = $value['total'];
+						}
+					$przychodyWProcentach=round(($sum*100)/$sumaPrzychodow,2);
+					$new_array=array("label"=>$etykietaPrzychodow, "y"=>$przychodyWProcentach);
+					array_push($daneWykresuPrzychodow, $new_array);					
+				} catch (PDOException $e) {
+					echo $e->getMessage();
+				}							
+			}
+		return $daneWykresuPrzychodow;
 	}
 	
 		
