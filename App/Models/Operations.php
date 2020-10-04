@@ -104,14 +104,24 @@ class Operations extends \Core\Model
 		return $sum;
 	}
 	
-	public static function getOperationsData($userId)
+	private function getCurrentDate()
+	{
+		return date('Y-m-d');
+	}
+	
+	public static function getOperationsData($userId, $startDate='2000-01-01', $endDate)
     {		
 			try
 			{
-				$sql = 'SELECT * FROM incomes, income_categories WHERE incomes.category_id=income_categories.category_id AND incomes.user_id=:userId';				
+				$sql = "SELECT * FROM incomes, income_categories WHERE incomes.category_id=income_categories.category_id AND incomes.user_id=:userId AND incomes.date BETWEEN :startDate AND :endDate";				
 				$db = static::getDB();
 				$stmt = $db->prepare($sql);
 				$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+
+					$stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+
+				$stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+				$stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
 				$stmt->execute();
 				$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
 			return $results;
@@ -121,10 +131,7 @@ class Operations extends \Core\Model
 		return false;
 	}
 	
-	public static function graphIncomes()
-	{
-		$this->ammount;
-	}
+
 	//*************************************
 	//returns array for the data of Graph
 	//*************************************

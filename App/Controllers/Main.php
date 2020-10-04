@@ -22,14 +22,14 @@ class Main extends \Core\Controller
 
 	public static function showMainReportAction($feedback='')
 	{
-		$incomes = Operations::getOperationsData($_SESSION['user_id']);
+		$incomes = Operations::getOperationsData($_SESSION['user_id'],'2020-09-14', '2020-10-14');
 		if ($incomes)
 		{
 			$sumOfIncomesAmmount = Operations::getSumOfAmmount($incomes); //need to add date range
 			$notEmptyIncomeCategories= Categories::getNotEmptyIncomeCategories($_SESSION['user_id']); //need to add date range
 			$notEmptyIncomeCategoriesWithoutRepeats = array_unique($notEmptyIncomeCategories);
-			
 			$incomeGraphData = Operations::getGraphDate($notEmptyIncomeCategoriesWithoutRepeats, $sumOfIncomesAmmount, $_SESSION['user_id']);
+
 			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'feedback'=>$feedback, 'graphDate'=>$incomeGraphData]);
 		}
 		else
