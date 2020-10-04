@@ -9,10 +9,10 @@ use PDO;
  *
  * PHP version 7.0
  */
-class Incomes extends \Core\Model
+class Operations extends \Core\Model
 {
 	
-	public $incomeErrors = [];
+	public $operationErrors = [];
 
     /**
      * Class constructor
@@ -104,7 +104,7 @@ class Incomes extends \Core\Model
 		return $sum;
 	}
 	
-	public static function getIncomes($userId)
+	public static function getOperationsData($userId)
     {		
 			try
 			{

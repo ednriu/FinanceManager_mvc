@@ -35,7 +35,6 @@
 	<script>
 		window.onload = function rysuj_wykresy_wydatkow_przychodow() 
 		{
-		  alert( 'Loaded' );
 			  var chart = new CanvasJS.Chart("chartContainer_wydatki", {
 				animationEnabled: true,
 				title: {
@@ -144,7 +143,7 @@
 
 			<!--okienka z sumami i bilansem-->
 			<div class="row d-flex justify-content-center mt-3">
-					{{ incomeForm }} 			
+					{{ incomeFormVisible }} 			
 				<div class="row d-flex justify-content-center mt-3">
 					<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
 						<div class="info-box">			
@@ -167,9 +166,6 @@
 							{{sumOfIncomes}}</p></div>	
 						</div>
 					</div>
-					{{ graphDate|json_encode(constant('JSON_NUMERIC_CHECK'))|raw }}
-
-
 				</div>
 		
 		
@@ -294,6 +290,7 @@
 										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_ammount'] }}</div>
 									{% endif %}	
 						  </div>
+						  
 						  <div class="form-group">
 								<label for="incomeDatePicker">Data:</label>
 								<input type="date" class="form-control" value = "{{incomeToBeAdded.datePicker}}" name="incomeDatePicker" id="incomeDatePicker" placeholder="dd-mm-yyyy">
@@ -302,17 +299,19 @@
 										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_date'] }}</div>
 									{% endif %}	
 						  </div>
+						 
 						  <div class="form-group">
 								<label for="kategoriaIncomeInput">Kategoria:</label>							
 								<select multiple class="form-control" name="kategoriaIncomeInput" id="kategoriaIncomeInput">
-									{% for item in items %}
-										<option value="{{ item.category_id }}">{{ item.name }}</option>
+									{% for incomeCategory in incomeCategories %}
+										<option value="{{ incomeCategory.category_id }}" {% if selectedCategoryId == incomeCategory.category_id %} selected {% endif %} >{{ incomeCategory.name }}</option>
 									{% endfor %}
 								</select>
 									{% if incomeToBeAdded.incomeErrors['error_category'] is not empty %}
 										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_category'] }}</div>
-									{% endif %}											
+									{% endif %}
 						  </div>
+						  
 						  <div class="form-group">
 								<label for="komentarzInput">Komentarz:</label>
 								<textarea class="form-control" name="commentInput" id="komentarzInput" rows="3">{{incomeToBeAdded.comment}}</textarea>
@@ -434,7 +433,7 @@
 	</div>
 </div><!-- /.container -->
 
-		{% if incomeForm == true %}
+		{% if incomeFormVisible == true %}
 			<script>
 				$(document).ready(function(){					
 					showIncome();
@@ -442,7 +441,7 @@
 			</script>
 		{% endif %}
 		
-		{% if expenseForm == true %}
+		{% if expenseFormVisible == true %}
 			<script>
 				$(document).ready(function(){					
 					showExpense();

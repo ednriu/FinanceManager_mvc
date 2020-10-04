@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\Categories;
-use \App\Models\Incomes;
+use \App\Models\Operations;
 
 /**
  * Home controller
@@ -22,19 +22,15 @@ class Main extends \Core\Controller
 
 	public static function showMainReportAction($feedback='')
 	{
-
-		$incomes = Incomes::getIncomes($_SESSION['user_id']);
+		$incomes = Operations::getOperationsData($_SESSION['user_id']);
 		if ($incomes)
 		{
-			$suma = Incomes::getSumOfAmmount($incomes);
+			$sumOfIncomesAmmount = Operations::getSumOfAmmount($incomes); //need to add date range
+			$notEmptyIncomeCategories= Categories::getNotEmptyIncomeCategories($_SESSION['user_id']); //need to add date range
+			$notEmptyIncomeCategoriesWithoutRepeats = array_unique($notEmptyIncomeCategories);
 			
-
-			$kategoriePrzychodowNiezerowych= Categories::getNotEmptyIncomeCategories(5);
-			$kategorieUnikalne = array_unique($kategoriePrzychodowNiezerowych);
-			$daneWykresuPrzychodow = Incomes::getGraphDate($kategorieUnikalne, 179, 5);
-
-			
-			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'sumOfIncomes'=>$suma, 'feedback'=>$feedback, 'graphDate'=>$daneWykresuPrzychodow]);
+			$incomeGraphData = Operations::getGraphDate($notEmptyIncomeCategoriesWithoutRepeats, $sumOfIncomesAmmount, $_SESSION['user_id']);
+			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'feedback'=>$feedback, 'graphDate'=>$incomeGraphData]);
 		}
 		else
 		{
@@ -42,41 +38,48 @@ class Main extends \Core\Controller
 		};
 	}
 
+	//Shows Add Incomes Form
 	public function addIncomeFormAction()
     {
-		$incomeForm = true;		
+		$incomeForm = true;	//variable causes showing income Form	
 		$incomeCategories = Categories::getIncomeCategories($_SESSION['user_id']);
-        View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'items'=>$incomeCategories],);
+        View::renderTemplate('Report/Main.html',['incomeFormVisible'=>$incomeForm, 'incomeCategories'=>$incomeCategories],);
     }
 	
+	//Shows Add Expense Form
 	public function addExpenseFormAction()
     {
 		$expenseForm = true;
 		$expenseCategories = Categories::getExpenseCategories($_SESSION['user_id']);
-        View::renderTemplate('Report/Main.html',['expenseForm'=>$expenseForm, 'items'=>$expenseCategories]);
+        View::renderTemplate('Report/Main.html',['expenseForm'=>$expenseForm, 'expenseCategories'=>$expenseCategories]);
     }
 	
+	//Returns $postedCategory if exists. 
+	//Returns 0 if $postedCategory does not exists
+	private function getSelectedCategory($postedCategory)
+	{
+			if (isset($postedCategory))
+			{
+				return $postedCategory;
+			} else {
+				return 0;
+			};
+	}
+	
+	//Submit Add Incomes Form
 	public function submitIncomeAction()
 	{
-			$incomeToBeAdded = new Incomes($_POST);
-			if (isset($_POST['kategoriaIncomeInput']))
-			{
-				$kategoriaIncomeInput = $_POST['kategoriaIncomeInput'];
-			} else {
-				$kategoriaIncomeInput = 0;
-			};
+			$incomeToBeAdded = new Operations($_POST);
+			$selectedCategoryId = Main::getSelectedCategory($_POST['kategoriaIncomeInput']);
 			
-			$incomeCategories = Categories::getIncomeCategories($_SESSION['user_id']);
-			
-			if($incomeToBeAdded -> saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'],$kategoriaIncomeInput, $_POST['commentInput']))
+			if($incomeToBeAdded -> saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'],$selectedCategoryId, $_POST['commentInput']))
 			{
 				$feedback = "Dodano Wydatek";
-				//View::renderTemplate('Report/Main.html',['feedback'=>$feedback]);
-				parent::redirect('/Main/showMainReport/');
-				Main::showMainReport('Dodano Nowy Wpływ');
+				parent::redirect('/Main/showMainReport'); //potrzeba dodać do URL parametr raportu
 			} else {
-				$incomeForm = true;
-				View::renderTemplate('Report/Main.html',['incomeForm'=>$incomeForm, 'incomeToBeAdded'=>$incomeToBeAdded, 'items'=>$incomeCategories]);
+				$incomeFormVisible = true;
+				$incomeCategoriesForUser = Categories::getIncomeCategories($_SESSION['user_id']);
+				View::renderTemplate('Report/Main.html',['incomeFormVisible'=>$incomeFormVisible, 'incomeToBeAdded'=>$incomeToBeAdded, 'incomeCategories'=>$incomeCategoriesForUser, 'selectedCategoryId'=>$selectedCategoryId]);
 			}
 	}
 }
