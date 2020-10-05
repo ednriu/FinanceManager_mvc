@@ -104,4 +104,27 @@ class Categories extends \Core\Model
 		return $keep_key_assoc ? $array : array_values($array);
 	}
 	
+	//Adds Incomes Category for specified userId
+	private static function addIncomeCategoryForUserId($userId, $incomeName)
+	{
+		$sql = 'INSERT INTO income_categories (name, user_Id)
+                    VALUES (:name, :userId)';
+                                              
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);			
+			$stmt->bindValue(':name', $incomeName, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);                                          
+            return $stmt->execute();
+	}
+	
+	//Creates initial income categories for new user
+	public function createIncomeCategoriesForNewUser($userId)
+	{
+		$initIncomeCategories = array(0=>"wypłata", 1=>"Odsetki", 2=>"Dodatkowa Praca", 3=>"Inwestycje");
+		foreach ($initIncomeCategories as $value)
+		{
+			$abc = Categories::addIncomeCategoryForUserId($userId, $value);
+		}
+	}
+	
 }

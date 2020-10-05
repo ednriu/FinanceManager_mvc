@@ -35,7 +35,7 @@ class Login extends \Core\Controller
 		if ($user) {
 			$_SESSION['name'] = $user->name;
 			$_SESSION['user_id'] = $user->user_id;
-			$this->redirect('/Main/showMainReport');
+			$this->redirect('/Main/showReportAllRange');
 		} else {
 			View::renderTemplate('Login/New.html',[
 			'login'=>$_POST['login']],);

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Models\Categories;
 
 /**
  * Signup controller
@@ -33,9 +34,10 @@ class Signup extends \Core\Controller
         $user = new User($_POST);
 
         if ($user->save()) {
-
+			$signedUserId = User::findByLogin($user->login);
+			$newIncomeCategories = new Categories();
+			$newIncomeCategories->createIncomeCategoriesForNewUser($signedUserId->user_id);
             $this->redirect('/Signup/Success');
-
         } else {
 
             View::renderTemplate('Signup/New.html', [

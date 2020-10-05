@@ -20,21 +20,20 @@ class Main extends \Core\Controller
      * @return void
      */
 
-	public static function showMainReportAction($feedback='')
+	public static function showReportAllRangeAction($feedback='')
 	{
-		$incomes = Operations::getOperationsData($_SESSION['user_id'],'2020-09-14', '2020-10-14');
+		$incomes = Operations::getOperationsData($_SESSION['user_id'],null, null);
 		if ($incomes)
 		{
 			$sumOfIncomesAmmount = Operations::getSumOfAmmount($incomes); //need to add date range
-			$notEmptyIncomeCategories= Categories::getNotEmptyIncomeCategories($_SESSION['user_id']); //need to add date range
+			$notEmptyIncomeCategories= Categories::getNotEmptyIncomeCategories($_SESSION['user_id']);
 			$notEmptyIncomeCategoriesWithoutRepeats = array_unique($notEmptyIncomeCategories);
 			$incomeGraphData = Operations::getGraphDate($notEmptyIncomeCategoriesWithoutRepeats, $sumOfIncomesAmmount, $_SESSION['user_id']);
-
-			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'feedback'=>$feedback, 'graphDate'=>$incomeGraphData]);
+			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'sumOfIncomesAmmount'=>$sumOfIncomesAmmount, 'feedback'=>$feedback, 'graphDate'=>$incomeGraphData]);
 		}
 		else
 		{
-			$error = "błąd"; //to nie może być tak, ponieważ w przypadku braku rekordów w bazie danych jest wyrzucany błąd.
+			View::renderTemplate('Report/Main.html', ['incomes'=>null, 'sumOfIncomesAmmount'=>0, 'feedback'=>"Jesteś nowym użytkownikiem", 'graphDate'=>0]);
 		};
 	}
 
@@ -75,11 +74,12 @@ class Main extends \Core\Controller
 			if($incomeToBeAdded -> saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'],$selectedCategoryId, $_POST['commentInput']))
 			{
 				$feedback = "Dodano Wydatek";
-				parent::redirect('/Main/showMainReport'); //potrzeba dodać do URL parametr raportu
+				parent::redirect('/Main/showReportAllRange'); //potrzeba dodać do URL parametr raportu
 			} else {
 				$incomeFormVisible = true;
 				$incomeCategoriesForUser = Categories::getIncomeCategories($_SESSION['user_id']);
 				View::renderTemplate('Report/Main.html',['incomeFormVisible'=>$incomeFormVisible, 'incomeToBeAdded'=>$incomeToBeAdded, 'incomeCategories'=>$incomeCategoriesForUser, 'selectedCategoryId'=>$selectedCategoryId]);
 			}
 	}
+	
 }

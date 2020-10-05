@@ -104,13 +104,21 @@ class Operations extends \Core\Model
 		return $sum;
 	}
 	
-	private function getCurrentDate()
+	private static function getCurrentDate()
 	{
 		return date('Y-m-d');
 	}
 	
-	public static function getOperationsData($userId, $startDate='2000-01-01', $endDate)
-    {		
+	public static function getOperationsData($userId, $startDate, $endDate)
+    {
+		if ($startDate==null) 
+		{
+			$startDate='2000-01-01';
+		}
+		if ($endDate==null) 
+		{
+			$endDate=Operations::getCurrentDate();
+		}
 			try
 			{
 				$sql = "SELECT * FROM incomes, income_categories WHERE incomes.category_id=income_categories.category_id AND incomes.user_id=:userId AND incomes.date BETWEEN :startDate AND :endDate";				
