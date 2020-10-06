@@ -27,8 +27,8 @@
 	</script>
 	
 	<script type="text/javascript">
-    function showExpense() {
-		$('#modalExpense').modal('show');
+    function showExpence() {
+		$(document).ready($('#modalExpence').modal('show'));	
     }
 	</script>
 	
@@ -47,13 +47,7 @@
 					type: "pie",
 					yValueFormatString: "#,##0.00\"%\"",
 					indexLabel: "{label} ({y})",
-					dataPoints: [
-						{y: 79.45, label: "Google"},
-						{y: 7.31, label: "Bing"},
-						{y: 7.06, label: "Baidu"},
-						{y: 4.91, label: "Yahoo"},
-						{y: 1.26, label: "Others"}
-					]
+					dataPoints: {{ expenceGraphDate|json_encode(constant('JSON_NUMERIC_CHECK'))|raw }}
 				}]
 			});
 			chart.render();
@@ -70,7 +64,7 @@
 					type: "pie",
 					yValueFormatString: "#,##0.00\"%\"",
 					indexLabel: "{label} ({y})",
-					dataPoints: {{ graphDate|json_encode(constant('JSON_NUMERIC_CHECK'))|raw }}
+					dataPoints: {{ incomeGraphDate|json_encode(constant('JSON_NUMERIC_CHECK'))|raw }}
 				}]
 			});
 			chart2.render();
@@ -89,7 +83,7 @@
 			<ul class="nav flex-column pt-2">			
 			  <li class="nav-item">
 				<form>
-					<a class="nav-link" href='/Main/addExpenseForm'> 
+					<a class="nav-link" href='/Main/addExpenceForm'> 
 					  <span data-feather="credit-card"></span>
 					  Dodaj Wydatek <span class="sr-only">(current)</span>
 					</a>
@@ -156,7 +150,7 @@
 						<div class="info-box balance">
 							<h1 class="text-center py-1">Bilans</h1>
 								<div class="row justify-content-center mt-4"><span data-feather="info"></span> <p class="balance font-weight-bold">								
-								</p></div>
+								{{balance}}</p></div>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
@@ -176,47 +170,33 @@
 				  	<h1 class="d-flex justify-content-center pb-2">Wydatki</h1>
 						<table id="table-expences" class="table table-striped table-sm table-bordered text-secondary table-light" >
 						  <thead class="thead-dark">
+							<thead class="thead-dark">
 							<tr>
 							  <th>#</th>
 							  <th>Data</th>
 							  <th>Kwota [zł]</th>
 							  <th>Kategoria</th>
+							  <th>Metoda</th>
 							  <th>Komentarz</th>
 							  <th>*</th>
 							</tr>
 						  </thead>
 						  <tbody>
-							<?php
-								if ($polaczenie->connect_errno!=0)
-								{
-									echo "Error: ".$polaczenie->connect_errno;
-								}
-								else
-								{	
-									$wydatki = $polaczenie->query("SELECT expences.expence_id, expences.date, expences.ammount,expences.category_id,users.user_id,expences.comment, expence_categories.cat_name 
-									FROM 
-										`expences`,
-										`expence_categories`,
-										`users`
-									WHERE users.user_id = ".$_SESSION['id']."
-										AND expences.user_id = users.user_id
-										AND expences.category_id = expence_categories.cat_id");
-										$liczba_porzadkowa = 1;
-										while ($wiersz_wydatkow = $wydatki->fetch_assoc())
-										{
-											echo '<tr>';
-											  echo '<td>'.$liczba_porzadkowa.'</td>';
-											  echo '<td>'.$wiersz_wydatkow['date'].'</td>';
-											  echo '<td>'.$wiersz_wydatkow['ammount'].'</td>';
-											  echo '<td>'.$wiersz_wydatkow['cat_name'].'</td>';
-											  echo '<td>'.$wiersz_wydatkow['comment'].'</td>';
-											  echo '<td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-													<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>';
-											echo '</tr>';
-											$liczba_porzadkowa=$liczba_porzadkowa+1;
-										}
-								};
-							?>												
+								{% set orderNumber = 1%}
+								{% for income in incomes %}
+										<tr>										
+											  <td>{{orderNumber}}</td>
+											  <td>{{expence.date}}</td>
+											  <td>{{expence.ammount}}</td>
+											  <td>{{expence.name}}</td>
+											  <td>{{expence.method}}</td>
+											  <td>{{expence.comment}}</td>
+											  <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+													<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
+										</tr>
+									{% set orderNumber = orderNumber+1 %}
+								{% endfor %}
+		
 						  </tbody>
 						</table>
 				  </div>
@@ -332,7 +312,7 @@
 
 		
 			<!-- Modal Add EXPENSE -->
-			<div class="modal bd-example-modal-sm" id="modalExpense" tabindex="-1" role="dialog" aria-labelledby="modalExpense" aria-hidden="true">
+			<div class="modal bd-example-modal-sm" id="modalExpence" tabindex="-1" role="dialog" aria-labelledby="modalExpence" aria-hidden="true">
 			  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
 				<div class="modal-content">
 				  <div class="modal-header">
@@ -376,7 +356,7 @@
 						  </div>
 						  <div class="form-group">
 							<label for="kategoriaInput">Kategoria:</label>							
-							<select multiple class="form-control" name="kategoriaExpInput" id="kategoriaInput">
+							<select multiple class="form-control" name="kategoriaExpenceInput" id="kategoriaExpenceInput">
 								{% for item in items %}
 									<option value="{{ item.id }}">{{ item.name }}</option>
 								{% endfor %}
@@ -389,7 +369,7 @@
 					  </div>
 					  <div class="modal-footer d-flex justify-content-center">
 						<button type="button"  class="btn btn-secondary" onclick = "$('#modalExpense').modal('hide');" data-dismiss="modal">Anuluj</button>
-						<button type="submit" formaction="Home/Index" class="btn btn-primary">Dodaj</button>
+						<button type="submit" formaction="/Main/submitExpence" class="btn btn-primary">Dodaj</button>
 					  </div>
 					</form>
 				</div>
@@ -441,10 +421,10 @@
 			</script>
 		{% endif %}
 		
-		{% if expenseFormVisible == true %}
+		{% if expenceFormVisible == true %}
 			<script>
 				$(document).ready(function(){					
-					showExpense();
+					showExpence();
 				});
 			</script>
 		{% endif %}

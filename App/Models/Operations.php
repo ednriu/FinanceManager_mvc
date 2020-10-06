@@ -57,32 +57,62 @@ class Operations extends \Core\Model
 
 
    public function saveIncome($userId, $ammount, $datePicker, $categoryId, $comment)
-    {
-		$this->ammount = $ammount;
-		$this->datePicker = $datePicker;
-		$this->category = $categoryId;
-		$this->comment = $comment;
-								
-		$this->validate();
-		if (empty($this->incomeErrors))
 		{
-			try
+			$this->ammount = $ammount;
+			$this->datePicker = $datePicker;
+			$this->category = $categoryId;
+			$this->comment = $comment;
+									
+			$this->validate();
+			if (empty($this->incomeErrors))
 			{
-				$sql = 'INSERT INTO `incomes`(`user_id`,`ammount`, `date`, `category_id`, `comment`) VALUES (:userId,:ammount,:date,:categoryId,:comment)';
-				$db = static::getDB();
-				$stmt = $db->prepare($sql);
-				$stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
-				$stmt->bindValue(':ammount', $ammount, PDO::PARAM_STR);
-				$stmt->bindValue(':date', $datePicker, PDO::PARAM_STR);
-				$stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR);
-				$stmt->bindValue(':comment', $comment, PDO::PARAM_STR);		
-				return $stmt->execute();
-			} catch (PDOException $e) {
-				echo $e->getMessage();
+				try
+				{
+					$sql = 'INSERT INTO `incomes`(`user_id`,`ammount`, `date`, `category_id`, `comment`) VALUES (:userId,:ammount,:date,:categoryId,:comment)';
+					$db = static::getDB();
+					$stmt = $db->prepare($sql);
+					$stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+					$stmt->bindValue(':ammount', $ammount, PDO::PARAM_STR);
+					$stmt->bindValue(':date', $datePicker, PDO::PARAM_STR);
+					$stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR);
+					$stmt->bindValue(':comment', $comment, PDO::PARAM_STR);		
+					return $stmt->execute();
+				} catch (PDOException $e) {
+					echo $e->getMessage();
+				}
 			}
+			return false;
 		}
-		return false;
-	}
+	
+	public function saveExpence($userId, $ammount, $datePicker, $categoryId, $comment, $methodId)
+		{
+			$this->ammount = $ammount;
+			$this->datePicker = $datePicker;
+			$this->category = $categoryId;
+			$this->comment = $comment;
+			$this->methodId = $methodId;
+									
+			$this->validate();
+			if (empty($this->expenceErrors))
+			{
+				try
+				{
+					$sql = 'INSERT INTO `expences`(`user_id`,`ammount`, `date`, `category_id`, `comment`, `method_id`) VALUES (:userId,:ammount,:date,:categoryId,:comment, :methodId)';
+					$db = static::getDB();
+					$stmt = $db->prepare($sql);
+					$stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
+					$stmt->bindValue(':ammount', $ammount, PDO::PARAM_STR);
+					$stmt->bindValue(':date', $datePicker, PDO::PARAM_STR);
+					$stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR);
+					$stmt->bindValue(':comment', $comment, PDO::PARAM_STR);
+					$stmt->bindValue(':methodId', $methodId, PDO::PARAM_STR);							
+					return $stmt->execute();
+				} catch (PDOException $e) {
+					echo $e->getMessage();
+				}
+			}
+			return false;
+		}
 
     /**
      * Function

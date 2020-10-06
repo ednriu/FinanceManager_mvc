@@ -81,6 +81,23 @@ class Categories extends \Core\Model
         }
 	}
 	
+		public static function getNotEmptyExpenceCategories($userId)
+	{
+		try
+		{
+			$sql = 'SELECT expence_categories.name FROM `expence_categories`,`expences` WHERE expences.user_Id=:userId AND expences.category_id=expence_categories.category_id';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
+			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			$result2 = array_column($results, 'name');
+			return $result2;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+	}
+	
 	public static function my_array_unique($array, $keep_key_assoc = false)
 	{
 		$duplicate_keys = array();
