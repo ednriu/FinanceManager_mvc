@@ -33,20 +33,21 @@ class Categories extends \Core\Model
      * @return boolean  True if the user was saved, false otherwise
      */
 
-	//poniższa funkcja idzie do poprawy na podstawie analogii do wpływów
-	public static function getExpenseCategories()
+	public static function getExpenceCategories($userId)
     {
 		try
 		{
-			$sql = 'SELECT * FROM `expence_categories` WHERE 1';
+			$sql = 'SELECT * FROM `expence_categories` WHERE user_Id=:userId';
 			$db = static::getDB();
-			$stmt = $db->query($sql);
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
 			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
 			return $results;
 		} catch (PDOException $e) {
             echo $e->getMessage();
         }
-    }
+	}
 	
 	public static function getIncomeCategories($userId)
     {

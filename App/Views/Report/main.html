@@ -182,19 +182,19 @@
 							</tr>
 						  </thead>
 						  <tbody>
-								{% set orderNumber = 1%}
-								{% for income in incomes %}
+								{% set expenceOrderNumber = 1%}
+								{% for expence in expences %}
 										<tr>										
-											  <td>{{orderNumber}}</td>
+											  <td>{{expenceOrderNumber}}</td>
 											  <td>{{expence.date}}</td>
 											  <td>{{expence.ammount}}</td>
 											  <td>{{expence.name}}</td>
-											  <td>{{expence.method}}</td>
+											  <td>{{expence.pay_method}}</td>
 											  <td>{{expence.comment}}</td>
 											  <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
 													<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
 										</tr>
-									{% set orderNumber = orderNumber+1 %}
+									{% set expenceOrderNumber = expenceOrderNumber+1 %}
 								{% endfor %}
 		
 						  </tbody>
@@ -224,10 +224,10 @@
 							</tr>
 						  </thead>
 						  <tbody>
-								{% set orderNumber = 1%}
+								{% set incomeOrderNumber = 1%}
 								{% for income in incomes %}
 										<tr>										
-											  <td>{{orderNumber}}</td>
+											  <td>{{incomeOrderNumber}}</td>
 											  <td>{{income.date}}</td>
 											  <td>{{income.ammount}}</td>
 											  <td>{{income.name}}</td>
@@ -235,7 +235,7 @@
 											  <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
 													<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
 										</tr>
-									{% set orderNumber = orderNumber+1 %}
+									{% set incomeOrderNumber = incomeOrderNumber+1 %}
 								{% endfor %}
 		
 						  </tbody>
@@ -336,35 +336,37 @@
 						  <div class="form-group">
 								 <label for="radios">Forma płatności:</label>
 										<div class="form-check">
-										  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="optionGotowka" checked>
-										  <label class="form-check-label" for="gridRadios1">
-											Gotówka
+										  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios1" value="Gotowka">
+										  <label class="form-check-label" for="radios">
+											Karta Gotówka
 										  </label>
 										</div>
 										<div class="form-check">
-										  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="optionKartaPlatnicza">
-										  <label class="form-check-label" for="gridRadios2">
+										  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios2" value="KartaPlatnicza">
+										  <label class="form-check-label" for="radios">
 											Karta Płatnicza
 										  </label>
 										</div>
 										<div class="form-check">
-										  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="OptionKartaDebetowa">
-										  <label class="form-check-label" for="gridRadios3">
+										  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios3" value="KartaDebetowa">
+										  <label class="form-check-label" for="radios">
 											Karta Debetowa
 										  </label>
 										</div>
 						  </div>
+						  
 						  <div class="form-group">
 							<label for="kategoriaInput">Kategoria:</label>							
 							<select multiple class="form-control" name="kategoriaExpenceInput" id="kategoriaExpenceInput">
-								{% for item in items %}
-									<option value="{{ item.id }}">{{ item.name }}</option>
+								{% for expenceCategory in expenceCategories %}
+									<option value="{{ expenceCategory.category_id }}">{{ expenceCategory.name }}</option>
 								{% endfor %}
 							</select>
 						  </div>
+						  
 						  <div class="form-group">
 							<label for="komentarzInput">Komentarz:</label>
-							<textarea class="form-control" name="komentarzInput" id="komentarzInput" rows="3"></textarea>
+							<textarea class="form-control" name="commentInput" id="komentarzInput" rows="3"></textarea>
 						  </div>						
 					  </div>
 					  <div class="modal-footer d-flex justify-content-center">

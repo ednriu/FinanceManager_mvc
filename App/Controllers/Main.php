@@ -22,21 +22,23 @@ class Main extends \Core\Controller
 
 	public static function showReportAllRangeAction($feedback='')
 	{
-		$incomes = Operations::getOperationsData($_SESSION['user_id'],null, null);
-		$expences = Operations::getOperationsData($_SESSION['user_id'],null, null);
-		if ($incomes AND $expences)
+		$incomes = Operations::getIncomesData($_SESSION['user_id'],null, null);
+		$expences = Operations::getExpencesData($_SESSION['user_id'],null, null);
+		var_dump($expences);
+
+		if ($incomes OR $expences)
 		{
 			$sumOfIncomesAmmount = Operations::getSumOfAmmount($incomes); //need to add date range
 			$notEmptyIncomeCategories= Categories::getNotEmptyIncomeCategories($_SESSION['user_id']);
 			$notEmptyIncomeCategoriesWithoutRepeats = array_unique($notEmptyIncomeCategories);
-			$incomeGraphData = Operations::getGraphDate($notEmptyIncomeCategoriesWithoutRepeats, $sumOfIncomesAmmount, $_SESSION['user_id']);
+			$incomeGraphData = Operations::getIncomesGraphDate($notEmptyIncomeCategoriesWithoutRepeats, $sumOfIncomesAmmount, $_SESSION['user_id']);
 			
 			$sumOfExpencesAmmount = Operations::getSumOfAmmount($expences); //need to add date range
 			$notEmptyExpenceCategories= Categories::getNotEmptyExpenceCategories($_SESSION['user_id']);
 			$notEmptyExpenceCategoriesWithoutRepeats = array_unique($notEmptyExpenceCategories);
-			$expenceGraphData = Operations::getGraphDate($notEmptyExpenceCategoriesWithoutRepeats, $sumOfExpencesAmmount, $_SESSION['user_id']);
+			$expenceGraphData = Operations::getExpencesGraphDate($notEmptyExpenceCategoriesWithoutRepeats, $sumOfExpencesAmmount, $_SESSION['user_id']);
 			
-			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'expences'=>$expences, 'sumOfIncomesAmmount'=>$sumOfIncomesAmmount, 'sumofExpencesAmmount'=>$sumOfExpencesAmmount, 'feedback'=>$feedback, 'incomeGraphDate'=>$incomeGraphData, 'expenceGraphDate'=>$expenceGraphData]);
+			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'expences'=>$expences, 'sumOfIncomesAmmount'=>$sumOfIncomesAmmount, 'sumOfExpencesAmmount'=>$sumOfExpencesAmmount, 'feedback'=>$feedback, 'incomeGraphDate'=>$incomeGraphData, 'expenceGraphDate'=>$expenceGraphData]);
 		}
 		else
 		{
@@ -56,7 +58,7 @@ class Main extends \Core\Controller
 	public function addExpenceFormAction()
     {
 		$expenceForm = true;
-		$expenceCategories = Categories::getExpenseCategories($_SESSION['user_id']);
+		$expenceCategories = Categories::getExpenceCategories($_SESSION['user_id']);
         View::renderTemplate('Report/Main.html',['expenceFormVisible'=>$expenceForm, 'expenceCategories'=>$expenceCategories]);
     }	
 	
@@ -95,9 +97,11 @@ class Main extends \Core\Controller
 	{
 			$expenceToBeAdded = new Operations($_POST);
 			$selectedCategoryId = Main::getSelectedCategory($_POST['kategoriaExpenceInput']);
-			$method_id = 1;
+			var_dump($_POST['payMethod']);
+			var_dump($selectedCategoryId);			
+			var_dump($_POST['kategoriaExpenceInput']);
 			
-			if($expenceToBeAdded -> saveExpence($_SESSION['user_id'], $_POST['expenceAmmount'], $_POST['expenceDatePicker'],$selectedCategoryId, $_POST['commentInput'], $method_id))
+			if($expenceToBeAdded -> saveExpence($_SESSION['user_id'], $_POST['expenceAmmount'], $_POST['expenceDatePicker'], $selectedCategoryId, $_POST['commentInput'], $_POST['payMethod']))
 			{
 				$feedback = "Dodano Wydatek";
 				parent::redirect('/Main/showReportAllRange'); 

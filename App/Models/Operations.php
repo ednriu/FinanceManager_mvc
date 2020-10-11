@@ -84,20 +84,20 @@ class Operations extends \Core\Model
 			return false;
 		}
 	
-	public function saveExpence($userId, $ammount, $datePicker, $categoryId, $comment, $methodId)
+	public function saveExpence($userId, $ammount, $datePicker, $categoryId, $comment, $payMethod)
 		{
 			$this->ammount = $ammount;
 			$this->datePicker = $datePicker;
 			$this->category = $categoryId;
 			$this->comment = $comment;
-			$this->methodId = $methodId;
+			$this->payMethod = $payMethod;
 									
 			$this->validate();
 			if (empty($this->expenceErrors))
 			{
 				try
 				{
-					$sql = 'INSERT INTO `expences`(`user_id`,`ammount`, `date`, `category_id`, `comment`, `method_id`) VALUES (:userId,:ammount,:date,:categoryId,:comment, :methodId)';
+					$sql = 'INSERT INTO `expences`(`user_id`,`ammount`, `date`, `category_id`, `comment`, `pay_Method`) VALUES (:userId,:ammount,:date,:categoryId,:comment,:payMethod)';
 					$db = static::getDB();
 					$stmt = $db->prepare($sql);
 					$stmt->bindValue(':userId', $userId, PDO::PARAM_STR);
@@ -105,7 +105,7 @@ class Operations extends \Core\Model
 					$stmt->bindValue(':date', $datePicker, PDO::PARAM_STR);
 					$stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_STR);
 					$stmt->bindValue(':comment', $comment, PDO::PARAM_STR);
-					$stmt->bindValue(':methodId', $methodId, PDO::PARAM_STR);							
+					$stmt->bindValue(':payMethod', $payMethod, PDO::PARAM_STR);							
 					return $stmt->execute();
 				} catch (PDOException $e) {
 					echo $e->getMessage();
@@ -139,7 +139,11 @@ class Operations extends \Core\Model
 		return date('Y-m-d');
 	}
 	
-	public static function getOperationsData($userId, $startDate, $endDate)
+	
+	//get Incomes Data
+	//returns Incomes Data
+	//returns false if error
+	public static function getIncomesData($userId, $startDate, $endDate)
     {
 		if ($startDate==null) 
 		{
@@ -155,9 +159,36 @@ class Operations extends \Core\Model
 				$db = static::getDB();
 				$stmt = $db->prepare($sql);
 				$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-
-					$stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
-
+				$stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+				$stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+				$stmt->execute();
+				$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results;
+			} catch (PDOException $e) {
+				echo $e->getMessage();
+			}
+		return false;
+	}
+	
+	//get Expences Data
+	//returns Expences Data
+	//returns false if error
+	public static function getExpencesData($userId, $startDate, $endDate)
+    {
+		if ($startDate==null) 
+		{
+			$startDate='2000-01-01';
+		}
+		if ($endDate==null) 
+		{
+			$endDate=Operations::getCurrentDate();
+		}
+			try
+			{
+				$sql = "SELECT * FROM expences, expence_categories WHERE expences.category_id=expence_categories.category_id AND expences.user_id=:userId AND expences.date BETWEEN :startDate AND :endDate";				
+				$db = static::getDB();
+				$stmt = $db->prepare($sql);
+				$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
 				$stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
 				$stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
 				$stmt->execute();
@@ -171,9 +202,9 @@ class Operations extends \Core\Model
 	
 
 	//*************************************
-	//returns array for the data of Graph
+	//returns array for the Incomes data of Graph
 	//*************************************
-	public static function getGraphDate($unikalneKategoriePrzychodowNiezerowych, $sumaPrzychodow, $userId)
+	public static function getIncomesGraphDate($unikalneKategoriePrzychodowNiezerowych, $sumaPrzychodow, $userId)
 	{
 		
 		$daneWykresuPrzychodow = array();
@@ -203,6 +234,41 @@ class Operations extends \Core\Model
 				}							
 			}
 		return $daneWykresuPrzychodow;
+	}
+	
+	//*************************************
+	//returns array for the Expences data of Graph
+	//*************************************
+	public static function getExpencesGraphDate($unikalneKategorieWydatkowNiezerowych, $sumaWydatkow, $userId)
+	{
+		
+		$daneWykresuWydatkow = array();
+		
+			foreach ($unikalneKategorieWydatkowNiezerowych as $k => $etykietaWydatkow) {
+				try
+				{
+					
+					$sql = 'SELECT SUM(expences.ammount) as total FROM expences, expence_categories WHERE expences.user_id=:userId  AND expence_categories.name=:category AND expence_categories.category_id=expences.category_id';
+					$db = static::getDB();
+					$stmt = $db->prepare($sql);
+					$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+					$stmt->bindValue(':category', $etykietaWydatkow, PDO::PARAM_STR);  //zmienić inwestycje na numer etykiety
+					$stmt->execute();
+					$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+					$sumaWydatkowDanejKategorii = $results;
+					foreach($results as $key=>$value)
+						{
+							if(isset($value['total']))   
+							$sum = $value['total'];
+						}
+					$wydatkiWProcentach=round(($sum*100)/$sumaWydatkow,2);
+					$new_array=array("label"=>$etykietaWydatkow, "y"=>$wydatkiWProcentach);
+					array_push($daneWykresuWydatkow, $new_array);					
+				} catch (PDOException $e) {
+					echo $e->getMessage();
+				}							
+			}
+		return $daneWykresuWydatkow;
 	}
 	
 		
