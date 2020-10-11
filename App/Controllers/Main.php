@@ -54,7 +54,9 @@ class Main extends \Core\Controller
 	//Shows operations only from previous month
 	public function showPreviousMonthReportAction()
 	{
-		Main::showReportAllRangeAction("Wydatki z Poprzedniego Miesiąca", date('Y-m-01'), date('Y-m-t'));
+		$startDate = Main::getOneMonthBefore(date('Y-m-01'));
+		$endDate = Main::getOneMonthBefore(date('Y-m-t'));
+		Main::showReportAllRangeAction("Wydatki z Poprzedniego Miesiąca", $startDate, $endDate);
 	}
 	
 	//Shows operations only from previous month
@@ -64,6 +66,13 @@ class Main extends \Core\Controller
 		$endDate = $_POST['endDate'];
 		$message = "Wydatki z okresu od ".$startDate." do ".$endDate;
 		Main::showReportAllRangeAction($message, $startDate, $endDate);
+	}
+	
+	//Shows gets one month before
+	private function getOneMonthBefore($date){
+		$day = intval(date("t", strtotime("$date")));//get the last day of the month
+		$month_date = date("y-m-d",strtotime("$date -$day days"));//get the day 1 month before
+		return $month_date;
 	}
 	
 	//Shows Add Incomes Form
