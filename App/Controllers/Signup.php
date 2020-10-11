@@ -35,8 +35,9 @@ class Signup extends \Core\Controller
 
         if ($user->save()) {
 			$signedUserId = User::findByLogin($user->login);
-			$newIncomeCategories = new Categories();
-			$newIncomeCategories->createIncomeCategoriesForNewUser($signedUserId->user_id);
+			$newCategories = new Categories();
+			$newCategories->createIncomeCategoriesForNewUser($signedUserId->user_id);
+			$newCategories->createExpenceCategoriesForNewUser($signedUserId->user_id);
             $this->redirect('/Signup/Success');
         } else {
 

@@ -20,11 +20,10 @@ class Main extends \Core\Controller
      * @return void
      */
 
-	public static function showReportAllRangeAction($feedback='')
+	public static function showReportAllRangeAction($feedback='Wszystkie Wydatki', $startDate=null, $endDate=null)
 	{
-		$incomes = Operations::getIncomesData($_SESSION['user_id'],null, null);
-		$expences = Operations::getExpencesData($_SESSION['user_id'],null, null);
-		var_dump($expences);
+		$incomes = Operations::getIncomesData($_SESSION['user_id'],$startDate, $endDate);
+		$expences = Operations::getExpencesData($_SESSION['user_id'],$startDate, $endDate);
 
 		if ($incomes OR $expences)
 		{
@@ -45,7 +44,28 @@ class Main extends \Core\Controller
 			View::renderTemplate('Report/Main.html', ['incomes'=>null, 'sumOfIncomesAmmount'=>0, 'feedback'=>"Jesteś nowym użytkownikiem", 'graphDate'=>0]);
 		};
 	}
-
+	
+	//Shows operations only from current month
+	public function showThisMonthReportAction()
+	{
+		Main::showReportAllRangeAction("Wydatki z Bieżącego Miesiąca", date('Y-m-01'), date('Y-m-t'));
+	}
+	
+	//Shows operations only from previous month
+	public function showPreviousMonthReportAction()
+	{
+		Main::showReportAllRangeAction("Wydatki z Poprzedniego Miesiąca", date('Y-m-01'), date('Y-m-t'));
+	}
+	
+	//Shows operations only from previous month
+	public function showSelectedPeriodReportAction()
+	{
+		$startDate = $_POST['startDate'];
+		$endDate = $_POST['endDate'];
+		$message = "Wydatki z okresu od ".$startDate." do ".$endDate;
+		Main::showReportAllRangeAction($message, $startDate, $endDate);
+	}
+	
 	//Shows Add Incomes Form
 	public function addIncomeFormAction()
     {
@@ -65,11 +85,35 @@ class Main extends \Core\Controller
 	
 	//Returns $postedCategory if exists. 
 	//Returns 0 if $postedCategory does not exists
-	private function getSelectedCategory($postedCategory)
+	private function getSelectedIncomeCategory()
 	{
-			if (isset($postedCategory))
+			if (isset($_POST['kategoriaIncomeInput']))
 			{
-				return $postedCategory;
+				return $_POST['kategoriaIncomeInput'];
+			} else {
+				return 0;
+			};
+	}
+
+	//Returns $postedCategory if exists. 
+	//Returns 0 if $postedCategory does not exists
+	private function getSelectedExpenceCategory()
+	{
+			if (isset($_POST['kategoriaExpenceInput']))
+			{
+				return $_POST['kategoriaExpenceInput'];
+			} else {
+				return 0;
+			};
+	}
+	
+	//Returns $posted PayMethod if exists. 
+	//Returns 0 if $postedCategory does not exists
+	private function getPayMethod()
+	{
+			if (isset($_POST['payMethod']))
+			{
+				return $_POST['payMethod'];
 			} else {
 				return 0;
 			};
@@ -79,8 +123,7 @@ class Main extends \Core\Controller
 	public function submitIncomeAction()
 	{
 			$incomeToBeAdded = new Operations($_POST);
-			$selectedCategoryId = Main::getSelectedCategory($_POST['kategoriaIncomeInput']);
-			
+			$selectedCategoryId = Main::getSelectedIncomeCategory();			
 			if($incomeToBeAdded -> saveIncome($_SESSION['user_id'], $_POST['incomeAmmount'], $_POST['incomeDatePicker'],$selectedCategoryId, $_POST['commentInput']))
 			{
 				$feedback = "Dodano Wpływ";
@@ -96,12 +139,9 @@ class Main extends \Core\Controller
 	public function submitExpenceAction()
 	{
 			$expenceToBeAdded = new Operations($_POST);
-			$selectedCategoryId = Main::getSelectedCategory($_POST['kategoriaExpenceInput']);
-			var_dump($_POST['payMethod']);
-			var_dump($selectedCategoryId);			
-			var_dump($_POST['kategoriaExpenceInput']);
-			
-			if($expenceToBeAdded -> saveExpence($_SESSION['user_id'], $_POST['expenceAmmount'], $_POST['expenceDatePicker'], $selectedCategoryId, $_POST['commentInput'], $_POST['payMethod']))
+			$selectedCategoryId = Main::getSelectedExpenceCategory();	
+			$payMethod = Main::getPayMethod();
+			if($expenceToBeAdded -> saveExpence($_SESSION['user_id'], $_POST['expenceAmmount'], $_POST['expenceDatePicker'], $selectedCategoryId, $_POST['commentInput'], $payMethod))
 			{
 				$feedback = "Dodano Wydatek";
 				parent::redirect('/Main/showReportAllRange'); 

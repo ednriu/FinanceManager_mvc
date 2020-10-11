@@ -28,14 +28,11 @@ class Operations extends \Core\Model
         };
     }
 
-    /**
-     * Savind incomes to DB
-     *
-     * 
-     *
-     * @return bool
-     */   
-	private function validate()
+	//*************************************
+	//Validate Incomes
+	//returns array $incomeErrors with the errors
+	//*************************************  
+	private function validateIncomes()
 	{
 		//Ammount
 		if ($this->ammount == '') {
@@ -54,6 +51,34 @@ class Operations extends \Core\Model
             $this->incomeErrors["error_comment"] = 'Nie podano kwoty';			
         }		
 	}
+	
+		//*************************************
+	//Validate Expences
+	//returns array $incomeErrors with the errors
+	//*************************************  
+	private function validateExpences()
+	{
+		//Ammount
+		if ($this->ammount == '') {
+            $this->expenceErrors["error_ammount"] = 'Nie podano kwoty';			
+        }
+		//Date
+		if ($this->datePicker == '') {
+			$this->expenceErrors["error_date"] = 'Nie wybrano daty';			
+        }
+		//Category
+		if ($this->category == '0') {
+			$this->expenceErrors["error_category"] = 'Nie wybrano kategorii';			
+        }
+		//Pay Method
+		if ($this->payMethod == '0') {
+			$this->expenceErrors["error_payMethod"] = 'Nie wybrano metody płatności';			
+        }
+		//Comment
+		if (strlen($this->comment) > 60) {
+			$this->expenceErrors["error_comment"] = 'Nie podano kwoty';			
+        }		
+	}
 
 
    public function saveIncome($userId, $ammount, $datePicker, $categoryId, $comment)
@@ -63,7 +88,7 @@ class Operations extends \Core\Model
 			$this->category = $categoryId;
 			$this->comment = $comment;
 									
-			$this->validate();
+			$this->validateIncomes();
 			if (empty($this->incomeErrors))
 			{
 				try
@@ -92,7 +117,7 @@ class Operations extends \Core\Model
 			$this->comment = $comment;
 			$this->payMethod = $payMethod;
 									
-			$this->validate();
+			$this->validateExpences();
 			if (empty($this->expenceErrors))
 			{
 				try
@@ -117,20 +142,26 @@ class Operations extends \Core\Model
     /**
      * Function
      *
-     * @param array $incomes 
+     * @param array $column 
      *
      * @return sum of property 'ammount'
      */
 	
-	public static function getSumOfAmmount($incomes)
+	public static function getSumOfAmmount($column)
 	{
 		$sum = 0;
 
-		foreach($incomes as $key=>$value)
+		foreach($column as $key=>$value)
 		{
 			if(isset($value['ammount']))   
 			$sum += $value['ammount'];
 		}
+		return $sum;
+	}
+	
+	public static function getSumOfTwoNumbers($first, $second)
+	{
+		$sum = $first + $second;
 		return $sum;
 	}
 	
@@ -226,9 +257,17 @@ class Operations extends \Core\Model
 							if(isset($value['total']))   
 							$sum = $value['total'];
 						}
-					$przychodyWProcentach=round(($sum*100)/$sumaPrzychodow,2);
-					$new_array=array("label"=>$etykietaPrzychodow, "y"=>$przychodyWProcentach);
-					array_push($daneWykresuPrzychodow, $new_array);					
+					if ($sumaPrzychodow!=0)
+					{
+						$przychodyWProcentach=round(($sum*100)/$sumaPrzychodow,2);
+						$new_array=array("label"=>$etykietaPrzychodow, "y"=>$przychodyWProcentach);
+							
+					} else {
+						$przychodyWProcentach = 100;
+						$new_array=array("label"=>"Brak Danych", "y"=>$przychodyWProcentach);
+	
+					}
+					array_push($daneWykresuPrzychodow, $new_array);	
 				} catch (PDOException $e) {
 					echo $e->getMessage();
 				}							
@@ -261,8 +300,17 @@ class Operations extends \Core\Model
 							if(isset($value['total']))   
 							$sum = $value['total'];
 						}
-					$wydatkiWProcentach=round(($sum*100)/$sumaWydatkow,2);
-					$new_array=array("label"=>$etykietaWydatkow, "y"=>$wydatkiWProcentach);
+						
+					if ($sumaWydatkow!=0)
+					{
+						$przychodyWProcentach=round(($sum*100)/$sumaWydatkow,2);
+						$wydatkiWProcentach=round(($sum*100)/$sumaWydatkow,2);
+						$new_array=array("label"=>$etykietaWydatkow, "y"=>$wydatkiWProcentach);						
+					} else {
+						$wydatkiWProcentach = 100;
+						$new_array=array("label"=>"Brak Danych", "y"=>$wydatkiWProcentach);
+					}						
+
 					array_push($daneWykresuWydatkow, $new_array);					
 				} catch (PDOException $e) {
 					echo $e->getMessage();

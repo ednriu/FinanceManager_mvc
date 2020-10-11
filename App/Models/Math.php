@@ -9,7 +9,7 @@ use PDO;
  *
  * PHP version 7.0
  */
-class Categories extends \Core\Model
+class Math extends \Core\Model
 {
 
 

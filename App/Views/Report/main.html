@@ -96,13 +96,19 @@
 				</a>
 			  </li>
 			  <li class="nav-item">
-				<a class="nav-link" href="#">
+				<a class="nav-link" href='/Main/showReportAllRange'>
+				  <span data-feather="grid"></span>
+				  Wszystkie Operacje
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href='/Main/showThisMonthReport'>
 				  <span data-feather="edit-2"></span>
 				  Bieżący Miesiąc
 				</a>
 			  </li>
 			  <li class="nav-item">
-				<a class="nav-link" href="#">
+				<a class="nav-link" href='/Main/showPreviousMonthReport'>
 				  <span data-feather="edit-3"></span>
 				  Poprzedni Miesiąc
 				</a>
@@ -150,7 +156,7 @@
 						<div class="info-box balance">
 							<h1 class="text-center py-1">Bilans</h1>
 								<div class="row justify-content-center mt-4"><span data-feather="info"></span> <p class="balance font-weight-bold">								
-								{{balance}}</p></div>
+								{{sumOfExpencesAmmount+sumOfIncomesAmmount}}</p></div>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
@@ -322,17 +328,25 @@
 					</button>
 				  </div>
 				  <form method="post" id="add_expence">
-					  <div class="modal-body">						
+					  <div class="modal-body">
+						<!--Ammount -->
 						  <div class="form-group">
 							<label for="kwotaInput">Kwota:</label>
-							<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" name="expenceAmmount" id="expenceAmmount" />
-	
+							<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" value="{{expenceToBeAdded.ammount}}" name="expenceAmmount" id="expenceAmmount" />
+							{% if expenceToBeAdded.expenceErrors['error_ammount'] is not empty %}
+										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_ammount'] }}</div>
+							{% endif %}	
 						  </div>
+						<!--Date -->						  
 						  <div class="form-group">
 							<label for="expenceDatePicker">Data:</label>
-							<input type="date" class="form-control" name="expenceDatePicker" id="expenceDatePicker" placeholder="dd-mm-yyyy">
+							<input type="date" class="form-control" name="expenceDatePicker" id="expenceDatePicker" value="{{expenceToBeAdded.date}}" placeholder="dd-mm-yyyy">
 							<script>TodayDate();</script>
+							{% if expenceToBeAdded.expenceErrors['error_date'] is not empty %}
+										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_date'] }}</div>
+							{% endif %}	
 						  </div>
+						<!--PayMethod -->
 						  <div class="form-group">
 								 <label for="radios">Forma płatności:</label>
 										<div class="form-check">
@@ -353,8 +367,11 @@
 											Karta Debetowa
 										  </label>
 										</div>
+								{% if expenceToBeAdded.expenceErrors['error_payMethod'] is not empty %}
+									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_payMethod'] }}</div>
+								{% endif %}	
 						  </div>
-						  
+						<!--Category -->						  
 						  <div class="form-group">
 							<label for="kategoriaInput">Kategoria:</label>							
 							<select multiple class="form-control" name="kategoriaExpenceInput" id="kategoriaExpenceInput">
@@ -362,12 +379,19 @@
 									<option value="{{ expenceCategory.category_id }}">{{ expenceCategory.name }}</option>
 								{% endfor %}
 							</select>
+								{% if expenceToBeAdded.expenceErrors['error_category'] is not empty %}
+									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_category'] }}</div>
+								{% endif %}
 						  </div>
-						  
+						<!--Comment -->						  
 						  <div class="form-group">
 							<label for="komentarzInput">Komentarz:</label>
 							<textarea class="form-control" name="commentInput" id="komentarzInput" rows="3"></textarea>
-						  </div>						
+								{% if expenceToBeAdded.expenceErrors['error_comment'] is not empty %}
+									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_comment'] }}</div>
+								{% endif %}						  
+						  </div>
+						  
 					  </div>
 					  <div class="modal-footer d-flex justify-content-center">
 						<button type="button"  class="btn btn-secondary" onclick = "$('#modalExpense').modal('hide');" data-dismiss="modal">Anuluj</button>
@@ -389,23 +413,23 @@
 					  <span aria-hidden="true">&times;</span>
 					</button>
 				  </div>
-				  <div class="modal-body">
-					<form>					 
-					  <div class="form-group">
-						<label for="datePicker">Data początkowa:</label>
-						<input type="date" class="form-control" id="dateStart" placeholder="dd-mm-yyyy">
-					  </div>
-					  <div class="form-group">
-						<label for="datePicker">Data końcowa:</label>
-						<input type="date" class="form-control" id="dateEnd" placeholder="dd-mm-yyyy">
+				  <form method="post">
+					  <div class="modal-body">						 
+						  <div class="form-group">
+							<label for="datePicker">Data początkowa:</label>
+							<input type="date" class="form-control" name="startDate" id="dateStart" placeholder="dd-mm-yyyy">
+						  </div>
+						  <div class="form-group">
+							<label for="datePicker">Data końcowa:</label>
+							<input type="date" class="form-control" name="endDate" id="dateEnd" placeholder="dd-mm-yyyy">
+						  </div>
 					  </div>
 					  
-					</form>
-				  </div>
-				  <div class="modal-footer d-flex justify-content-center">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-					<button type="button" class="btn btn-primary">Dodaj</button>
-				  </div>
+					  <div class="modal-footer d-flex justify-content-center">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+						<button type="submit" formaction="/Main/showSelectedPeriodReport" class="btn btn-primary">Dodaj</button>
+					  </div>
+				 </form>
 				</div>
 			  </div>
 			</div>
