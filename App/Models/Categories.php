@@ -131,9 +131,11 @@ class Categories extends \Core\Model
             $db = static::getDB();
             $stmt = $db->prepare($sql);			
 			$stmt->bindValue(':name', $incomeName, PDO::PARAM_STR);
-            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);                                          
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT); 
             return $stmt->execute();
-	}
+	}           
+	
+
 	
 	//Adds Expences Category for specified userId
 	private static function addExpenceCategoryForUserId($userId, $incomeName)
@@ -151,7 +153,7 @@ class Categories extends \Core\Model
 	//Creates initial income categories for new user
 	public function createIncomeCategoriesForNewUser($userId)
 	{
-		$initIncomeCategories = array(0=>"wypłata", 1=>"Odsetki", 2=>"Dodatkowa Praca", 3=>"Inwestycje");
+		$initIncomeCategories = array(0=>"Wypłata", 1=>"Odsetki", 2=>"Dodatkowa Praca", 3=>"Inwestycje");
 		foreach ($initIncomeCategories as $value)
 		{
 			$addNewCategories = Categories::addIncomeCategoryForUserId($userId, $value);

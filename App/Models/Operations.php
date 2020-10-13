@@ -235,8 +235,17 @@ class Operations extends \Core\Model
 	//*************************************
 	//returns array for the Incomes data of Graph
 	//*************************************
-	public static function getIncomesGraphDate($unikalneKategoriePrzychodowNiezerowych, $sumaPrzychodow, $userId)
+	public static function getIncomesGraphDate($unikalneKategoriePrzychodowNiezerowych, $sumaPrzychodow, $userId, $startDate, $endDate)
 	{
+		if ($startDate==null) 
+		{
+			$startDate='2000-01-01';
+		}
+		if ($endDate==null) 
+		{
+			$endDate=Operations::getCurrentDate();
+		}
+		
 		
 		$daneWykresuPrzychodow = array();
 		
@@ -244,14 +253,17 @@ class Operations extends \Core\Model
 				try
 				{
 					
-					$sql = 'SELECT SUM(incomes.ammount) as total FROM incomes, income_categories WHERE incomes.user_id=:userId  AND income_categories.name=:category AND income_categories.category_id=incomes.category_id';
+					$sql = 'SELECT SUM(incomes.ammount) as total FROM incomes, income_categories WHERE incomes.user_id=:userId  AND income_categories.name=:category AND income_categories.category_id=incomes.category_id AND incomes.date BETWEEN :startDate AND :endDate';
 					$db = static::getDB();
 					$stmt = $db->prepare($sql);
 					$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-					$stmt->bindValue(':category', $etykietaPrzychodow, PDO::PARAM_STR);  //zmienić inwestycje na numer etykiety
+					$stmt->bindValue(':category', $etykietaPrzychodow, PDO::PARAM_STR);
+					$stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+					$stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
 					$stmt->execute();
 					$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
 					$sumaPrzychodowDanejKategorii = $results;
+					$sum = 0;
 					foreach($results as $key=>$value)
 						{
 							if(isset($value['total']))   
@@ -278,8 +290,17 @@ class Operations extends \Core\Model
 	//*************************************
 	//returns array for the Expences data of Graph
 	//*************************************
-	public static function getExpencesGraphDate($unikalneKategorieWydatkowNiezerowych, $sumaWydatkow, $userId)
+	public static function getExpencesGraphDate($unikalneKategorieWydatkowNiezerowych, $sumaWydatkow, $userId, $startDate, $endDate)
 	{
+		
+		if ($startDate==null) 
+		{
+			$startDate='2000-01-01';
+		}
+		if ($endDate==null) 
+		{
+			$endDate=Operations::getCurrentDate();
+		}
 		
 		$daneWykresuWydatkow = array();
 		
@@ -287,14 +308,17 @@ class Operations extends \Core\Model
 				try
 				{
 					
-					$sql = 'SELECT SUM(expences.ammount) as total FROM expences, expence_categories WHERE expences.user_id=:userId  AND expence_categories.name=:category AND expence_categories.category_id=expences.category_id';
+					$sql = 'SELECT SUM(expences.ammount) as total FROM expences, expence_categories WHERE expences.user_id=:userId  AND expence_categories.name=:category AND expence_categories.category_id=expences.category_id AND expences.date BETWEEN :startDate AND :endDate';
 					$db = static::getDB();
 					$stmt = $db->prepare($sql);
 					$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-					$stmt->bindValue(':category', $etykietaWydatkow, PDO::PARAM_STR);  //zmienić inwestycje na numer etykiety
+					$stmt->bindValue(':category', $etykietaWydatkow, PDO::PARAM_STR);
+					$stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+					$stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
 					$stmt->execute();
 					$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
 					$sumaWydatkowDanejKategorii = $results;
+					$sum = 0;
 					foreach($results as $key=>$value)
 						{
 							if(isset($value['total']))   
@@ -303,7 +327,6 @@ class Operations extends \Core\Model
 						
 					if ($sumaWydatkow!=0)
 					{
-						$przychodyWProcentach=round(($sum*100)/$sumaWydatkow,2);
 						$wydatkiWProcentach=round(($sum*100)/$sumaWydatkow,2);
 						$new_array=array("label"=>$etykietaWydatkow, "y"=>$wydatkiWProcentach);						
 					} else {

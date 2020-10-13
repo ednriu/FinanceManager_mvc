@@ -30,18 +30,18 @@ class Main extends \Core\Controller
 			$sumOfIncomesAmmount = Operations::getSumOfAmmount($incomes); //need to add date range
 			$notEmptyIncomeCategories= Categories::getNotEmptyIncomeCategories($_SESSION['user_id']);
 			$notEmptyIncomeCategoriesWithoutRepeats = array_unique($notEmptyIncomeCategories);
-			$incomeGraphData = Operations::getIncomesGraphDate($notEmptyIncomeCategoriesWithoutRepeats, $sumOfIncomesAmmount, $_SESSION['user_id']);
+			$incomeGraphData = Operations::getIncomesGraphDate($notEmptyIncomeCategoriesWithoutRepeats, $sumOfIncomesAmmount, $_SESSION['user_id'], $startDate, $endDate);
 			
 			$sumOfExpencesAmmount = Operations::getSumOfAmmount($expences); //need to add date range
 			$notEmptyExpenceCategories= Categories::getNotEmptyExpenceCategories($_SESSION['user_id']);
 			$notEmptyExpenceCategoriesWithoutRepeats = array_unique($notEmptyExpenceCategories);
-			$expenceGraphData = Operations::getExpencesGraphDate($notEmptyExpenceCategoriesWithoutRepeats, $sumOfExpencesAmmount, $_SESSION['user_id']);
+			$expenceGraphData = Operations::getExpencesGraphDate($notEmptyExpenceCategoriesWithoutRepeats, $sumOfExpencesAmmount, $_SESSION['user_id'], $startDate, $endDate);
 			
 			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'expences'=>$expences, 'sumOfIncomesAmmount'=>$sumOfIncomesAmmount, 'sumOfExpencesAmmount'=>$sumOfExpencesAmmount, 'feedback'=>$feedback, 'incomeGraphDate'=>$incomeGraphData, 'expenceGraphDate'=>$expenceGraphData]);
 		}
 		else
 		{
-			View::renderTemplate('Report/Main.html', ['incomes'=>null, 'sumOfIncomesAmmount'=>0, 'feedback'=>"Jesteś nowym użytkownikiem", 'graphDate'=>0]);
+			View::renderTemplate('Report/Main.html', ['incomes'=>null, 'sumOfIncomesAmmount'=>0, 'sumOfExpencesAmmount'=>0, 'feedback'=>"Brak danych do wyświetlenia", 'graphDate'=>0]);
 		};
 	}
 	
@@ -55,7 +55,7 @@ class Main extends \Core\Controller
 	public function showPreviousMonthReportAction()
 	{
 		$startDate = Main::getOneMonthBefore(date('Y-m-01'));
-		$endDate = Main::getOneMonthBefore(date('Y-m-t'));
+		$endDate = Main::getLastDayOfOneMonthBefore(date('Y-m-t'));
 		Main::showReportAllRangeAction("Wydatki z Poprzedniego Miesiąca", $startDate, $endDate);
 	}
 	
@@ -69,12 +69,19 @@ class Main extends \Core\Controller
 	}
 	
 	//Shows gets one month before
-	private function getOneMonthBefore($date){
+	private function getLastDayOfOneMonthBefore($date){
 		$day = intval(date("t", strtotime("$date")));//get the last day of the month
 		$month_date = date("y-m-d",strtotime("$date -$day days"));//get the day 1 month before
 		return $month_date;
 	}
 	
+	//Shows gets one month before
+	private function getOneMonthBefore($date){
+		$month = 1;
+		$month_date = date("y-m-d",strtotime("$date -$month months"));//get the day 1 month before
+		return $month_date;
+	}
+
 	//Shows Add Incomes Form
 	public function addIncomeFormAction()
     {
