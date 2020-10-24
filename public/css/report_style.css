@@ -7,11 +7,13 @@ body {
 }
 
 .bg{
-	background: url('../img/pexels-photo-259132.jpeg') no-repeat;
-	max-width: 100%;
-	min-height: 100vh;	
-	background-attachment: fixed;  
+	background-image: url('../img/pexels-photo-259132.jpeg') ;
+	background-position: center;
+	background-repeat: no-repeat;
 	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	min-height:150vh;
 }
 /*
  * Graph
@@ -58,13 +60,15 @@ table.table-bordered > tbody{
 	max-height:240px;
 }
 
+
 table.table-bordered > tbody > tr > td:last-child {
-	width:83px;
+	width:80px;
 }
 
 table.table-bordered > tbody > tr > td, th {
 	width:100px;
 }
+
 
 table.table td a {
 	cursor: pointer;

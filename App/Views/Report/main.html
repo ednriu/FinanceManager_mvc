@@ -133,17 +133,16 @@
 	<!--Right Panel-->
 		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pt-lg-3 pt-md-5">
 			
-			
-			<!--Komunikat zwrotny dla użytkownika-->
-			{% if feedback == true %}
-				<div class="row d-flex justify-content-center mt-3"><div class="alert alert-success" role="alert">{{ feedback }}</div></div>
-			{% endif %}
-			
+			<div class="row d-flex justify-content-center mt-3">
+				<!--Komunikat zwrotny dla użytkownika-->
+				{% if feedback == true %}
+					<div class="row d-flex justify-content-center mt-3"><div class="alert alert-success" role="alert">{{ feedback }}</div></div>
+				{% endif %}
+			</div>
 			
 
 			<!--okienka z sumami i bilansem-->
 			<div class="row d-flex justify-content-center mt-3">
-					{{ incomeFormVisible }} 			
 				<div class="row d-flex justify-content-center mt-3">
 					<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
 						<div class="info-box">			
@@ -167,273 +166,274 @@
 						</div>
 					</div>
 				</div>
-		
-		
-		<!--Tabela wydatków-->
-		<div class="row mt-3">
-			<div class="col-lg-6">
-				  <div class="table-responsive inc-exp-area mt-3">
-				  	<h1 class="d-flex justify-content-center pb-2">Wydatki</h1>
-						<table id="table-expences" class="table table-striped table-sm table-bordered text-secondary table-light" >
-							<thead class="thead-dark">
-							<tr>
-							  <th>#</th>
-							  <th>Data</th>
-							  <th>Kwota [zł]</th>
-							  <th>Kategoria</th>
-							  <th>Metoda</th>
-							  <th>Komentarz</th>
-							  <th>*</th>
-							</tr>
-						  </thead>
-						  <tbody>
-								{% set expenceOrderNumber = 1%}
-								{% for expence in expences %}
-										<tr>										
-											  <td>{{expenceOrderNumber}}</td>
-											  <td>{{expence.date}}</td>
-											  <td>{{expence.ammount}}</td>
-											  <td>{{expence.name}}</td>
-											  <td>{{expence.pay_method}}</td>
-											  <td>{{expence.comment}}</td>
-											  <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-													<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
-										</tr>
-									{% set expenceOrderNumber = expenceOrderNumber+1 %}
-								{% endfor %}
-		
-						  </tbody>
-						</table>
-				  </div>
-				<div class="wykres">
-					<div id="chartContainer_wydatki" style="height: 370px; width: 100%;"></div>
-					<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-				</div>				  
 			</div>
-			<!--Koniec Tabeli Wydatków-->
-			
-			
-			<!--Tabela przychodów-->
-			<div class="col-lg-6">
-				  <div class="table-responsive inc-exp-area mt-3">
-				  	<h1 class="d-flex justify-content-center pb-2">Przychody</h1>
-						<table id="table-incomes" class="table table-striped table-sm table-bordered text-secondary table-light">
-						  <thead class="thead-dark">
-							<tr>
-							  <th>#</th>
-							  <th>Data</th>
-							  <th>Kwota [zł]</th>
-							  <th>Kategoria</th>
-							  <th>Komentarz</th>
-							  <th>*</th>
-							</tr>
-						  </thead>
-						  <tbody>
-								{% set incomeOrderNumber = 1%}
-								{% for income in incomes %}
-										<tr>										
-											  <td>{{incomeOrderNumber}}</td>
-											  <td>{{income.date}}</td>
-											  <td>{{income.ammount}}</td>
-											  <td>{{income.name}}</td>
-											  <td>{{income.comment}}</td>
-											  <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-													<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
-										</tr>
-									{% set incomeOrderNumber = incomeOrderNumber+1 %}
-								{% endfor %}
 		
-						  </tbody>
-						</table>
-				  </div>
-				  
-					<div class="wykres">
-						<div id="chartContainer_przychody" style="height: 370px; width: 100%;"></div>
-						<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-					</div>
+		
 
-			</div>
+			<div class="row mt-3">
+					<!--Tabela wydatków-->
+					<div class="col-lg-6">
+						  <div class="table-responsive inc-exp-area mt-3">
+							<h1 class="d-flex justify-content-center pb-2">Wydatki</h1>
+								<table id="table-expences" class="table table-striped table-sm table-bordered text-secondary table-light" >
+									<thead class="thead-dark">
+									<tr>
+									  <th>#</th>
+									  <th>Data</th>
+									  <th>Kwota [zł]</th>
+									  <th>Kategoria</th>
+									  <th>Metoda</th>
+									  <th>Komentarz</th>
+									  <th>*</th>
+									</tr>
+								  </thead>
+								  <tbody>
+										{% set expenceOrderNumber = 1%}
+										{% for expence in expences %}
+												<tr>										
+													  <td>{{expenceOrderNumber}}</td>
+													  <td>{{expence.date}}</td>
+													  <td>{{expence.ammount}}</td>
+													  <td>{{expence.name}}</td>
+													  <td>{{expence.pay_method}}</td>
+													  <td>{{expence.comment}}</td>
+													  <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+															<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
+												</tr>
+											{% set expenceOrderNumber = expenceOrderNumber+1 %}
+										{% endfor %}
+				
+								  </tbody>
+								</table>
+						  </div>
+						<div class="wykres">
+							<div id="chartContainer_wydatki" style="height: 370px; width: 100%;"></div>
+							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+						</div>				  
+					</div>
+					<!--Koniec Tabeli Wydatków-->
+					
+					
+					<!--Tabela przychodów-->
+					<div class="col-lg-6">
+						  <div class="table-responsive inc-exp-area mt-3">
+							<h1 class="d-flex justify-content-center pb-2">Przychody</h1>
+								<table id="table-incomes" class="table table-striped table-sm table-bordered text-secondary table-light">
+								  <thead class="thead-dark">
+									<tr>
+									  <th>#</th>
+									  <th>Data</th>
+									  <th>Kwota [zł]</th>
+									  <th>Kategoria</th>
+									  <th>Komentarz</th>
+									  <th>*</th>
+									</tr>
+								  </thead>
+								  <tbody>
+										{% set incomeOrderNumber = 1%}
+										{% for income in incomes %}
+												<tr>										
+													  <td>{{incomeOrderNumber}}</td>
+													  <td>{{income.date}}</td>
+													  <td>{{income.ammount}}</td>
+													  <td>{{income.name}}</td>
+													  <td>{{income.comment}}</td>
+													  <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+															<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
+												</tr>
+											{% set incomeOrderNumber = incomeOrderNumber+1 %}
+										{% endfor %}
+				
+								  </tbody>
+								</table>
+						  </div>
+						  
+						<div class="wykres">
+							<div id="chartContainer_przychody" style="height: 370px; width: 100%;"></div>
+							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+						</div>
+					</div>
 				
 			
 
-			<!-- Modal Add INCOME -->
-			<div class="modal bd-example-modal-sm" id="modalIncome" tabindex="-1" role="dialog" aria-labelledby="modalIncome" aria-hidden="true">
-			  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-				<div class="modal-content">
-				  <div class="modal-header">
-					<h5 class="modal-title" id="modalIncomeTitle">Dodaj Przychód</h5>
-					<button type="button" class="close" onclick = "$('#modalIncome').modal('hide');" data-dismiss="modal" aria-label="Close">
-					  <span aria-hidden="true">&times;</span>
-					</button>
+				<!-- Modal Add INCOME -->
+				<div class="modal bd-example-modal-sm" id="modalIncome" tabindex="-1" role="dialog" aria-labelledby="modalIncome" aria-hidden="true">
+				  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title" id="modalIncomeTitle">Dodaj Przychód</h5>
+						<button type="button" class="close" onclick = "$('#modalIncome').modal('hide');" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+						<form method="post" id="add_income">
+							<div class="modal-body">
+							  <div class="form-group">
+									<label for="kwotaInput">Kwota:</label>
+									<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency"  value = "{{incomeToBeAdded.ammount}}" name="incomeAmmount" id="incomeAmmount"/>
+										{% if incomeToBeAdded.incomeErrors['error_ammount'] is not empty %}
+											<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_ammount'] }}</div>
+										{% endif %}	
+							  </div>
+							  
+							  <div class="form-group">
+									<label for="incomeDatePicker">Data:</label>
+									<input type="date" class="form-control" value = "{{incomeToBeAdded.datePicker}}" name="incomeDatePicker" id="incomeDatePicker" placeholder="dd-mm-yyyy">
+									<script>TodayDate();</script>
+										{% if incomeToBeAdded.incomeErrors['error_date'] is not empty %}
+											<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_date'] }}</div>
+										{% endif %}	
+							  </div>
+							 
+							  <div class="form-group">
+									<label for="kategoriaIncomeInput">Kategoria:</label>							
+									<select multiple class="form-control" name="kategoriaIncomeInput" id="kategoriaIncomeInput">
+										{% for incomeCategory in incomeCategories %}
+											<option value="{{ incomeCategory.category_id }}" {% if selectedCategoryId == incomeCategory.category_id %} selected {% endif %} >{{ incomeCategory.name }}</option>
+										{% endfor %}
+									</select>
+										{% if incomeToBeAdded.incomeErrors['error_category'] is not empty %}
+											<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_category'] }}</div>
+										{% endif %}
+							  </div>
+							  
+							  <div class="form-group">
+									<label for="komentarzInput">Komentarz:</label>
+									<textarea class="form-control" name="commentInput" id="komentarzInput" rows="3">{{incomeToBeAdded.comment}}</textarea>
+										{% if incomeToBeAdded.incomeErrors['error_comment'] is not empty %}
+											<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_comment'] }}</div>
+										{% endif %}		
+							  </div>						
+						  </div>
+						  <div class="modal-footer d-flex justify-content-center">
+							<button type="button" class="btn btn-secondary"  onclick = "$('#modalIncome').modal('hide');" data-dismiss="modal">Anuluj</button>
+							<button type="submit" formaction="/Main/submitIncome" class="btn btn-primary">Dodaj</button>
+						  </div>
+					  </form>
+					</div>
 				  </div>
-					<form method="post" id="add_income">
-						<div class="modal-body">
-						  <div class="form-group">
-								<label for="kwotaInput">Kwota:</label>
-								<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency"  value = "{{incomeToBeAdded.ammount}}" name="incomeAmmount" id="incomeAmmount"/>
-									{% if incomeToBeAdded.incomeErrors['error_ammount'] is not empty %}
-										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_ammount'] }}</div>
-									{% endif %}	
-						  </div>
-						  
-						  <div class="form-group">
-								<label for="incomeDatePicker">Data:</label>
-								<input type="date" class="form-control" value = "{{incomeToBeAdded.datePicker}}" name="incomeDatePicker" id="incomeDatePicker" placeholder="dd-mm-yyyy">
-								<script>TodayDate();</script>
-									{% if incomeToBeAdded.incomeErrors['error_date'] is not empty %}
-										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_date'] }}</div>
-									{% endif %}	
-						  </div>
-						 
-						  <div class="form-group">
-								<label for="kategoriaIncomeInput">Kategoria:</label>							
-								<select multiple class="form-control" name="kategoriaIncomeInput" id="kategoriaIncomeInput">
-									{% for incomeCategory in incomeCategories %}
-										<option value="{{ incomeCategory.category_id }}" {% if selectedCategoryId == incomeCategory.category_id %} selected {% endif %} >{{ incomeCategory.name }}</option>
-									{% endfor %}
-								</select>
-									{% if incomeToBeAdded.incomeErrors['error_category'] is not empty %}
-										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_category'] }}</div>
-									{% endif %}
-						  </div>
-						  
-						  <div class="form-group">
-								<label for="komentarzInput">Komentarz:</label>
-								<textarea class="form-control" name="commentInput" id="komentarzInput" rows="3">{{incomeToBeAdded.comment}}</textarea>
-									{% if incomeToBeAdded.incomeErrors['error_comment'] is not empty %}
-										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ incomeToBeAdded.incomeErrors['error_comment'] }}</div>
-									{% endif %}		
-						  </div>						
-					  </div>
-					  <div class="modal-footer d-flex justify-content-center">
-						<button type="button" class="btn btn-secondary"  onclick = "$('#modalIncome').modal('hide');" data-dismiss="modal">Anuluj</button>
-						<button type="submit" formaction="/Main/submitIncome" class="btn btn-primary">Dodaj</button>
-					  </div>
-				  </form>
 				</div>
-			  </div>
-			</div>
-			<!-- End Modal Add INCOME -->
+				<!-- End Modal Add INCOME -->
 
 		
-			<!-- Modal Add EXPENSE -->
-			<div class="modal bd-example-modal-sm" id="modalExpence" tabindex="-1" role="dialog" aria-labelledby="modalExpence" aria-hidden="true">
-			  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-				<div class="modal-content">
-				  <div class="modal-header">
-					<h5 class="modal-title" id="modalExpenceTitle">Dodaj Wydatek</h5>
-					<button type="button" class="close" onclick = "$('#modalExpense').modal('hide');" data-dismiss="modal" aria-label="Close">
-					  <span aria-hidden="true">&times;</span>
-					</button>
-				  </div>
-				  <form method="post" id="add_expence">
-					  <div class="modal-body">
-						<!--Ammount -->
-						  <div class="form-group">
-							<label for="kwotaInput">Kwota:</label>
-							<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" value="{{expenceToBeAdded.ammount}}" name="expenceAmmount" id="expenceAmmount" />
-							{% if expenceToBeAdded.expenceErrors['error_ammount'] is not empty %}
-										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_ammount'] }}</div>
-							{% endif %}	
-						  </div>
-						<!--Date -->						  
-						  <div class="form-group">
-							<label for="expenceDatePicker">Data:</label>
-							<input type="date" class="form-control" name="expenceDatePicker" id="expenceDatePicker" value="{{expenceToBeAdded.datePicker}}" placeholder="dd-mm-yyyy">
-							<script>TodayDate();</script>
-							{% if expenceToBeAdded.expenceErrors['error_date'] is not empty %}
-										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_date'] }}</div>
-							{% endif %}	
-						  </div>
-						<!--PayMethod -->
-						  <div class="form-group">
-								 <label for="radios">Forma płatności:</label>
-										<div class="form-check">
-										  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios1" value="Gotowka">
-										  <label for="gridRadios1" class="form-check-label" for="radios">
-											Gotówka
-										  </label>
-										</div>
-										<div class="form-check">
-										  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios2" value="KartaPlatnicza">
-										  <label for="gridRadios2" class="form-check-label" for="radios">
-											Karta Płatnicza
-										  </label>
-										</div>
-										<div class="form-check">
-										  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios3" value="KartaDebetowa">
-										  <label for="gridRadios3" class="form-check-label" for="radios">
-											Karta Debetowa
-										  </label>
-										</div>
-								{% if expenceToBeAdded.expenceErrors['error_payMethod'] is not empty %}
-									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_payMethod'] }}</div>
+				<!-- Modal Add EXPENSE -->
+				<div class="modal bd-example-modal-sm" id="modalExpence" tabindex="-1" role="dialog" aria-labelledby="modalExpence" aria-hidden="true">
+				  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title" id="modalExpenceTitle">Dodaj Wydatek</h5>
+						<button type="button" class="close" onclick = "$('#modalExpense').modal('hide');" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+					  <form method="post" id="add_expence">
+						  <div class="modal-body">
+							<!--Ammount -->
+							  <div class="form-group">
+								<label for="kwotaInput">Kwota:</label>
+								<input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" value="{{expenceToBeAdded.ammount}}" name="expenceAmmount" id="expenceAmmount" />
+								{% if expenceToBeAdded.expenceErrors['error_ammount'] is not empty %}
+											<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_ammount'] }}</div>
 								{% endif %}	
+							  </div>
+							<!--Date -->						  
+							  <div class="form-group">
+								<label for="expenceDatePicker">Data:</label>
+								<input type="date" class="form-control" name="expenceDatePicker" id="expenceDatePicker" value="{{expenceToBeAdded.datePicker}}" placeholder="dd-mm-yyyy">
+								<script>TodayDate();</script>
+								{% if expenceToBeAdded.expenceErrors['error_date'] is not empty %}
+											<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_date'] }}</div>
+								{% endif %}	
+							  </div>
+							<!--PayMethod -->
+							  <div class="form-group">
+									 <label for="radios">Forma płatności:</label>
+											<div class="form-check">
+											  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios1" value="Gotowka">
+											  <label for="gridRadios1" class="form-check-label" for="radios">
+												Gotówka
+											  </label>
+											</div>
+											<div class="form-check">
+											  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios2" value="KartaPlatnicza">
+											  <label for="gridRadios2" class="form-check-label" for="radios">
+												Karta Płatnicza
+											  </label>
+											</div>
+											<div class="form-check">
+											  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios3" value="KartaDebetowa">
+											  <label for="gridRadios3" class="form-check-label" for="radios">
+												Karta Debetowa
+											  </label>
+											</div>
+									{% if expenceToBeAdded.expenceErrors['error_payMethod'] is not empty %}
+										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_payMethod'] }}</div>
+									{% endif %}	
+							  </div>
+							<!--Category -->						  
+							  <div class="form-group">
+								<label for="kategoriaInput">Kategoria:</label>							
+								<select multiple class="form-control" name="kategoriaExpenceInput" id="kategoriaExpenceInput">							
+										{% for expenceCategory in expenceCategories %}
+											<option value="{{ expenceCategory.category_id }}" {% if selectedCategoryId == expenceCategory.category_id %} selected {% endif %} >{{ expenceCategory.name }}</option>
+										{% endfor %}
+								</select>
+									{% if expenceToBeAdded.expenceErrors['error_category'] is not empty %}
+										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_category'] }}</div>
+									{% endif %}
+							  </div>
+							<!--Comment -->						  
+							  <div class="form-group">
+								<label for="komentarzInput">Komentarz:</label>
+								<textarea class="form-control" name="commentInput" value="{{expenceToBeAdded.comment}}" id="komentarzInput" rows="3"></textarea>
+									{% if expenceToBeAdded.expenceErrors['error_comment'] is not empty %}
+										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_comment'] }}</div>
+									{% endif %}						  
+							  </div>							  
 						  </div>
-						<!--Category -->						  
-						  <div class="form-group">
-							<label for="kategoriaInput">Kategoria:</label>							
-							<select multiple class="form-control" name="kategoriaExpenceInput" id="kategoriaExpenceInput">							
-									{% for expenceCategory in expenceCategories %}
-										<option value="{{ expenceCategory.category_id }}" {% if selectedCategoryId == expenceCategory.category_id %} selected {% endif %} >{{ expenceCategory.name }}</option>
-									{% endfor %}
-							</select>
-								{% if expenceToBeAdded.expenceErrors['error_category'] is not empty %}
-									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_category'] }}</div>
-								{% endif %}
+						  <div class="modal-footer d-flex justify-content-center">
+							<button type="button"  class="btn btn-secondary" onclick = "$('#modalExpense').modal('hide');" data-dismiss="modal">Anuluj</button>
+							<button type="submit" formaction="/Main/submitExpence" class="btn btn-primary">Dodaj</button>
 						  </div>
-						<!--Comment -->						  
-						  <div class="form-group">
-							<label for="komentarzInput">Komentarz:</label>
-							<textarea class="form-control" name="commentInput" value="{{expenceToBeAdded.comment}}" id="komentarzInput" rows="3"></textarea>
-								{% if expenceToBeAdded.expenceErrors['error_comment'] is not empty %}
-									<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_comment'] }}</div>
-								{% endif %}						  
+						</form>
+					</div>
+				  </div>
+				</div>
+				<!--End  Modal Add EXPENSE -->
+			
+				<!--MODAL Another Range of Date -->
+				<div class="modal fade  modalAnotherRangeOfDate" id="modalAnotherRangeOfDate" tabindex="-1" role="dialog" aria-labelledby="modalAnotherRangeOfDate" aria-hidden="true">
+				  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title" id="modalIncomeTitle">Wybierz Zakres Dat</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+					  <form method="post">
+						  <div class="modal-body">						 
+							  <div class="form-group">
+								<label for="datePicker">Data początkowa:</label>
+								<input type="date" class="form-control" name="startDate" id="dateStart" placeholder="dd-mm-yyyy">
+							  </div>
+							  <div class="form-group">
+								<label for="datePicker">Data końcowa:</label>
+								<input type="date" class="form-control" name="endDate" id="dateEnd" placeholder="dd-mm-yyyy">
+							  </div>
 						  </div>
 						  
-					  </div>
-					  <div class="modal-footer d-flex justify-content-center">
-						<button type="button"  class="btn btn-secondary" onclick = "$('#modalExpense').modal('hide');" data-dismiss="modal">Anuluj</button>
-						<button type="submit" formaction="/Main/submitExpence" class="btn btn-primary">Dodaj</button>
-					  </div>
-					</form>
-				</div>
-			  </div>
-			</div>
-			<!--End  Modal Add EXPENSE -->
-			
-			<!--MODAL Another Range of Date -->
-			<div class="modal fade  modalAnotherRangeOfDate" id="modalAnotherRangeOfDate" tabindex="-1" role="dialog" aria-labelledby="modalAnotherRangeOfDate" aria-hidden="true">
-			  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-				<div class="modal-content">
-				  <div class="modal-header">
-					<h5 class="modal-title" id="modalIncomeTitle">Wybierz Zakres Dat</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					  <span aria-hidden="true">&times;</span>
-					</button>
+						  <div class="modal-footer d-flex justify-content-center">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+							<button type="submit" formaction="/Main/showSelectedPeriodReport" class="btn btn-primary">Dodaj</button>
+						  </div>
+					 </form>
+					</div>
 				  </div>
-				  <form method="post">
-					  <div class="modal-body">						 
-						  <div class="form-group">
-							<label for="datePicker">Data początkowa:</label>
-							<input type="date" class="form-control" name="startDate" id="dateStart" placeholder="dd-mm-yyyy">
-						  </div>
-						  <div class="form-group">
-							<label for="datePicker">Data końcowa:</label>
-							<input type="date" class="form-control" name="endDate" id="dateEnd" placeholder="dd-mm-yyyy">
-						  </div>
-					  </div>
-					  
-					  <div class="modal-footer d-flex justify-content-center">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-						<button type="submit" formaction="/Main/showSelectedPeriodReport" class="btn btn-primary">Dodaj</button>
-					  </div>
-				 </form>
 				</div>
-			  </div>
+				<!--End MODAL Another Range of Date -->
+				
 			</div>
-			<!--End MODAL Another Range of Date -->
-			
 		</main>
 	</div>
 </div><!-- /.container -->
