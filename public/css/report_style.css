@@ -6,23 +6,23 @@ body {
   text-align: center;
 }
 
-.bg{
-	background-image: url('../img/pexels-photo-259132.jpeg') ;
-	background-position: center;
+.bg{	
+	background: url('../img/pexels-photo-259132.jpeg');
 	background-repeat: no-repeat;
-	background-size: cover;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	min-height:150vh;
+	background-position: center, center;
+	background-size: cover !important;
 }
+
+
 /*
  * Graph
  */
 .wykres{
 	background-color: rgba(240, 233, 216, 0.7);
-	padding:10px;
-	margin-top:5px;	
+	text-align:center;
+	padding:1rem;
 	border-radius: 10px;
+	height:400px;
 }
 
 
@@ -30,7 +30,6 @@ body {
  * GTable With Data
  */
 .inc-exp-area{
-
 	background-color: rgba(240, 233, 216, 0.7);
 	text-align:center;
 	padding:1rem;
@@ -44,6 +43,10 @@ table.table-bordered{
   }
 table.table-bordered > thead > tr > th, td{
     border:1px solid grey!important;
+}
+
+.table-responsive.inc-exp-area {
+	overflow:hidden;
 }
 
 .table-responsive.inc-exp-area h1{
@@ -97,6 +100,17 @@ table.table .form-control.error {
 	border-color: #f50000;
 }
 
+
+/*
+ * MainWindow
+ */
+
+.mainWindow {
+  position: fixed;
+  top: 100;
+  right: 0;
+  overflow:scroll;
+}
 
 
 /*
@@ -366,4 +380,6 @@ p.balance{
 	body{
 		padding-top:3rem;		
 	}
+	
+
 }
