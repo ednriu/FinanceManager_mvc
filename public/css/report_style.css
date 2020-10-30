@@ -26,6 +26,7 @@ body {
 }
 
 
+
 /*
  * GTable With Data
  */
@@ -37,41 +38,24 @@ body {
 	height:400px;
 }
 
-table.table-bordered{
-    border:1px solid grey!important;
-    margin-top:20px;
-  }
-table.table-bordered > thead > tr > th, td{
-    border:1px solid grey!important;
-}
-
-.table-responsive.inc-exp-area {
-	overflow:hidden;
-}
-
-.table-responsive.inc-exp-area h1{
-	color:#2C1B6F;
-}
-
-table.table-bordered > thead{
-	display:block;
-}
-
-table.table-bordered > tbody{
-	display:block;
-	overflow-y:scroll;
-	max-height:240px;
+table.table-bordered >thead>tr>th:nth-child(2),
+table.table-bordered >tbody>tr>td:nth-child(2) {
+  width: 120px;
+  overflow: hidden;
 }
 
 
-table.table-bordered > tbody > tr > td:last-child {
-	width:80px;
+table.table-bordered >thead>tr>th:nth-child(3),
+table.table-bordered >tbody>tr>td:nth-child(3) {
+  max-width: 80px;
+  overflow: hidden;
 }
 
-table.table-bordered > tbody > tr > td, th {
-	width:100px;
+table.table-bordered >thead>tr>th:last-child,
+table.table-bordered >tbody>tr>td:last-child {
+  max-width: 40px;
+  overflow: hidden;
 }
-
 
 table.table td a {
 	cursor: pointer;
