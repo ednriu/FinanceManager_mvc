@@ -57,18 +57,34 @@
 	  
 	  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
 		<ul class="navbar-nav mr-auto">
+		
 		  <li class="nav-item active">
 			<a class="nav-link" href='/Main/showReportAllRange'><span class="navbar-text">Moje Finanse</span><span class="sr-only">(current)</span></a>
 		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" href="Application/Settings"><span class="navbar-text">Aplikacja</span><span class="sr-only"></span></a>
+		  
+		  <li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" id="applicationSettingsDropdownMenuLink" data-toggle="dropdown"
+			  aria-haspopup="true" aria-expanded="false"><span class="navbar-text">Ustawienia Aplikacji</span><span class="sr-only"></span></a>
+				<div class="dropdown-menu dropdown-primary bg-primary" aria-labelledby="applicationSettingsDropdownMenuLink">
+				  <a class="dropdown-item bg-primary" href="#">Kategorie Przychodów</a>
+				  <a class="dropdown-item bg-primary" href="#">Kategorie Wydatków</a>
+				  <a class="dropdown-item bg-primary" href="#">Metody Płatności</a>
+				</div>
 		  </li>
-		  <li class="nav-item">
-		   <a class="nav-link" href="User/Settings"><span class="navbar-text">Użytkownik</span><span class="sr-only"></span></a>
+		  
+		  <li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" id="userSettingsDropdownMenuLink" data-toggle="dropdown"
+			  aria-haspopup="true" aria-expanded="false"><span class="navbar-text">Ustawienia Użytkownika</span><span class="sr-only"></span></a>
+				<div class="dropdown-menu dropdown-primary bg-primary" aria-labelledby="applicationSettingsDropdownMenuLink">
+				  <a class="dropdown-item bg-primary" href="#">Zmiana Hasła</a>
+				  <a class="dropdown-item bg-primary" href="#">Zmiana Danych</a>
+				</div>
 		  </li>
+		  
 		  <li class="nav-item">
 			<a class="nav-link" href="/Login/Logout"><span class="navbar-text">Wyloguj</span><span class="sr-only"></span></a>
 		  </li>
+
 		</ul>
 		{% if session.name %}
 		<span class="badge badge-success mx-2">Jesteś zalogowany jako: {{ session.name }}</span>

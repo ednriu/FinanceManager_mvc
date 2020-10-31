@@ -14,18 +14,6 @@ body {
 }
 
 
-/*
- * Graph
- */
-.wykres{
-	background-color: rgba(240, 233, 216, 0.7);
-	text-align:center;
-	padding:1rem;
-	border-radius: 10px;
-	height:550px;
-}
-
-
 
 /*
  * GTable With Data
@@ -37,8 +25,6 @@ body {
 	border-radius: 10px;
 	height:550px;
 }
-
-
 
 table.table td a {
 	cursor: pointer;
@@ -173,7 +159,7 @@ table.table .form-control.error {
 }
 
 .navbar .navbar-text:hover{
-	transform: scale(1.1);
+	transform: scale(1.05);
 }
 
 .navbar .nav-item
@@ -195,6 +181,16 @@ table.table .form-control.error {
 	display:inline-block;
 	height:2.5rem;
 }
+
+.dropdown-item{
+	color:#FAF70C !important;
+	line-height:1rem !important;
+	font-size:1.2rem !important;
+	font-weight:bold !important;
+	letter-spacing:0.1rem !important;
+}
+
+
 
 /*
  * Modals for Adding Expences and Incomes
