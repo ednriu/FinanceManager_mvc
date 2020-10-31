@@ -31,28 +31,36 @@
 
 {% block body %}  
 
+<!-- Show Incomes script-->
 	<script type="text/javascript">
     function showIncome() {
 		$(document).ready($('#modalIncome').modal('show'));	
     }
 	</script>
-	
+<!-- End of Show Incomes script-->
+
+<!-- Show Expences script-->
 	<script type="text/javascript">
     function showExpence() {
 		$(document).ready($('#modalExpence').modal('show'));	
     }
 	</script>
+<!-- End of Show Expences script-->
 	
+<!-- Drawing graphs-->
 	<script>
 		window.onload = function rysuj_wykresy_wydatkow_przychodow() 
 		{
+	<!-- Canvas JS Graph for expences-->
 			  var chart = new CanvasJS.Chart("chartContainer_wydatki", {
 				animationEnabled: true,
+				backgroundColor: "rgba(240, 233, 216, 0.7)",
+				
 				title: {
-					text: "Wydatki"
+					text: "Wykres"
 				},
 				subtitles: [{
-					text: "Cały Okres"
+					text: ""
 				}],
 				data: [{
 					type: "pie",
@@ -62,14 +70,19 @@
 				}]
 			});
 			chart.render();
-			
+	
+	<!-- End of Canvas JS Graph for expences-->
+	
+	<!-- Canvas JS Graph for incomes-->	
 			var chart2 = new CanvasJS.Chart("chartContainer_przychody", {
 				animationEnabled: true,
+				backgroundColor: "rgba(240, 233, 216, 0.7)",
+
 				title: {
-					text: "Przychody"
+					text: "Wykres"
 				},
 				subtitles: [{
-					text: "Cały Okres"
+					text: ""
 				}],
 				data: [{
 					type: "pie",
@@ -81,7 +94,10 @@
 			chart2.render();
 			  
 		};
+	<!-- End of Canvas JS Graph for incomes-->	
 	</script>
+<!-- End of Drawing graphs-->
+
 
 
 <!-- Finance Manager Content-->
@@ -179,13 +195,13 @@
 		
 		
 
-			<div class="row mt-3">
+
 					<!--Tabela wydatków-->
-					<div class="col-lg-10 ">
-						<div class="inc-exp-area pb-2">
-						<h1 class="d-flex justify-content-center pb-2">Wydatki</h1>
+					<div class="row mt-3 d-flex justify-content-center">
+						<div class="col-lg-8 inc-exp-area pb-2">
+							<h1 class="d-flex justify-content-center pb-2">Wydatki</h1>
 							<div class="table-responsive d-flex" width="80%">
-								<table id="dtVerticalScrollExample" class="table table-striped table-sm" cellspacing="0" width="80%">
+								<table id="expencesTableScroll" class="table table-striped table-sm" cellspacing="0" width="80%">
 								  <thead class="black white-text">
 									<tr>
 									  <th scope="col" class="th-sm">Nr
@@ -207,7 +223,7 @@
 								  <tbody>
 										{% set expenceOrderNumber = 1%}
 										{% for expence in expences %}
-												<tr>										
+												<tr class="text-dark">										
 													  <th scope="row">{{expenceOrderNumber}}</td>
 													  <td>{{expence.date}}</td>
 													  <td>{{expence.ammount}}</td>
@@ -223,58 +239,64 @@
 								</table>
 							</div>
 						</div>
-						<div class="wykres">
-							<div id="chartContainer_wydatki" style="height: 370px; width: 100%;"></div>
+
+						<div id="chartContainer_wydatki" class="col-lg-4 p-1" style="height: 400px; width: 100%;"></div>
 							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-						</div>				  
+				  
 					</div>
 					<!--Koniec Tabeli Wydatków-->
 					
 					
 					<!--Tabela przychodów-->
-					<div class="col-lg-8">
-						  <div class="table-responsive inc-exp-area mt-3">
+					<div class="row mt-3 d-flex justify-content-center">
+						<div class="col-lg-8 inc-exp-area pb-2">
 							<h1 class="d-flex justify-content-center pb-2">Przychody</h1>
-								<table id="table-incomes" class="table table-striped table-sm table-bordered text-secondary table-light">
-								  <thead class="thead-dark">
+							<div class="table-responsive d-flex justify-content-center" width="100%">
+								<table id="incomesTableScroll" class="table table-striped table-sm" cellspacing="0" width="80%">
+								  <thead class="black white-text">
 									<tr>
-									  <th>#</th>
-									  <th>Data</th>
-									  <th>Kwota [zł]</th>
-									  <th>Kategoria</th>
-									  <th>Komentarz</th>
-									  <th>*</th>
+									  <th scope="col" class="th-sm">Nr
+									  </th>
+									  <th scope="col" class="th-sm">Data
+									  </th>
+									  <th scope="col" class="th-sm">Zł
+									  </th>
+									  <th scope="col" class="th-sm">Kategoria
+									  </th>
+									  <th scope="col" class="th-sm">Komentarz
+									  </th>
+									  <th scope="col" class="th-sm">FF
+									  </th>
 									</tr>
 								  </thead>
 								  <tbody>
 										{% set incomeOrderNumber = 1%}
 										{% for income in incomes %}
-												<tr>										
-													  <td>{{incomeOrderNumber}}</td>
+												<tr class="text-dark">										
+													  <th scope="row">{{incomeOrderNumber}}</td>
 													  <td>{{income.date}}</td>
 													  <td>{{income.ammount}}</td>
-													  <td>{{income.name}}</td>
+													  <td>{{income.name}}</td>														  
 													  <td>{{income.comment}}</td>
 													  <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
 															<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
 												</tr>
 											{% set incomeOrderNumber = incomeOrderNumber+1 %}
 										{% endfor %}
-				
-								  </tbody>
+								   </tbody>
 								</table>
-						  </div>
-						  
-						<div class="wykres">
-							<div id="chartContainer_przychody" style="height: 370px; width: 100%;"></div>
-							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+							</div>
 						</div>
+
+							<div id="chartContainer_przychody" class="col-lg-4 p-1" style="height: 400px; width: 100%;"></div>
+							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+			  
 					</div>
-				
+					<!--Koniec Tabeli przychodów-->				
 			
 
 				<!-- Modal Add INCOME -->
-				<div class="modal bd-example-modal-sm" id="modalIncome" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="modalIncome" aria-hidden="true">
+				<div class="modal bd-example-modal-sm pt-5" id="modalIncome" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="modalIncome" aria-hidden="true">
 				  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
 					<div class="modal-content">
 					  <div class="modal-header">
@@ -334,7 +356,7 @@
 
 		
 				<!-- Modal Add EXPENSE -->
-				<div class="modal bd-example-modal-sm" id="modalExpence" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="modalExpence" aria-hidden="true">
+				<div class="modal bd-example-modal-sm pt-5" id="modalExpence" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="modalExpence" aria-hidden="true">
 				  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
 					<div class="modal-content">
 					  <div class="modal-header">
@@ -419,7 +441,7 @@
 				<!--End  Modal Add EXPENSE -->
 			
 				<!--MODAL Another Range of Date -->
-				<div class="modal fade  modalAnotherRangeOfDate" id="modalAnotherRangeOfDate" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="modalAnotherRangeOfDate" aria-hidden="true">
+				<div class="modal fade  modalAnotherRangeOfDate pt-5" id="modalAnotherRangeOfDate" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="modalAnotherRangeOfDate" aria-hidden="true">
 				  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
 					<div class="modal-content">
 					  <div class="modal-header">
@@ -450,11 +472,12 @@
 				</div>
 				<!--End MODAL Another Range of Date -->
 				
-			</div>
-		</div>
-	</div>
-</div><!-- /.container -->
 
+		</div><!-- /.right panel column-->
+	</div><!-- /.row-->
+</div><!-- /.container-fluid-->
+
+	<!--Show Income form if variable 'incomeFormVisible' is true-->
 		{% if incomeFormVisible == true %}
 			<script>
 				$(document).ready(function(){					
@@ -462,7 +485,9 @@
 				});
 			</script>
 		{% endif %}
-		
+	<!--End Show Income form if variable 'incomeFormVisible' is true-->
+
+	<!--Show Expence form if variable 'expenceFormVisible' is true-->	
 		{% if expenceFormVisible == true %}
 			<script>
 				$(document).ready(function(){					
@@ -470,35 +495,52 @@
 				});
 			</script>
 		{% endif %}
+	<!--End of Show Expence form if variable 'expenceFormVisible' is true-->
 		
 	<!--Canvas JS Chart-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
     <script src="bootstrap-4.0.0-dist/js/dashboard.js"></script>
 	<!--Feather Icons -->
 	
-<!-- jQuery -->
-  <script type="text/javascript" src="/js/jquery.min.js"></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="/js/popper.min.js"></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="/js/mdb.min.js"></script>
-  <!-- Your custom scripts (optional) -->
-  <script type="text/javascript"></script>
+	<!-- jQuery -->
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<!-- Bootstrap tooltips -->
+	<script type="text/javascript" src="/js/popper.min.js"></script>
+	<!-- Bootstrap core JavaScript -->
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<!-- MDB core JavaScript -->
+	<script type="text/javascript" src="/js/mdb.min.js"></script>
+	<!-- Your custom scripts (optional) -->
+	<script type="text/javascript"></script>
 
-<!-- MDBootstrap Datatables  -->
-<script type="text/javascript" src="/js/addons/datatables2.min.js"></script>
+	<!-- MDBootstrap Datatables  -->
+	<script type="text/javascript" src="/js/addons/datatables2.min.js"></script>
 
-<script>
-	$(document).ready(function () {
-	$('#dtVerticalScrollExample').DataTable({
-	"scrollY": "200px",
-	"scrollCollapse": true,
-	});
-	$('.dataTables_length').addClass('bs-select');
-	});
-</script>
+<!-- Scrollable MDBootstrap Datatables for Incomes -->
+	<script>
+		$(document).ready(function () {
+		$('#incomesTableScroll').DataTable({
+		"scrollY": "200px",
+		"scrollCollapse": true,
+		});
+		$('.dataTables_length').addClass('bs-select');
+		});
+	</script>
+<!-- End of Scrollable MDBootstrap Datatables for Incomes -->	
+
+<!-- Scrollable MDBootstrap Datatables for Expences -->	
+	<script>
+		$(document).ready(function () {
+		$('#expencesTableScroll').DataTable({
+		"scrollY": "200px",
+		"scrollCollapse": true,
+		});
+		$('.dataTables_length').addClass('bs-select');
+		});
+	</script>
+<!-- End of Scrollable MDBootstrap Datatables for Expences -->	
 	
+	<!-- feather icons  -->
 	<script>feather.replace()</script>
+	<!-- End of feather icons  -->
 {% endblock %}
