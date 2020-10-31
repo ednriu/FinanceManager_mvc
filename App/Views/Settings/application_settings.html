@@ -1,0 +1,100 @@
+{% extends 'base_report.html' %}
+
+{% block title %}Moje Finanse{% endblock %}
+
+{% block style %}
+
+    <!-- Bootstrap core CSS -->
+	<link href="/bootstrap-4.0.0-dist/css/bootstrap.css" rel="stylesheet">
+	<!-- Report Style CSS -->
+	<link href="/css/report_style.css" rel="stylesheet">
+	<link href="/bootstrap-4.0.0-dist/css/dashboard.css" rel="stylesheet">
+	<!--Dodatkowe Fonty -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	
+	<!-- Google Fonts Roboto -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+	<!-- Bootstrap core CSS -->
+	<!--<link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+	<!-- MDBootstrap Datatables  -->
+	<link href="/css/addons/datatables2.min.css" rel="stylesheet">
+
+	<!-- Material Design Bootstrap -->
+	<link rel="stylesheet" href="/css/mdb.min.css">
+	<!-- Your custom styles (optional) -->
+	<link rel="stylesheet" href="/css/style.css">
+
+{% endblock %}
+
+{% block body %}  
+
+<!-- Show Incomes script-->
+	<script type="text/javascript">
+    function showIncome() {
+		$(document).ready($('#modalIncome').modal('show'));	
+    }
+	</script>
+<!-- End of Show Incomes script-->
+
+<!-- Show Expences script-->
+	<script type="text/javascript">
+    function showExpence() {
+		$(document).ready($('#modalExpence').modal('show'));	
+    }
+	</script>
+<!-- End of Show Expences script-->
+	
+
+
+
+
+<!-- Finance Manager Content-->
+<div class="container-fluid">
+	{{option}}
+</div><!-- /.container-fluid-->
+
+	<!--Show Income form if variable 'incomeFormVisible' is true-->
+		{% if incomeFormVisible == true %}
+			<script>
+				$(document).ready(function(){					
+					showIncome();
+				});
+			</script>
+		{% endif %}
+	<!--End Show Income form if variable 'incomeFormVisible' is true-->
+
+	<!--Show Expence form if variable 'expenceFormVisible' is true-->	
+		{% if expenceFormVisible == true %}
+			<script>
+				$(document).ready(function(){					
+					showExpence();
+				});
+			</script>
+		{% endif %}
+	<!--End of Show Expence form if variable 'expenceFormVisible' is true-->
+		
+
+	
+	<!-- jQuery -->
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<!-- Bootstrap tooltips -->
+	<script type="text/javascript" src="/js/popper.min.js"></script>
+	<!-- Bootstrap core JavaScript -->
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<!-- MDB core JavaScript -->
+	<script type="text/javascript" src="/js/mdb.min.js"></script>
+	<!-- Your custom scripts (optional) -->
+	<script type="text/javascript"></script>
+
+	<!-- MDBootstrap Datatables  -->
+	<script type="text/javascript" src="/js/addons/datatables2.min.js"></script>
+
+
+	
+	<!-- feather icons  -->
+	<script>feather.replace()</script>
+	<!-- End of feather icons  -->
+{% endblock %}
