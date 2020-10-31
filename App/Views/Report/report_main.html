@@ -173,21 +173,21 @@
 						<div class="info-box">			
 							<h1 class="text-center py-1">Suma Wydatków</h1>							
 								<div class="row justify-content-center mt-4"><span data-feather="plus-square"></span> <p class="balance font-weight-bold">								
-								{{sumOfExpencesAmmount}}</p></div>							
+								{{sumOfExpencesAmmount}}zł</p></div>							
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
 						<div class="info-box balance">
 							<h1 class="text-center py-1">Bilans</h1>
 								<div class="row justify-content-center mt-4"><span data-feather="info"></span> <p class="balance font-weight-bold">								
-								{{sumOfIncomesAmmount-sumOfExpencesAmmount}}</p></div>
+								{{sumOfIncomesAmmount-sumOfExpencesAmmount}}zł</p></div>
 						</div>
 					</div>
 					<div class="col-lg-3 col-sm-3 d-flex justify-content-center">
 						<div class="info-box">
 							<h1 class="text-center py-1">Suma Przychodów</h1>
 							<div class="row justify-content-center mt-4"><span data-feather="plus-square"></span> <p class="balance font-weight-bold">								
-							{{sumOfIncomesAmmount}}</p></div>	
+							{{sumOfIncomesAmmount}}zł</p></div>	
 						</div>
 					</div>
 				</div>
@@ -199,7 +199,7 @@
 					<!--Tabela wydatków-->
 					<div class="row mt-3 d-flex justify-content-center">
 						<div class="col-lg-8 inc-exp-area pb-2">
-							<h1 class="d-flex justify-content-center pb-2">Wydatki</h1>
+							<h1 class="d-flex justify-content-center pb-2">Wydatki {% if feedback == true %} {{ feedback }} {% endif %}</h1>
 							<div class="table-responsive d-flex" width="80%">
 								<table id="expencesTableScroll" class="table table-striped table-sm" cellspacing="0" width="80%">
 								  <thead class="black white-text">
@@ -250,7 +250,7 @@
 					<!--Tabela przychodów-->
 					<div class="row mt-3 d-flex justify-content-center">
 						<div class="col-lg-8 inc-exp-area pb-2">
-							<h1 class="d-flex justify-content-center pb-2">Przychody</h1>
+							<h1 class="d-flex justify-content-center pb-2">Przychody {% if feedback == true %} {{ feedback }} {% endif %}</h1>
 							<div class="table-responsive d-flex justify-content-center" width="100%">
 								<table id="incomesTableScroll" class="table table-striped table-sm" cellspacing="0" width="80%">
 								  <thead class="black white-text">

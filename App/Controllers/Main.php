@@ -20,7 +20,7 @@ class Main extends \Core\Controller
      * @return void
      */
 
-	public static function showReportAllRangeAction($feedback='Wszystkie Wydatki', $startDate=null, $endDate=null)
+	public static function showReportAllRangeAction($feedback=' - wszystkie dane', $startDate=null, $endDate=null)
 	{
 		$incomes = Operations::getIncomesData($_SESSION['user_id'],$startDate, $endDate);
 		$expences = Operations::getExpencesData($_SESSION['user_id'],$startDate, $endDate);
@@ -37,18 +37,18 @@ class Main extends \Core\Controller
 			$notEmptyExpenceCategoriesWithoutRepeats = array_unique($notEmptyExpenceCategories);
 			$expenceGraphData = Operations::getExpencesGraphDate($notEmptyExpenceCategoriesWithoutRepeats, $sumOfExpencesAmmount, $_SESSION['user_id'], $startDate, $endDate);
 			
-			View::renderTemplate('Report/Main.html', ['incomes'=>$incomes, 'expences'=>$expences, 'sumOfIncomesAmmount'=>$sumOfIncomesAmmount, 'sumOfExpencesAmmount'=>$sumOfExpencesAmmount, 'feedback'=>$feedback, 'incomeGraphDate'=>$incomeGraphData, 'expenceGraphDate'=>$expenceGraphData]);
+			View::renderTemplate('Report/report_main.html', ['incomes'=>$incomes, 'expences'=>$expences, 'sumOfIncomesAmmount'=>$sumOfIncomesAmmount, 'sumOfExpencesAmmount'=>$sumOfExpencesAmmount, 'feedback'=>$feedback, 'incomeGraphDate'=>$incomeGraphData, 'expenceGraphDate'=>$expenceGraphData]);
 		}
 		else
 		{
-			View::renderTemplate('Report/Main.html', ['incomes'=>null, 'sumOfIncomesAmmount'=>0, 'sumOfExpencesAmmount'=>0, 'feedback'=>"Brak danych do wyświetlenia", 'graphDate'=>0]);
+			View::renderTemplate('Report/report_main.html', ['incomes'=>null, 'sumOfIncomesAmmount'=>0, 'sumOfExpencesAmmount'=>0, 'feedback'=>"Brak danych do wyświetlenia", 'graphDate'=>0]);
 		};
 	}
 	
 	//Shows operations only from current month
 	public function showThisMonthReportAction()
 	{
-		Main::showReportAllRangeAction("Wydatki z Bieżącego Miesiąca", date('Y-m-01'), date('Y-m-t'));
+		Main::showReportAllRangeAction(" z Bieżącego Miesiąca", date('Y-m-01'), date('Y-m-t'));
 	}
 	
 	//Shows operations only from previous month
@@ -56,7 +56,7 @@ class Main extends \Core\Controller
 	{
 		$startDate = Main::getOneMonthBefore(date('Y-m-01'));
 		$endDate = Main::getLastDayOfOneMonthBefore(date('Y-m-t'));
-		Main::showReportAllRangeAction("Wydatki z Poprzedniego Miesiąca", $startDate, $endDate);
+		Main::showReportAllRangeAction(" z Poprzedniego Miesiąca", $startDate, $endDate);
 	}
 	
 	//Shows operations only from previous month
@@ -64,7 +64,7 @@ class Main extends \Core\Controller
 	{
 		$startDate = $_POST['startDate'];
 		$endDate = $_POST['endDate'];
-		$message = "Wydatki z okresu od ".$startDate." do ".$endDate;
+		$message = " od ".$startDate." do ".$endDate;
 		Main::showReportAllRangeAction($message, $startDate, $endDate);
 	}
 	
@@ -87,7 +87,7 @@ class Main extends \Core\Controller
     {
 		$incomeForm = true;	//variable causes showing income Form	
 		$incomeCategories = Categories::getIncomeCategories($_SESSION['user_id']);
-        View::renderTemplate('Report/Main.html',['incomeFormVisible'=>$incomeForm, 'incomeCategories'=>$incomeCategories],);
+        View::renderTemplate('Report/report_main.html',['incomeFormVisible'=>$incomeForm, 'incomeCategories'=>$incomeCategories],);
     }
 	
 	//Shows Add Expence Form
@@ -95,7 +95,7 @@ class Main extends \Core\Controller
     {
 		$expenceForm = true;
 		$expenceCategories = Categories::getExpenceCategories($_SESSION['user_id']);
-        View::renderTemplate('Report/Main.html',['expenceFormVisible'=>$expenceForm, 'expenceCategories'=>$expenceCategories]);
+        View::renderTemplate('Report/report_main.html',['expenceFormVisible'=>$expenceForm, 'expenceCategories'=>$expenceCategories]);
     }	
 	
 	
@@ -147,7 +147,7 @@ class Main extends \Core\Controller
 			} else {
 				$incomeFormVisible = true;
 				$incomeCategoriesForUser = Categories::getIncomeCategories($_SESSION['user_id']);
-				View::renderTemplate('Report/Main.html',['incomeFormVisible'=>$incomeFormVisible, 'incomeToBeAdded'=>$incomeToBeAdded, 'incomeCategories'=>$incomeCategoriesForUser, 'selectedCategoryId'=>$selectedCategoryId]);
+				View::renderTemplate('Report/report_main.html',['incomeFormVisible'=>$incomeFormVisible, 'incomeToBeAdded'=>$incomeToBeAdded, 'incomeCategories'=>$incomeCategoriesForUser, 'selectedCategoryId'=>$selectedCategoryId]);
 			}
 	}
 	
@@ -164,7 +164,7 @@ class Main extends \Core\Controller
 			} else {
 				$expenceFormVisible = true;
 				$expenceCategoriesForUser = Categories::getExpenceCategories($_SESSION['user_id']);
-				View::renderTemplate('Report/Main.html',['expenceFormVisible'=>$expenceFormVisible, 'expenceToBeAdded'=>$expenceToBeAdded, 'expenceCategories'=>$expenceCategoriesForUser, 'selectedCategoryId'=>$selectedCategoryId]);
+				View::renderTemplate('Report/report_main.html',['expenceFormVisible'=>$expenceFormVisible, 'expenceToBeAdded'=>$expenceToBeAdded, 'expenceCategories'=>$expenceCategoriesForUser, 'selectedCategoryId'=>$selectedCategoryId]);
 			}
 	}
 	
