@@ -86,7 +86,7 @@ class Main extends \Core\Controller
 	public function addIncomeFormAction()
     {
 		$incomeForm = true;	//variable causes showing income Form	
-		$incomeCategories = Categories::getIncomeCategories($_SESSION['user_id']);
+		$incomeCategories = Categories::getIncomeCategoriesForNewIncome($_SESSION['user_id']);
         View::renderTemplate('Report/report_main.html',['incomeFormVisible'=>$incomeForm, 'incomeCategories'=>$incomeCategories],);
     }
 	
@@ -94,7 +94,7 @@ class Main extends \Core\Controller
 	public function addExpenceFormAction()
     {
 		$expenceForm = true;
-		$expenceCategories = Categories::getExpenceCategories($_SESSION['user_id']);
+		$expenceCategories = Categories::getExpenceCategoriesForNewExpence($_SESSION['user_id']);
         View::renderTemplate('Report/report_main.html',['expenceFormVisible'=>$expenceForm, 'expenceCategories'=>$expenceCategories]);
     }	
 	

@@ -20,7 +20,8 @@ class Settings extends \Core\Controller
      */
     public function incomeCategoriesSettingsAction()
     {
-        View::renderTemplate('Settings/application_settings.html',['option'=>1]);
+		$incomeCategories = Categories::getIncomeCategoriesForNewIncome($_SESSION['user_id']);
+        View::renderTemplate('Settings/application_settings.html',['option'=>1, 'incomeCategories'=>$incomeCategories]);
     }
 	
 	    public function expenceCategoriesSettingsAction()

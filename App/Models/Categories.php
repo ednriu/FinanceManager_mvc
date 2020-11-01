@@ -27,13 +27,25 @@ class Categories extends \Core\Model
         };
     }
 	
-    /**
-     * Save the user model with the current property values
-     *
-     * @return boolean  True if the user was saved, false otherwise
-     */
-
-	public static function getExpenceCategories($userId)
+	//get all expence categories together with "nieskategoryzowane"
+	public static function getAllExpenceCategories($userId)
+    {
+		try
+		{
+			$sql = 'SELECT * FROM `expence_categories` WHERE user_Id=:userId';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
+			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+	}
+	
+	//get expence categories for add axpence form - it is without "nieskategoryzowane" category
+	public static function getExpenceCategoriesForNewExpence($userId)
     {
 		try
 		{
@@ -49,11 +61,29 @@ class Categories extends \Core\Model
         }
 	}
 	
-	public static function getIncomeCategories($userId)
+	//get income categories for add axpence form - it is without "nieskategoryzowane" category
+	public static function getIncomeCategoriesForNewIncome($userId)
     {
 		try
 		{
 			$sql = 'SELECT * FROM `income_categories` WHERE user_Id=:userId AND Name<>"Nieskategoryzowane"';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
+			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+	}	
+	
+	//get all income categories together with "nieskategoryzowane"
+	public static function getAllIncomeCategories($userId)
+    {
+		try
+		{
+			$sql = 'SELECT * FROM `income_categories` WHERE user_Id=:userId';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
