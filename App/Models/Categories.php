@@ -37,7 +37,7 @@ class Categories extends \Core\Model
     {
 		try
 		{
-			$sql = 'SELECT * FROM `expence_categories` WHERE user_Id=:userId';
+			$sql = 'SELECT * FROM `expence_categories` WHERE user_Id=:userId AND Name<>"Nieskategoryzowane"';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
@@ -53,7 +53,7 @@ class Categories extends \Core\Model
     {
 		try
 		{
-			$sql = 'SELECT * FROM `income_categories` WHERE user_Id=:userId';
+			$sql = 'SELECT * FROM `income_categories` WHERE user_Id=:userId AND Name<>"Nieskategoryzowane"';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
@@ -153,7 +153,7 @@ class Categories extends \Core\Model
 	//Creates initial income categories for new user
 	public function createIncomeCategoriesForNewUser($userId)
 	{
-		$initIncomeCategories = array(0=>"Wypłata", 1=>"Odsetki", 2=>"Dodatkowa Praca", 3=>"Inwestycje");
+		$initIncomeCategories = array(0=>"Nieskategoryzowane", 1=>"Odsetki", 2=>"Dodatkowa Praca", 3=>"Inwestycje", 4=>"Wypłata");
 		foreach ($initIncomeCategories as $value)
 		{
 			$addNewCategories = Categories::addIncomeCategoryForUserId($userId, $value);
@@ -163,7 +163,7 @@ class Categories extends \Core\Model
 	//Creates initial expence categories for new user
 	public function createExpenceCategoriesForNewUser($userId)
 	{
-		$initIncomeCategories = array(0=>"Dom", 1=>"Jedzenie", 2=>"Samochód", 3=>"Rachunki");
+		$initIncomeCategories = array(0=>"Nieskategoryzowane", 1=>"Jedzenie", 2=>"Samochód", 3=>"Rachunki", 4=>"Dom");
 		foreach ($initIncomeCategories as $value)
 		{
 			$addNewCategories = Categories::addExpenceCategoryForUserId($userId, $value);
