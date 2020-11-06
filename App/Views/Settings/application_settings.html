@@ -46,14 +46,13 @@
     }
 	</script>
 <!-- End of Show Expences script-->
-	
-
-
 
 
 <!-- Finance Manager Content-->
 <div class="container-fluid">
 	{{option}}
+	
+	
 	
 	<!-- Editable table -->
 	<div class="card">
@@ -71,25 +70,24 @@
 			</thead>
 			<tbody>
 			
-			{% for category in incomeCategories %}
+				{% for category in incomeCategories %}
+				  <tr>
+					<td class="pt-3-half" contenteditable="true">{{category.name}}</td>
+					<td class="pt-3-half" contenteditable="true">{{category.max}}</td>
+					<td class="pt-3-half">
+					  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
+							aria-hidden="true"></i></a></span>
+					  <span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down"
+							aria-hidden="true"></i></a></span>
+					</td>
+					<td>
+					  <span class="table-remove"><button type="button"
+						  class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+					</td>
+				  </tr>
+				{% endfor %}
 
-				
-
-			  <tr>
-				<td class="pt-3-half" contenteditable="true">{{category.name}}</td>
-				<td class="pt-3-half" contenteditable="true">{{category.max}}</td>
-				<td class="pt-3-half">
-				  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
-						aria-hidden="true"></i></a></span>
-				  <span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down"
-						aria-hidden="true"></i></a></span>
-				</td>
-				<td>
-				  <span class="table-remove"><button type="button"
-					  class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
-				</td>
-			  </tr>
-				{% endfor %}			 
+					<div id="wynik"></div>
 			</tbody>
 		  </table>
 		</div>
@@ -98,26 +96,7 @@
 	<!-- Editable table -->
 </div><!-- /.container-fluid-->
 
-	<!--Show Income form if variable 'incomeFormVisible' is true-->
-		{% if incomeFormVisible == true %}
-			<script>
-				$(document).ready(function(){					
-					showIncome();
-				});
-			</script>
-		{% endif %}
-	<!--End Show Income form if variable 'incomeFormVisible' is true-->
-
-	<!--Show Expence form if variable 'expenceFormVisible' is true-->	
-		{% if expenceFormVisible == true %}
-			<script>
-				$(document).ready(function(){					
-					showExpence();
-				});
-			</script>
-		{% endif %}
-	<!--End of Show Expence form if variable 'expenceFormVisible' is true-->
-		
+	
 
 	
 	<!-- jQuery -->
@@ -140,47 +119,64 @@
 		const $BTN = $('#export-btn');
 		const $EXPORT = $('#export');
 
-		 const newTr = `
-		<tr class="hide">
-		  <td class="pt-3-half" contenteditable="true">Example</td>
-		  <td class="pt-3-half" contenteditable="true">Example</td>
-		  <td class="pt-3-half">
-			<span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a></span>
-			<span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a></span>
-		  </td>
-		  <td>
-			<span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 waves-effect waves-light">Remove</button></span>
-		  </td>
+		const $newCategory = `
+		<tr>
+					<td class="pt-3-half" contenteditable="true">Nowa Kategoria</td>
+					<td class="pt-3-half" contenteditable="true">1000</td>
+					<td class="pt-3-half">
+					  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
+							aria-hidden="true"></i></a></span>
+					  <span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down"
+							aria-hidden="true"></i></a></span>
+					</td>
+					<td>
+					  <span class="table-remove"><button type="button"
+						  class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+					</td>
 		</tr>`;
+		
+		var newCategory = $tableID.find('tr:last td:first').text();
+		$("#wynik").text(newCategory);
+		var contents = $('#table table tbody tr:last td:first').html();
 
+		//dodawanie nowej kategori jeśli nie istnieje
 		 $('.table-add').on('click', 'i', () => {
-
-		   const $clone = $tableID.find('tbody tr').last().clone(true).removeClass('hide table-line');
-
-		   if ($tableID.find('tbody tr').length === 0) {
-
-			 $('tbody').append(newTr);
+		   const $clone = $tableID.find('tbody tr').last().clone(true);
+		   newCategory = $tableID.find('tr:last td:first').text();
+		   if ((newCategory !== 'Nowa Kategoria')) {
+			 $('#table table tbody').append($newCategory);
+			 newCategory = $tableID.find('tr:last td:first').text();
+			 contents = $('#table table tbody tr:last td:first').html();
+			 $('.table-add').find('a').hide();
 		   }
+		 });		
+		
+		//Zmiana Danych	w ostatniej komórce	
+		$tableID.on('blur','tr:last td:first',function() {
+			if (contents!=$(this).html()){
+				$('.table-add').find('a').show();
+				contents = $(this).html();
+			}
+		});
 
-		   $tableID.find('table').append($clone);
-		 });
 
+
+
+		//usuwanie linijki
 		 $tableID.on('click', '.table-remove', function () {
-
 		   $(this).parents('tr').detach();
 		 });
 
+		//przesuwanie kategori do góry
 		 $tableID.on('click', '.table-up', function () {
-
 		   const $row = $(this).parents('tr');
-
 		   if ($row.index() === 0) {
 			 return;
 		   }
-
 		   $row.prev().before($row.get(0));
 		 });
 
+		//przesuwanie kategorii w dół
 		 $tableID.on('click', '.table-down', function () {
 
 		   const $row = $(this).parents('tr');
