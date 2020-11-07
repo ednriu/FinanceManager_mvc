@@ -50,13 +50,16 @@
 
 <!-- Finance Manager Content-->
 <div class="container-fluid">
-	{{option}}
 	
+	<div id="export" class="demo"></div>
+	
+	<button id="przycisk" type="button">Click Me!</button>
+
 	
 	
 	<!-- Editable table -->
 	<div class="card">
-	  <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Editable table</h3>
+	  <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Kategorie Przychodów</h3>
 	  <div class="card-body">
 		<div id="table" class="table-editable">
 		  <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i
@@ -116,7 +119,7 @@
 
 	<script>
 		const $tableID = $('#table');
-		const $BTN = $('#export-btn');
+		const $BTN = $('#przycisk');
 		const $EXPORT = $('#export');
 
 		const $newCategory = `
@@ -134,6 +137,9 @@
 						  class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
 					</td>
 		</tr>`;
+		
+
+
 		
 		var newCategory = $tableID.find('tr:last td:first').text();
 		$("#wynik").text(newCategory);
@@ -159,13 +165,27 @@
 			}
 		});
 
-
-
-
 		//usuwanie linijki
 		 $tableID.on('click', '.table-remove', function () {
 		   $(this).parents('tr').detach();
-		 });
+		   
+			  $.ajax({
+					url : "Categories/removeIncomeCategory",
+						method : "post",
+						data : {
+							categoryToBeRemoved : "Wypłata",
+						},
+						dataType : "json"
+				})
+				.done(function(response) {
+					console.log(response);
+				})
+				.fail(function() {
+					$(".form-message").html( "Wystąpił błąd" );
+				})
+			});
+
+		 
 
 		//przesuwanie kategori do góry
 		 $tableID.on('click', '.table-up', function () {
@@ -214,9 +234,15 @@
 		   });
 
 		   // Output the result
-		   $EXPORT.text(JSON.stringify(data));
+		   $EXPORT.text(JSON.stringify(data));		   
 		 });
+		 
+
 	</script>
+	
+	
+	
+
 	
 	<!-- feather icons  -->
 	<script>feather.replace()</script>

@@ -200,4 +200,16 @@ class Categories extends \Core\Model
 		}
 	}
 	
+	//Removes Income Category for Selected user ID
+	public function removeIncomeCategory($userId, $categoryName)
+	{
+		$sql = 'DELETE FROM `income_categories` WHERE user_id=:userId AND name=:categoryName';
+                                              
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);			
+			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);  			
+            return $stmt->execute();
+	}
+	
 }

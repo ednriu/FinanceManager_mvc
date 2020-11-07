@@ -24,6 +24,13 @@ class Settings extends \Core\Controller
         View::renderTemplate('Settings/application_settings.html',['option'=>1, 'incomeCategories'=>$incomeCategories]);
     }
 	
+	public function removeIncomeCategoryAction()
+    {
+		$zmienna="a";
+		var_dump($_POST['categoryToBeRemoved']);
+		$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $_POST['categoryToBeRemoved']);
+    }
+	
 	    public function expenceCategoriesSettingsAction()
     {
         View::renderTemplate('Settings/application_settings.html',['option'=>2]);
