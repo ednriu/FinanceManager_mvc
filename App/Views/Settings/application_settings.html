@@ -51,7 +51,12 @@
 <!-- Finance Manager Content-->
 <div class="container-fluid">
 	
-	<div id="export" class="demo"></div>
+	<div id="export" class=".form-message"></div>
+	
+	<a class="nav-link" href='/Settings/removeIncomeCategory'> 
+					  <span data-feather="credit-card"></span>
+					  Dodaj Wydatek <span class="sr-only">(current)</span>
+					</a>
 	
 	<button id="przycisk" type="button">Click Me!</button>
 
@@ -167,24 +172,20 @@
 
 		//usuwanie linijki
 		 $tableID.on('click', '.table-remove', function () {
-		   $(this).parents('tr').detach();
-		   
-			  $.ajax({
-					url : "Categories/removeIncomeCategory",
-						method : "post",
-						data : {
-							categoryToBeRemoved : "Wypłata",
-						},
-						dataType : "json"
-				})
-				.done(function(response) {
-					console.log(response);
-				})
-				.fail(function() {
-					$(".form-message").html( "Wystąpił błąd" );
-				})
+			$category = $(this).parents('tr').find('td:first-child').html();
+			alert($category);
+			$(this).parents('tr').detach();
+			
+				 $.ajax({
+					type: 'POST',
+					url: '/Settings/removeIncomeCategory',
+					data: {category: $category},
+					success: function(msg) {
+					  alert(msg);
+					}
+				  });
 			});
-
+		
 		 
 
 		//przesuwanie kategori do góry

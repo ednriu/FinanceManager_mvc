@@ -201,7 +201,7 @@ class Categories extends \Core\Model
 	}
 	
 	//Removes Income Category for Selected user ID
-	public function removeIncomeCategory($userId, $categoryName)
+	public static function removeIncomeCategory($userId, $categoryName)
 	{
 		$sql = 'DELETE FROM `income_categories` WHERE user_id=:userId AND name=:categoryName';
                                               

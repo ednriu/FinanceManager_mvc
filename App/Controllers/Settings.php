@@ -26,10 +26,20 @@ class Settings extends \Core\Controller
 	
 	public function removeIncomeCategoryAction()
     {
-		$zmienna="a";
-		var_dump($_POST['categoryToBeRemoved']);
-		$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $_POST['categoryToBeRemoved']);
-    }
+		
+		var_dump("zer");
+		if(isset($_POST['category'])) {
+			$json = $_POST['category'];
+			$categoryToBeRemoved=$_POST['category'];
+			var_dump($_POST['category']);
+		  } else {
+			echo "Noooooooob";
+		  }
+		
+		
+		$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $categoryToBeRemoved);
+    
+	}
 	
 	    public function expenceCategoriesSettingsAction()
     {
