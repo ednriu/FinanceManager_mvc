@@ -139,9 +139,7 @@ class User extends \Core\Model
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-
         $stmt->execute();
-
         return $stmt->fetch() !== false;
     }
 	
@@ -152,9 +150,7 @@ class User extends \Core\Model
         $db = static::getDB();
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':login', $login, PDO::PARAM_STR);
-
         $stmt->execute();
-
         return $stmt->fetch() !== false;
     }
 	

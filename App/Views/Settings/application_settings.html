@@ -159,6 +159,9 @@
 			 newCategory = $tableID.find('tr:last td:first').text();
 			 contents = $('#table table tbody tr:last td:first').html();
 			 $('.table-add').find('a').hide();
+			 $tableID.find('tr:last .table-up').hide();
+			 $tableID.find('tr:last .table-down').hide();
+
 		   }
 		 });		
 		
@@ -166,14 +169,33 @@
 		$tableID.on('blur','tr:last td:first',function() {
 			if (contents!=$(this).html()){
 				$('.table-add').find('a').show();
+				$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
+				alert($(this).html());
+				$.ajax({
+					type: 'POST',
+					url: '/Settings/addIncomeCategory',
+					data: {
+						categoryName: $(this).html(),
+						max: $maxLimit
+						},
+					success: function(msg) {
+					  alert("sukces");
+					},
+					error : function() {
+						console.log("Wystąpił błąd z połączeniem");
+					}
+				  });
+				  
+
 				contents = $(this).html();
+				$tableID.find('tr:last .table-up').show();
+				$tableID.find('tr:last .table-down').show();
 			}
 		});
 
 		//usuwanie linijki
 		 $tableID.on('click', '.table-remove', function () {
 			$category = $(this).parents('tr').find('td:first-child').html();
-			alert($category);
 			$(this).parents('tr').detach();
 			
 				 $.ajax({
@@ -181,7 +203,7 @@
 					url: '/Settings/removeIncomeCategory',
 					data: {category: $category},
 					success: function(msg) {
-					  alert(msg);
+
 					}
 				  });
 			});

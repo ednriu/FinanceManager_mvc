@@ -209,7 +209,41 @@ class Categories extends \Core\Model
             $stmt = $db->prepare($sql);			
 			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
             $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);  			
-            return $stmt->execute();
+			$stmt->execute();
 	}
+	
+
+
+	//Check whether income category exists or not
+	protected function incomeCategoryExists($categoryName)
+    {
+        $sql = 'SELECT `name`, `user_id`, `max` FROM `income_categories` WHERE name=:categoryName and user_id=:userId';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
+        $stmt->execute();
+        return $stmt->fetch() !== false;
+    }
+	
+
+	//Adds Income Category for Selected user ID
+	public static function addIncomeCategory($userId, $categoryName, $maxLimit)
+	{
+
+
+			$sql = 'INSERT INTO `income_categories`(`name`, `user_id`, `max`) VALUES (:categoryName,:userId,:maxLimit)';                                              
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);			
+			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':maxLimit', $maxLimit, PDO::PARAM_STR); 			
+            return $stmt->execute();
+
+
+	}
+	
+
 	
 }

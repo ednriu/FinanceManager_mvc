@@ -24,21 +24,33 @@ class Settings extends \Core\Controller
         View::renderTemplate('Settings/application_settings.html',['option'=>1, 'incomeCategories'=>$incomeCategories]);
     }
 	
+	//remove income Category
 	public function removeIncomeCategoryAction()
     {
-		
-		var_dump("zer");
+
 		if(isset($_POST['category'])) {
-			$json = $_POST['category'];
 			$categoryToBeRemoved=$_POST['category'];
-			var_dump($_POST['category']);
 		  } else {
 			echo "Noooooooob";
-		  }
-		
+		  }	
 		
 		$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $categoryToBeRemoved);
     
+	}
+	
+	//add income category
+	public function addIncomeCategoryAction()
+	{
+		if(isset($_POST['categoryName'])) {
+			$categoryToBeAdded=$_POST['categoryName'];
+			var_dump($categoryToBeAdded);
+			echo("123");
+		  } else {
+			echo "Noooooooob";
+		  }
+
+		$maxLimit=$_POST['max'];
+		$incomeCategories = Categories::addIncomeCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
 	}
 	
 	    public function expenceCategoriesSettingsAction()
