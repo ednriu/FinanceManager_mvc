@@ -48,9 +48,10 @@ class Settings extends \Core\Controller
 		  } else {
 			echo "Noooooooob";
 		  }
-
 		$maxLimit=$_POST['max'];
-		$incomeCategories = Categories::addIncomeCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
+		
+		$incomeCategories = Categories::addNewIncomeCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);		
+		
 	}
 	
 	    public function expenceCategoriesSettingsAction()
