@@ -217,26 +217,33 @@ class Categories extends \Core\Model
 
 
 	//Check whether income category exists or not
-	public static function incomeCategoryExists($categoryName, $userId)
+	private static function incomeCategoryExists($categoryName, $userId)
     {
-        //$sql = 'SELECT * FROM `income_categories` WHERE name=:categoryName AND user_id=:userId';
+        $sql = 'SELECT * FROM `income_categories` WHERE name=:categoryName AND user_id=:userId';
 
-        //$db = static::getDB();
-        //$stmt = $db->prepare($sql);
-        //$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
-        //$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
-        //$stmt->execute();
-        //return $stmt->fetch() !== false;
-		return 2;
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
+        $stmt->execute();
+        return $stmt->fetch() !== false;
+
     }
 	
 
 	//Adds Income Category for Selected user ID
 	public static function addNewIncomeCategory($userId, $categoryName, $maxLimit)
 	{
-			$addNewCategories = Categories::addIncomeCategoryForUserId($userId, $categoryName, $maxLimit);
-			return true;
-
+			$istnieje = Categories:: incomeCategoryExists($categoryName, $userId);
+			if($istnieje)
+			{
+				echo "błąd";
+				return false;
+			} else {
+				$addNewCategories = Categories::addIncomeCategoryForUserId($userId, $categoryName, $maxLimit);
+				return true;
+			}
+			
 	}
 	
 
