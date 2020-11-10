@@ -237,10 +237,9 @@ class Categories extends \Core\Model
 			$istnieje = Categories:: incomeCategoryExists($categoryName, $userId);
 			if($istnieje)
 			{
-				echo "błąd";
 				return false;
 			} else {
-				$addNewCategories = Categories::addIncomeCategoryForUserId($userId, $categoryName, $maxLimit);
+				$addNewCategories = Categories::addIncomeCategoryForUserId($userId, $categoryName, $maxLimit);				
 				return true;
 			}
 			
