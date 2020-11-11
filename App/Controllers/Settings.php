@@ -46,6 +46,7 @@ class Settings extends \Core\Controller
 				$categoryToBeAdded=$_POST['categoryName'];
 				$maxLimit=$_POST['max'];
 				$incomeCategories = Categories::addNewIncomeCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
+
 					if ($incomeCategories) {
 						$isCategoryDoubled=false;
 						$message="Dodano nową kategorię.";

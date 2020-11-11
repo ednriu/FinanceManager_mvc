@@ -141,8 +141,8 @@
 
 		
 		var newCategory = $tableID.find('tr:last td:first').text();
-		
-		var $contents = $('#table table tbody tr:last td:first').html();
+		var activeCellContent;		
+		//var $contents = $('#table table tbody tr:last td:first').html();
 
 		//dodawanie nowej kategori jeśli nie istnieje
 		 $('.table-add').on('click', 'i', () => {
@@ -151,17 +151,22 @@
 		   if ((newCategory !== 'Nowa Kategoria')) {
 			 $('#table table tbody').append($newCategory);
 			 newCategory = $tableID.find('tr:last td:first').text();
-			 $contents = $('#table table tbody tr:last td:first').html();
+			 //$contents = $('#table table tbody tr:last td:first').html();
 			 $('.table-add').find('a').hide();
 			 $tableID.find('tr:last .table-up').hide();
 			 $tableID.find('tr:last .table-down').hide();
 
 		   }
-		 });		
-		
+		 });
+
+		//Zmiana Danych	w ostatniej komórce	
+		$tableID.on('click','tbody tr td',function() {
+			$activeCellContent = $(this).html();
+		});
+
 		//Zmiana Danych	w ostatniej komórce	
 		$tableID.on('blur','tr:last td:first',function() {
-			if ($contents!=$(this).html()){
+			if ($activeCellContent!=$(this).html()){
 
 				$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
 				$newCategoryName = $(this).html();
@@ -191,7 +196,7 @@
 					}
 				  }); 
 
-				$contents = $(this).html();
+				
 			}
 		});
 
