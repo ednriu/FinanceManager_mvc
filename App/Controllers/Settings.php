@@ -84,8 +84,7 @@ class Settings extends \Core\Controller
 						$isCategoryDoubled=true;
 						$message="Istnieje już taka kategoria.";
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
-					}
-					
+					}			
 		
 		  } else {
 			echo "Błąd Połączenia.";
