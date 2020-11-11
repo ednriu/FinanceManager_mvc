@@ -132,7 +132,8 @@ class Operations extends \Core\Model
 					$stmt->bindValue(':comment', $comment, PDO::PARAM_STR);
 					$stmt->bindValue(':payMethod', $payMethod, PDO::PARAM_STR);							
 					return $stmt->execute();
-				} catch (PDOException $e) {
+				} 
+				catch (PDOException $e) {
 					echo $e->getMessage();
 				}
 			}

@@ -249,14 +249,21 @@ class Categories extends \Core\Model
 	//Update Income Category, returns false when error
 	public static function updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$userId)
     {
-        $sql = 'UPDATE `income_categories` SET `name`=:newCategoryName,`max`=:maxLimit WHERE `user_id`=:userId AND `name`=:oldCategoryName';
-        $db = static::getDB();
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue(':oldCategoryName', $oldCategoryName, PDO::PARAM_STR);
-		$stmt->bindValue(':newCategoryName', $newCategoryName, PDO::PARAM_STR);
-		$stmt->bindValue(':maxLimit', $maxLimit, PDO::PARAM_STR);
-        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
-        $stmt->execute();
+		try
+		{
+			$sql = 'UPDATE `income_categories` SET `name`=:newCategoryName,`max`=:maxLimit WHERE `user_id`=:userId AND `name`=:oldCategoryName';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':oldCategoryName', $oldCategoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':newCategoryName', $newCategoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':maxLimit', $maxLimit, PDO::PARAM_STR);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
+			return $stmt->execute();
+		} catch (PDOException $e) 
+			{
+				echo $e->getMessage();
+			}
+		return false;
     }
 
 	

@@ -63,8 +63,36 @@ class Settings extends \Core\Controller
 			echo "Błąd Połączenia.";
 
 		  };	
-		
 	}	
+	
+		//add income category
+	public function updateIncomeCategoryAction()
+	{
+		if(isset($_POST['newCategoryName']) && isset($_POST['oldCategoryName']) && isset($_POST['max'])) {
+			
+				$oldCategoryName=$_POST['oldCategoryName'];
+				$newCategoryName=$_POST['newCategoryName'];
+				$maxLimit=$_POST['max'];
+				$incomeCategories = Categories::updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
+				//$incomeCategories = false;
+					if ($incomeCategories) {
+						$isCategoryDoubled=false;
+						$message="Zaktualizowano dane.";
+						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
+					}
+					if (!$incomeCategories) {
+						$isCategoryDoubled=true;
+						$message="Istnieje już taka kategoria.";
+						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
+					}
+					
+		
+		  } else {
+			echo "Błąd Połączenia.";
+
+		  };	
+	}	
+	
 	
 	    public function expenceCategoriesSettingsAction()
     {

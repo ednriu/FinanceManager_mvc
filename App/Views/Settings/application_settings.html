@@ -159,42 +159,98 @@
 		   }
 		 });
 
-		//Zmiana Danych	w ostatniej komórce	
+		//Zapisanie danych z dowolnej komórki
 		$tableID.on('click','tbody tr td',function() {
 			$activeCellContent = $(this).html();
+			$activeCellCollumnNumber = $(this).index();
+			if ($activeCellCollumnNumber==1) {
+					$activeCategoryContent = $(this).parents('tr').find('td:first').html();
+				};
 		});
 
-		//Zmiana Danych	w ostatniej komórce	
-		$tableID.on('blur','tr:last td:first',function() {
+		//Zmiana Danych	w dowolnej komórce	
+		$tableID.on('blur','tbody tr td',function() {
 			if ($activeCellContent!=$(this).html()){
 
-				$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
-				$newCategoryName = $(this).html();
-				$.ajax({
-					type: 'POST',
-					url: '/Settings/addIncomeCategory',
-					data: {
-						categoryName: $newCategoryName,
-						max: $maxLimit
+				//jeżeli strzałka w górę jest ukryta znaczy, że to jest zmiana nowej kategorii
+				if ($(this).parents('tr').find('td:nth-child(3) .table-up').is(":hidden")) 
+				{
+					$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
+					$newCategoryName = $(this).html();
+					$.ajax({
+						type: 'POST',
+						url: '/Settings/addIncomeCategory',
+						data: {
+							categoryName: $newCategoryName,
+							max: $maxLimit
+							},
+						success: function(res, msg) {
+						  res = $.parseJSON(res);
+						  if (res.isCategoryDoubled) {
+							$tableID.find('tr:last td:first').text("Nowa Kategoria");
+							$("#feedback").text(res.message).addClass('alert-danger').removeClass('alert-success');;
+						  }
+						  else
+						  {
+							$("#feedback").text(res.message).addClass('alert-success').removeClass('alert-danger');
+							$('.table-add').find('a').show();
+							$tableID.find('tr:last .table-up').show();
+							$tableID.find('tr:last .table-down').show();
+						  };
 						},
-					success: function(res, msg) {
-					  res = $.parseJSON(res);
-					  if (res.isCategoryDoubled) {
-						$tableID.find('tr:last td:first').text("Nowa Kategoria");
-						$("#feedback").text(res.message).addClass('alert-danger').removeClass('alert-success');;
-					  }
-					  else
-					  {
-						$("#feedback").text(res.message).addClass('alert-success').removeClass('alert-danger');
-						$('.table-add').find('a').show();
-						$tableID.find('tr:last .table-up').show();
-						$tableID.find('tr:last .table-down').show();
-					  };
-					},
-					error : function() {
-						console.log("Wystąpił błąd z połączeniem");
-					}
-				  }); 
+						error : function() {
+							console.log("Wystąpił błąd z połączeniem");
+						}
+					}); 				
+				};
+				
+				
+				//jeżeli strzałka w górę jest widoczna oznacza to zmianę kategori różnej od "Nowa Kategoria"
+				if ($(this).parents('tr').find('td:nth-child(3) .table-up').is(":visible")) 
+				{
+					//zmiana w kolumnie katerogii
+						if ($activeCellCollumnNumber==0) {
+							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());	
+							$newCategoryName = ($(this).parents('tr').find('td:nth-child(1)').html());
+							$oldCategoryName = $activeCellContent;
+						};
+					//zmiana w kolumnie limitów	
+						if ($activeCellCollumnNumber==1) {
+							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
+							$newCategoryName = $activeCategoryContent;
+							$oldCategoryName = $activeCategoryContent;
+						};
+
+					$.ajax({
+						type: 'POST',
+						url: '/Settings/updateIncomeCategory',
+						data: {
+							newCategoryName: $newCategoryName,
+							oldCategoryName: $oldCategoryName,
+							max: $maxLimit
+							},
+						success: function(res, msg) {
+						  res = $.parseJSON(res);
+						  if (res.isCategoryDoubled) {
+							$tableID.find('tr:last td:first').text("Nowa Kategoria");
+							$("#feedback").text(res.message).addClass('alert-danger').removeClass('alert-success');;
+						  }
+						  else
+						  {
+							$("#feedback").text(res.message).addClass('alert-success').removeClass('alert-danger');
+							$('.table-add').find('a').show();
+							$tableID.find('tr:last .table-up').show();
+							$tableID.find('tr:last .table-down').show();
+						  };
+						},
+						error : function() {
+							console.log("Wystąpił błąd z połączeniem");
+						}
+					}); 				
+				};
+				
+
+				
 
 				
 			}
