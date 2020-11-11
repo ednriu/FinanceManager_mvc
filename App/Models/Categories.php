@@ -219,14 +219,19 @@ class Categories extends \Core\Model
 	//Check whether income category exists or not
 	private static function incomeCategoryExists($categoryName, $userId)
     {
-        $sql = 'SELECT * FROM `income_categories` WHERE name=:categoryName AND user_id=:userId';
-
-        $db = static::getDB();
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
-        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
-        $stmt->execute();
-        return $stmt->fetch() !== false;
+        try 
+		{
+			$sql = 'SELECT * FROM `income_categories` WHERE name=:categoryName AND user_id=:userId';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
+			$stmt->execute();
+			return $stmt->fetch() !== false;
+		} catch (PDOException $e) 
+		{
+			echo $e->getMessage();
+		}
 
     }
 	
@@ -249,6 +254,12 @@ class Categories extends \Core\Model
 	//Update Income Category, returns false when error
 	public static function updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$userId)
     {
+		$istnieje = Categories:: incomeCategoryExists($newCategoryName, $userId);
+		if($oldCategoryName!=$newCategoryName){
+			$istnieje = Categories:: incomeCategoryExists($newCategoryName, $userId);
+			if($istnieje) return false;
+		};
+		
 		try
 		{
 			$sql = 'UPDATE `income_categories` SET `name`=:newCategoryName,`max`=:maxLimit WHERE `user_id`=:userId AND `name`=:oldCategoryName';
@@ -265,6 +276,46 @@ class Categories extends \Core\Model
 			}
 		return false;
     }
+	
+	// gets category_id for selected category Name (incomes)
+	public static function getIncomeCategoryId($categoryName,$userId) {		
+		//SELECT `category_id` FROM `income_categories` WHERE `name`="Odsetki" AND `user_id`="39"
+		try
+		{
+			$sql = 'SELECT `category_id` FROM `income_categories` WHERE `name`=:categoryName AND `user_id`=:userId';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
+			$results=$stmt->fetchColumn();
+			//$result3 = $results[0];
+			//$result2 = array_column($results, 'category_id');
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+        }		
+	}
+	
+		// sets category_id for selected category Name (incomes). If error returns false.
+	public static function setIncomeCategoryId($categoryName,$userId, $newId) {		
+
+		try
+		{
+			$sql = 'UPDATE `income_categories` SET `category_id`=:newId WHERE `user_id`=:userId AND `name`=:categoryName';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->bindValue(':newId', $newId, PDO::PARAM_INT);
+			$stmt->execute();
+			return true;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+			return false;
+        }
+		return false;
+	}
 
 	
 }

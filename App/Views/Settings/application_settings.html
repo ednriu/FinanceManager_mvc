@@ -247,12 +247,7 @@
 							console.log("Wystąpił błąd z połączeniem");
 						}
 					}); 				
-				};
-				
-
-				
-
-				
+				};				
 			}
 		});
 
@@ -284,9 +279,9 @@
 
 		//przesuwanie kategorii w dół
 		 $tableID.on('click', '.table-down', function () {
-
 		   const $row = $(this).parents('tr');
 		   $row.next().after($row.get(0));
+		   
 		 });
 
 		 // A few jQuery helpers for exporting only

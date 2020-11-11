@@ -65,7 +65,7 @@ class Settings extends \Core\Controller
 		  };	
 	}	
 	
-		//add income category
+	//add income category
 	public function updateIncomeCategoryAction()
 	{
 		if(isset($_POST['newCategoryName']) && isset($_POST['oldCategoryName']) && isset($_POST['max'])) {
@@ -90,7 +90,21 @@ class Settings extends \Core\Controller
 			echo "Błąd Połączenia.";
 
 		  };	
-	}	
+	}
+	
+	//replace income categories ids
+	public function replaceIncomeCategoriesIds()
+	{
+		if(isset($_POST['firstCategoryName']) && isset($_POST['secondCategoryName'])) {
+			$firstCategoryName = $_POST['firstCategoryName'];
+			$secondCategoryName = $_POST['secondCategoryName'];
+			$firstCategoryId = Categories::getIncomeCategoryId($firstCategoryName,$userId);
+			$secondCategoryId = Categories::getIncomeCategoryId($secondCategoryName,$userId);
+			$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$userId, 0);
+			$assignSecondId = Categories::setIncomeCategoryId($secondCategoryName,$userId, $firstCategoryId);
+			$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$userId, $secondCategoryId);
+		}
+	}
 	
 	
 	    public function expenceCategoriesSettingsAction()
