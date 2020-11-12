@@ -95,15 +95,18 @@ class Settings extends \Core\Controller
 	//replace income categories ids
 	public function replaceIncomeCategoriesIds()
 	{
+
 		if(isset($_POST['firstCategoryName']) && isset($_POST['secondCategoryName'])) {
 			$firstCategoryName = $_POST['firstCategoryName'];
 			$secondCategoryName = $_POST['secondCategoryName'];
-			$firstCategoryId = Categories::getIncomeCategoryId($firstCategoryName,$userId);
-			$secondCategoryId = Categories::getIncomeCategoryId($secondCategoryName,$userId);
-			$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$userId, 0);
-			$assignSecondId = Categories::setIncomeCategoryId($secondCategoryName,$userId, $firstCategoryId);
-			$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$userId, $secondCategoryId);
+			$firstCategoryId = Categories::getIncomeCategoryId($firstCategoryName,$_SESSION['user_id']);
+			$secondCategoryId = Categories::getIncomeCategoryId($secondCategoryName,$_SESSION['user_id']);
+			$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$_SESSION['user_id'], 0);
+			$assignSecondId = Categories::setIncomeCategoryId($secondCategoryName,$_SESSION['user_id'], $firstCategoryId);
+			$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$_SESSION['user_id'], $secondCategoryId);
+			echo true;
 		}
+
 	}
 	
 	

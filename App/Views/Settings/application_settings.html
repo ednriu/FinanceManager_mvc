@@ -219,6 +219,33 @@
 							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
 							$newCategoryName = $activeCategoryContent;
 							$oldCategoryName = $activeCategoryContent;
+							
+							$.ajax({
+								type: 'POST',
+								url: '/Settings/addIncomeCategory',
+								data: {
+									categoryName: $newCategoryName,
+									max: $maxLimit
+									},
+								success: function(res, msg) {
+								  res = $.parseJSON(res);
+								  if (res.isCategoryDoubled) {
+									$tableID.find('tr:last td:first').text("Nowa Kategoria");
+									$("#feedback").text(res.message).addClass('alert-danger').removeClass('alert-success');;
+								  }
+								  else
+								  {
+									$("#feedback").text(res.message).addClass('alert-success').removeClass('alert-danger');
+									$('.table-add').find('a').show();
+									$tableID.find('tr:last .table-up').show();
+									$tableID.find('tr:last .table-down').show();
+								  };
+								},
+								error : function() {
+									console.log("Wystąpił błąd z połączeniem");
+								}
+							}); 		
+							
 						};
 
 					$.ajax({
@@ -233,7 +260,7 @@
 						  res = $.parseJSON(res);
 						  if (res.isCategoryDoubled) {
 							$tableID.find('tr:last td:first').text("Nowa Kategoria");
-							$("#feedback").text(res.message).addClass('alert-danger').removeClass('alert-success');;
+							$("#feedback").text(res.message).addClass('alert-danger').removeClass('alert-success');
 						  }
 						  else
 						  {
@@ -261,7 +288,7 @@
 					url: '/Settings/removeIncomeCategory',
 					data: {category: $category},
 					success: function(msg) {
-
+						$("#feedback").text("aaa");
 					}
 				  });
 			});
@@ -279,6 +306,39 @@
 
 		//przesuwanie kategorii w dół
 		 $tableID.on('click', '.table-down', function () {
+			$topCategory=$(this).parents('tr').find('td:first').html();
+			$bottomCategory=$(this).parents('tr').next('tr').find('td:first').html();
+			 $.ajax({
+					type: 'POST',
+					url: '/Settings/replaceIncomeCategoriesIds',
+					data: {
+									firstCategoryName: $topCategory,
+									secondCategoryName: $bottomCategory
+									},
+					success: function(res,msg) {
+
+					},
+					error : function (jqXHR, exception) {
+							var msg = '';
+							if (jqXHR.status === 0) {
+								msg = 'Not connect.\n Verify Network.';
+							} else if (jqXHR.status == 404) {
+								msg = 'Requested page not found. [404]';
+							} else if (jqXHR.status == 500) {
+								msg = 'Internal Server Error [500].';
+							} else if (exception === 'parsererror') {
+								msg = 'Requested JSON parse failed.';
+							} else if (exception === 'timeout') {
+								msg = 'Time out error.';
+							} else if (exception === 'abort') {
+								msg = 'Ajax request aborted.';
+							} else {
+								msg = 'Uncaught Error.\n' + jqXHR.responseText;
+							}
+							alert(msg);
+						},
+				  });	
+
 		   const $row = $(this).parents('tr');
 		   $row.next().after($row.get(0));
 		   

@@ -294,7 +294,9 @@ class Categories extends \Core\Model
 			return $results;
 		} catch (PDOException $e) {
             echo $e->getMessage();
-        }		
+			return false;
+        }
+		return false;
 	}
 	
 		// sets category_id for selected category Name (incomes). If error returns false.
