@@ -144,6 +144,7 @@
 		var activeCellContent;		
 		//var $contents = $('#table table tbody tr:last td:first').html();
 
+		//-----------------------------------------
 		//dodawanie nowej kategori jeśli nie istnieje
 		 $('.table-add').on('click', 'i', () => {
 		   const $clone = $tableID.find('tbody tr').last().clone(true);
@@ -159,6 +160,7 @@
 		   }
 		 });
 
+		//----------------------------------------
 		//Zapisanie danych z dowolnej komórki
 		$tableID.on('click','tbody tr td',function() {
 			$activeCellContent = $(this).html();
@@ -167,7 +169,8 @@
 					$activeCategoryContent = $(this).parents('tr').find('td:first').html();
 				};
 		});
-
+		
+		//------------------------------------------
 		//Zmiana Danych	w dowolnej komórce	
 		$tableID.on('blur','tbody tr td',function() {
 			if ($activeCellContent!=$(this).html()){
@@ -278,6 +281,7 @@
 			}
 		});
 
+		//-------------------------------------------
 		//usuwanie linijki
 		 $tableID.on('click', '.table-remove', function () {
 			$category = $(this).parents('tr').find('td:first-child').html();
@@ -294,16 +298,53 @@
 			});
 		
 		 
-
+		//--------------------------------------------
 		//przesuwanie kategori do góry
 		 $tableID.on('click', '.table-up', function () {
 		   const $row = $(this).parents('tr');
+		   $bottomCategory=$(this).parents('tr').find('td:first').html();
+		   $topCategory=$(this).parents('tr').prev('tr').find('td:first').html();
 		   if ($row.index() === 0) {
 			 return;
 		   }
+		   $.ajax({
+					type: 'POST',
+					url: '/Settings/replaceIncomeCategoriesIds',
+					data: {
+									firstCategoryName: $topCategory,
+									secondCategoryName: $bottomCategory
+									},
+					success: function(res,msg) {
+
+					},
+					error : function (jqXHR, exception) {
+							var msg = '';
+							if (jqXHR.status === 0) {
+								msg = 'Not connect.\n Verify Network.';
+							} else if (jqXHR.status == 404) {
+								msg = 'Requested page not found. [404]';
+							} else if (jqXHR.status == 500) {
+								msg = 'Internal Server Error [500].';
+							} else if (exception === 'parsererror') {
+								msg = 'Requested JSON parse failed.';
+							} else if (exception === 'timeout') {
+								msg = 'Time out error.';
+							} else if (exception === 'abort') {
+								msg = 'Ajax request aborted.';
+							} else {
+								msg = 'Uncaught Error.\n' + jqXHR.responseText;
+							}
+							alert(msg);
+						},
+				  });	
+		   
+		   
+		   
+		   
 		   $row.prev().before($row.get(0));
 		 });
-
+		 
+		//---------------------------------------------
 		//przesuwanie kategorii w dół
 		 $tableID.on('click', '.table-down', function () {
 			$topCategory=$(this).parents('tr').find('td:first').html();
@@ -338,12 +379,11 @@
 							alert(msg);
 						},
 				  });	
-
 		   const $row = $(this).parents('tr');
-		   $row.next().after($row.get(0));
-		   
+		   $row.next().after($row.get(0));		   
 		 });
-
+		 
+		 //------------------------------------------
 		 // A few jQuery helpers for exporting only
 		 jQuery.fn.pop = [].pop;
 		 jQuery.fn.shift = [].shift;
