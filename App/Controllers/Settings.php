@@ -43,7 +43,7 @@ class Settings extends \Core\Controller
 	{
 		if(isset($_POST['categoryName']) && isset($_POST['max'])) {
 			
-				$categoryToBeAdded=$_POST['categoryName'];
+				$categoryToBeAdded=(ucwords(strtolower($_POST['categoryName'])));
 				$maxLimit=$_POST['max'];
 				$incomeCategories = Categories::addNewIncomeCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
 

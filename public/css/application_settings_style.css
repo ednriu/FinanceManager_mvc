@@ -1,0 +1,236 @@
+body {
+  padding-top: 4rem;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.bg{	
+	background: url('../img/pexels-photo-259132.jpeg');
+	background-repeat: no-repeat;
+	background-position: center, center;
+	background-size: cover !important;
+}
+
+.mainWindow {
+  position: fixed;
+  top: 100;
+  right: 0;
+  overflow:scroll;
+}
+
+#feedbackLine {
+	height: 60px;
+}
+
+
+
+/*
+ * MainWindow
+ */
+
+.mainWindow {
+  position: fixed;
+  top: 100;
+  right: 0;
+  overflow:scroll;
+}
+
+
+/*
+ * TOP Navbar Horizontal
+ */
+
+.navbar .navbar-toggler {
+  top: .25rem;
+  right: 1rem;  
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.navbar .navbar-text{
+	color:#FAF70C;
+	line-height:1rem;
+	font-size:1.2rem;
+	font-weight:bold;
+	letter-spacing:0.1rem;
+}
+
+.navbar .active .navbar-text{
+	text-decoration: underline;
+}
+
+.navbar .navbar-text:hover{
+	transform: scale(1.05);
+}
+
+.navbar .nav-item
+{
+	margin-left:10px;
+	margin-right:10px;
+}
+
+.navbar .form-control{
+	border-radius:5px;
+}
+
+.navbar .search-btn{
+	display:inline-block;
+	height:2.5rem;
+}
+
+.navbar .search-input{
+	display:inline-block;
+	height:2.5rem;
+}
+
+.dropdown-item{
+	color:#FAF70C !important;
+	line-height:1rem !important;
+	font-size:1.2rem !important;
+	font-weight:bold !important;
+	letter-spacing:0.1rem !important;
+}
+
+
+
+/*
+ * Modals for Adding Expences and Incomes
+ */
+
+.modal{
+	color: #0521B3;
+}
+
+.modal-header{
+	background-color:#0b1570;
+	color:white;
+}
+
+.modal-footer{
+	background-color: #EEEDE0;
+}
+
+.modal-body{
+	padding: 0.5rem 1.5rem;
+}
+
+h5.modal-title{
+	font-size:1.8rem;
+}
+
+.modalAnotherRangeOfDate h5.modal-title{
+	font-size:1.4rem;
+}
+
+.modal label{
+	font-size:1.4rem;
+}
+
+label.form-check-label{
+	font-size:1rem;
+}
+
+input[type:number]{
+	background-color:red;
+}
+
+/*
+ * User Settings Cards
+ * Aplication Settings Cards
+ */
+ 
+ .card-header{
+	background-color:#0b1570;
+	color:white;
+	font:1rem;
+ }
+ 
+ .card-body{
+	background-color:#e4e4eb;
+	color:#36364d;
+	font-size:1rem;
+ }
+ 
+ .card{
+	 border:1px solid #0b1570;
+	 	opacity:0.9;
+ }
+ .user-menu.card{
+	 opacity:1;
+ }
+ 
+.card label{
+	 font-size:20px;
+ }
+ 
+ .card input:disabled{
+	background-color:white;
+ }
+ 
+ /*
+ * INFO BOX
+ */
+ 
+ .info-box{
+	 background-color:#CAD0D4;
+	 width:12rem;
+	 height:8rem;
+	 border-radius:15px;
+	 border:#498192 solid 1px;
+	 text-align:center;
+	 font-size:1rem;
+	 vertical-align:middle;
+ }
+ 
+p.balance{
+	color:#47865A;
+	font-size:1.2rem;
+}
+ 
+.info-box .feather{
+	color:#1336F8;
+	font-size:1.2rem;
+	position:relative;
+	top:3px;
+}
+ 
+.info-box.balance{
+	border:red solid 1px;
+ }
+ 
+.info-box h1{
+	 font-size:1.2rem;
+	 color:white;
+	 background-color:#498192;
+	 margin-left:0;
+	 margin-right:0;
+	 overflow:hidden;
+	 border-radius: 15px 15px 0 0;
+	 padding-bottom:0.3rem;
+ }
+ 
+ .info-box.balance h1{
+	 background-color:red;
+ }
+ 
+
+ 
+
+
+
+@media only screen and (max-width: 767.98px){
+	.bg{
+		background-size: 300%;
+	}
+	body{
+		padding-top:3rem;		
+	}
+	
+
+}
