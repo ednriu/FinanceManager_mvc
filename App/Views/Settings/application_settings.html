@@ -138,11 +138,13 @@
 		</tr>`;
 		
 
-
+		//poniższe wartości ustawiane są jako "." ponieważ jeśli używkonik nie kliknął nic, to program nie ma do czego porównywać kategori
+		var $activeCellContent =".";
+		var $activeCategoryContent=".";
 		
 		var newCategory = $tableID.find('tr:last td:first').text();
 		var activeCellContent;		
-		//var $contents = $('#table table tbody tr:last td:first').html();
+
 
 		//-----------------------------------------
 		//dodawanie nowej kategori jeśli nie istnieje
@@ -152,59 +154,75 @@
 		   if ((newCategory !== 'Nowa Kategoria')) {
 			 $('#table table tbody').append($newCategory);
 			 newCategory = $tableID.find('tr:last td:first').text();
-			 //$contents = $('#table table tbody tr:last td:first').html();
+			 $feedback = "Proszę nadać nazwę nowej kategorii."
+			 $("#feedback").show().text($feedback).addClass('alert-success').removeClass('alert-danger');
+			 //Ponieważ nazwa kategorii musi być zmieniona, skrypt ukrywa przyciski w linijce nowej kategorii oraz przycisk dodania kolejnej
 			 $('.table-add').find('a').hide();
 			 $tableID.find('tr:last .table-up').hide();
 			 $tableID.find('tr:last .table-down').hide();
-
 		   }
 		 });
 
 		//----------------------------------------
-		//Zapisanie danych z dowolnej komórki
+		//Zapisanie danych do zmiennych z klikniętej komórki
 		$tableID.on('click','tbody tr td',function() {
 			$activeCellContent = $(this).html();
 			$activeCellCollumnNumber = $(this).index();
+			$activeCellRowNumber = parseInt($(this).closest("tr").index()+1);
 			if ($activeCellCollumnNumber==1) {
 					$activeCategoryContent = $(this).parents('tr').find('td:first').html();
+					$activeMaxLimit = $(this).parents('tr').find('td:nth-child(2)').html();
 				};
 		});
 		
 		//------------------------------------------
 		//Zmiana Danych	w dowolnej komórce	
-		$tableID.on('blur','tbody tr td',function() {
+		$tableID.on('focusout','tbody tr td',function() {
 			if ($activeCellContent!=$(this).html()){
 
 				//jeżeli strzałka w górę jest ukryta znaczy, że to jest zmiana nowej kategorii
 				if ($(this).parents('tr').find('td:nth-child(3) .table-up').is(":hidden")) 
 				{
-					$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
-					$newCategoryName = $(this).html();
-					$.ajax({
-						type: 'POST',
-						url: '/Settings/addIncomeCategory',
-						data: {
-							categoryName: $newCategoryName,
-							max: $maxLimit
+					//zmiana dotyczy komórki z limitami, dlatego nie można dokonać zmiany
+					if ($activeCellCollumnNumber==1) 
+					{
+						$(this).parents('tr').find('td:nth-child(2)').text($activeMaxLimit);
+						$feedback = "Nie można zmienić limitu ponieważ nie została nadana nowa nazwa dla kategorii"
+						$("#feedback").show().text($feedback).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});						
+					};
+					
+					//zmiana dotyczy zmiany kategorii. Musi być ona różna od "Nowa Kategoria"
+					if ($activeCellCollumnNumber==0) 
+					{					
+						$newCategoryName = $(this).html();
+						$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
+						
+						$.ajax({
+							type: 'POST',
+							url: '/Settings/addIncomeCategory',
+							data: {
+								categoryName: $newCategoryName,
+								max: $maxLimit
+								},
+							success: function(res, msg) {
+							  res = $.parseJSON(res);
+							  if (res.isCategoryDoubled) {
+								$tableID.find('tr:last td:first').text("Nowa Kategoria");
+								$("#feedback").show().text(res.message).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
+							  }
+							  else
+							  {
+								$("#feedback").show().text(res.message).addClass('alert-success').removeClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});
+								$('.table-add').find('a').show();
+								$tableID.find('tr:last .table-up').show();
+								$tableID.find('tr:last .table-down').show();
+							  };
 							},
-						success: function(res, msg) {
-						  res = $.parseJSON(res);
-						  if (res.isCategoryDoubled) {
-							$tableID.find('tr:last td:first').text("Nowa Kategoria");
-							$("#feedback").text(res.message).addClass('alert-danger').removeClass('alert-success');;
-						  }
-						  else
-						  {
-							$("#feedback").text(res.message).addClass('alert-success').removeClass('alert-danger');
-							$('.table-add').find('a').show();
-							$tableID.find('tr:last .table-up').show();
-							$tableID.find('tr:last .table-down').show();
-						  };
-						},
-						error : function() {
-							console.log("Wystąpił błąd z połączeniem");
-						}
-					}); 				
+							error : function() {
+								console.log("Wystąpił błąd z połączeniem");
+							}
+						});						
+					};								
 				};
 				
 				
@@ -217,66 +235,38 @@
 							$newCategoryName = ($(this).parents('tr').find('td:nth-child(1)').html());
 							$oldCategoryName = $activeCellContent;
 						};
+						
 					//zmiana w kolumnie limitów	
 						if ($activeCellCollumnNumber==1) {
 							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
 							$newCategoryName = $activeCategoryContent;
-							$oldCategoryName = $activeCategoryContent;
-							
+							$oldCategoryName = $activeCategoryContent;												
+						};
+					
+					//Wywołanie polecenia AJAX dla obydwu zmian
 							$.ajax({
 								type: 'POST',
-								url: '/Settings/addIncomeCategory',
+								url: '/Settings/updateIncomeCategory',
 								data: {
-									categoryName: $newCategoryName,
+									newCategoryName: $newCategoryName,
+									oldCategoryName: $oldCategoryName,
 									max: $maxLimit
 									},
 								success: function(res, msg) {
 								  res = $.parseJSON(res);
 								  if (res.isCategoryDoubled) {
-									$tableID.find('tr:last td:first').text("Nowa Kategoria");
-									$("#feedback").text(res.message).addClass('alert-danger').removeClass('alert-success');;
+									$tableID.find('tr:nth-child('+$activeCellRowNumber+') td:nth-child(1)').text($activeCellContent);
+									$("#feedback").show().text(res.message).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});;
 								  }
 								  else
 								  {
-									$("#feedback").text(res.message).addClass('alert-success').removeClass('alert-danger');
-									$('.table-add').find('a').show();
-									$tableID.find('tr:last .table-up').show();
-									$tableID.find('tr:last .table-down').show();
+									$("#feedback").show().text(res.message).addClass('alert-success').removeClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});;
 								  };
 								},
 								error : function() {
 									console.log("Wystąpił błąd z połączeniem");
 								}
-							}); 		
-							
-						};
-
-					$.ajax({
-						type: 'POST',
-						url: '/Settings/updateIncomeCategory',
-						data: {
-							newCategoryName: $newCategoryName,
-							oldCategoryName: $oldCategoryName,
-							max: $maxLimit
-							},
-						success: function(res, msg) {
-						  res = $.parseJSON(res);
-						  if (res.isCategoryDoubled) {
-							$tableID.find('tr:last td:first').text("Nowa Kategoria");
-							$("#feedback").text(res.message).addClass('alert-danger').removeClass('alert-success');
-						  }
-						  else
-						  {
-							$("#feedback").text(res.message).addClass('alert-success').removeClass('alert-danger');
-							$('.table-add').find('a').show();
-							$tableID.find('tr:last .table-up').show();
-							$tableID.find('tr:last .table-down').show();
-						  };
-						},
-						error : function() {
-							console.log("Wystąpił błąd z połączeniem");
-						}
-					}); 				
+							});					
 				};				
 			}
 		});
@@ -292,7 +282,7 @@
 					url: '/Settings/removeIncomeCategory',
 					data: {category: $category},
 					success: function(msg) {
-						$("#feedback").text("aaa");
+						$("#feedback").show().text("Usunięto wybraną kategorię.").addClass('alert-success').removeClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});
 					}
 				  });
 			});
@@ -336,11 +326,7 @@
 							}
 							alert(msg);
 						},
-				  });	
-		   
-		   
-		   
-		   
+				  });		   
 		   $row.prev().before($row.get(0));
 		 });
 		 
@@ -383,40 +369,7 @@
 		   $row.next().after($row.get(0));		   
 		 });
 		 
-		 //------------------------------------------
-		 // A few jQuery helpers for exporting only
-		 jQuery.fn.pop = [].pop;
-		 jQuery.fn.shift = [].shift;
 
-		 $BTN.on('click', () => {
-
-		   const $rows = $tableID.find('tr:not(:hidden)');
-		   const headers = [];
-		   const data = [];
-
-		   // Get the headers (add special header logic here)
-		   $($rows.shift()).find('th:not(:empty)').each(function () {
-
-			 headers.push($(this).text().toLowerCase());
-		   });
-
-		   // Turn all existing rows into a loopable array
-		   $rows.each(function () {
-			 const $td = $(this).find('td');
-			 const h = {};
-
-			 // Use the headers from earlier to name our hash keys
-			 headers.forEach((header, i) => {
-
-			   h[header] = $td.eq(i).text();
-			 });
-
-			 data.push(h);
-		   });
-
-		   // Output the result
-		   $EXPORT.text(JSON.stringify(data));		   
-		 });
 		 
 
 	</script>
