@@ -246,8 +246,9 @@
 		   }
 		   $.ajax({
 					type: 'POST',
-					url: '/Settings/replaceIncomeCategoriesIds',
+					url: '/Settings/replaceCategoriesIds',
 					data: {
+									categoryType: $categoryType,
 									firstCategoryName: $topCategory,
 									secondCategoryName: $bottomCategory
 									},
@@ -284,8 +285,9 @@
 			$bottomCategory=$(this).parents('tr').next('tr').find('td:first').html();
 			 $.ajax({
 					type: 'POST',
-					url: '/Settings/replaceIncomeCategoriesIds',
+					url: '/Settings/replaceCategoriesIds',
 					data: {
+									categoryType: $categoryType,
 									firstCategoryName: $topCategory,
 									secondCategoryName: $bottomCategory
 									},

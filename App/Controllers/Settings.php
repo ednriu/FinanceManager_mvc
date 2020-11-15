@@ -38,9 +38,9 @@ class Settings extends \Core\Controller
 	//remove income Category
 	public function removeCategoryAction()
     {
-
 		if(isset($_POST['category']) && isset($_POST['categoryType'])) {
 			$categoryToBeRemoved=$_POST['category'];
+			
 			switch ($_POST['categoryType']) {
 				case "incomes":
 					$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $categoryToBeRemoved);
@@ -86,12 +86,8 @@ class Settings extends \Core\Controller
 			}
 		  } else {
 			return false;
-		  };
-
-		
-			echo json_encode(array("successfullyRemoved"=>$successfullyRemoved,"message"=>$message));		
-
-    
+		  };		
+			echo json_encode(array("successfullyRemoved"=>$successfullyRemoved,"message"=>$message));    
 	}
 	
 	//add income category
@@ -177,26 +173,38 @@ class Settings extends \Core\Controller
 	}
 	
 	//replace income categories ids
-	public function replaceIncomeCategoriesIds()
+	public function replaceCategoriesIds()
 	{
-
-		if(isset($_POST['firstCategoryName']) && isset($_POST['secondCategoryName'])) {
-			$firstCategoryName = $_POST['firstCategoryName'];
-			$secondCategoryName = $_POST['secondCategoryName'];
-			$firstCategoryId = Categories::getIncomeCategoryId($firstCategoryName,$_SESSION['user_id']);
-			$secondCategoryId = Categories::getIncomeCategoryId($secondCategoryName,$_SESSION['user_id']);
-			$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$_SESSION['user_id'], 0);
-			$assignSecondId = Categories::setIncomeCategoryId($secondCategoryName,$_SESSION['user_id'], $firstCategoryId);
-			$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$_SESSION['user_id'], $secondCategoryId);
-			echo true;
+		$firstCategoryName = $_POST['firstCategoryName'];
+		$secondCategoryName = $_POST['secondCategoryName'];
+		
+		if(isset($_POST['categoryType']) && isset($_POST['firstCategoryName']) && isset($_POST['secondCategoryName'])) {
+			switch ($_POST['categoryType']) {
+					case "incomes":
+						$firstCategoryId = Categories::getIncomeCategoryId($firstCategoryName,$_SESSION['user_id']);
+						$secondCategoryId = Categories::getIncomeCategoryId($secondCategoryName,$_SESSION['user_id']);
+						$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$_SESSION['user_id'], 0);
+						$assignSecondId = Categories::setIncomeCategoryId($secondCategoryName,$_SESSION['user_id'], $firstCategoryId);
+						$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$_SESSION['user_id'], $secondCategoryId);
+						echo true;
+						break;
+					case "expences":
+						$firstCategoryId = Categories::getExpenceCategoryId($firstCategoryName,$_SESSION['user_id']);
+						$secondCategoryId = Categories::getExpenceCategoryId($secondCategoryName,$_SESSION['user_id']);
+						$assignFirstId = Categories::setExpenceCategoryId($firstCategoryName,$_SESSION['user_id'], 0);
+						$assignSecondId = Categories::setExpenceCategoryId($secondCategoryName,$_SESSION['user_id'], $firstCategoryId);
+						$assignFirstId = Categories::setExpenceCategoryId($firstCategoryName,$_SESSION['user_id'], $secondCategoryId);
+						echo true;
+						break;					
+					case "payMethods":
+						$firstCategoryId = Categories::getPayMethodCategoryId($firstCategoryName,$_SESSION['user_id']);
+						$secondCategoryId = Categories::getPayMethodCategoryId($secondCategoryName,$_SESSION['user_id']);
+						$assignFirstId = Categories::setPayMethodCategoryId($firstCategoryName,$_SESSION['user_id'], 0);
+						$assignSecondId = Categories::setPayMethodCategoryId($secondCategoryName,$_SESSION['user_id'], $firstCategoryId);
+						$assignFirstId = Categories::setPayMethodCategoryId($firstCategoryName,$_SESSION['user_id'], $secondCategoryId);
+						echo true;
+						break;		
+			};
 		}
-
 	}
-	
-	
-
-	
-
-
-
 }
