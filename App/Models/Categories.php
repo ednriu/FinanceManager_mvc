@@ -78,6 +78,23 @@ class Categories extends \Core\Model
 		} catch (PDOException $e) {
             echo $e->getMessage();
         }
+	}
+
+	//get payMethod categories - it is without "nieskategoryzowane" category
+	public static function getPayMethodCategoriesForNewPayMethod($userId)
+    {
+		try
+		{
+			$sql = 'SELECT * FROM `pay_method_categories` WHERE user_Id=:userId AND Name<>"Nieskategoryzowane"';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
+			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+        }
 	}		
 	
 	//get all income categories together with "nieskategoryzowane"
@@ -212,6 +229,44 @@ class Categories extends \Core\Model
 		try
 		{
 			$sql = 'DELETE FROM `income_categories` WHERE user_id=:userId AND name=:categoryName';                                              
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);			
+			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);  			
+			return $stmt->execute() !== false;
+		} catch (PDOException $e) 
+		{
+			echo $e->getMessage();
+			return false;
+		}
+		return false;
+	}
+	
+	//Removes Expence Category for Selected user ID
+	public static function removeExpenceCategory($userId, $categoryName)
+	{
+		try
+		{
+			$sql = 'DELETE FROM `expence_categories` WHERE user_id=:userId AND name=:categoryName';                                              
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);			
+			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);  			
+			return $stmt->execute() !== false;
+		} catch (PDOException $e) 
+		{
+			echo $e->getMessage();
+			return false;
+		}
+		return false;
+	}
+	
+	//Removes pay Method Category for Selected user ID
+	public static function removePayMethodCategory($userId, $categoryName)
+	{
+		try
+		{
+			$sql = 'DELETE FROM `pay_method_categories` WHERE user_id=:userId AND name=:categoryName';                                              
             $db = static::getDB();
             $stmt = $db->prepare($sql);			
 			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);

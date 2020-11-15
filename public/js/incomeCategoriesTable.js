@@ -2,39 +2,83 @@
 		const $BTN = $('#przycisk');
 		const $EXPORT = $('#export');
 
-		const $newCategory = `
-		<tr>
-					<td class="pt-3-half" contenteditable="true">Nowa Kategoria</td>
-					<td class="pt-3-half" contenteditable="true">1000</td>
-					<td class="pt-3-half">
-					  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
-							aria-hidden="true"></i></a></span>
-					  <span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down"
-							aria-hidden="true"></i></a></span>
-					</td>
-					<td>
-					  <span class="table-remove"><button type="button"
-						  class="btn btn-danger btn-rounded btn-sm my-0">Usuń</button></span>
-					</td>
-		</tr>`;
+		var $newCategory;
+		var $categoryType;
+		
+		switch($option) {
+		  case 1:
+						$newCategory = `
+				<tr>
+							<td class="pt-3-half" contenteditable="true">Nowa Kategoria</td>
+							<td class="pt-3-half" contenteditable="true">1000</td>
+							<td class="pt-3-half">
+							  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
+									aria-hidden="true"></i></a></span>
+							  <span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down"
+									aria-hidden="true"></i></a></span>
+							</td>
+							<td>
+							  <span class="table-remove"><button type="button"
+								  class="btn btn-danger btn-rounded btn-sm my-0">Usuń</button></span>
+							</td>
+				</tr>`;
+				$categoryType = "incomes";
+			break;
+		  case 2:
+						$newCategory = `
+				<tr>
+							<td class="pt-3-half" contenteditable="true">Nowa Kategoria</td>
+							<td class="pt-3-half" contenteditable="true">1000</td>
+							<td class="pt-3-half">
+							  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
+									aria-hidden="true"></i></a></span>
+							  <span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down"
+									aria-hidden="true"></i></a></span>
+							</td>
+							<td>
+							  <span class="table-remove"><button type="button"
+								  class="btn btn-danger btn-rounded btn-sm my-0">Usuń</button></span>
+							</td>
+				</tr>`;
+				$categoryType = "expences";
+			break;
+		  case 3:
+						$newCategory = `
+				<tr>
+							<td class="pt-3-half" contenteditable="true">Nowa Metoda</td>
+							<td class="pt-3-half">
+							  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
+									aria-hidden="true"></i></a></span>
+							  <span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down"
+									aria-hidden="true"></i></a></span>
+							</td>
+							<td>
+							  <span class="table-remove"><button type="button"
+								  class="btn btn-danger btn-rounded btn-sm my-0">Usuń</button></span>
+							</td>
+				</tr>`;
+				$categoryType = "payMethods";
+			break;
+		}
 		
 
 		//poniższe wartości ustawiane są jako "." ponieważ jeśli używkonik nie kliknął nic, to program nie ma do czego porównywać kategori
 		var $activeCellContent =".";
 		var $activeCategoryContent=".";
 		
-		var newCategory = $tableID.find('tr:last td:first').text();
+		var newCategory = $tableID.find('tr:last td:first').text(); //czy oby na pewno potrzebne?
 		var activeCellContent;		
+
+
+
 
 
 		//-----------------------------------------
 		//dodawanie nowej kategori jeśli nie istnieje
 		 $('.table-add').on('click', 'i', () => {
 		   const $clone = $tableID.find('tbody tr').last().clone(true);
-		   newCategory = $tableID.find('tr:last td:first').text();
-
-		   
-		   if ((newCategory !== 'Nowa Kategoria')) {
+		   newCategory = $tableID.find('tr:last td:first').text();		   
+		   if ((newCategory !== 'Nowa Kategoria') && (newCategory !== 'Nowa Metoda')) {
 			 $('#table table tbody').append($newCategory);
 			 newCategory = $tableID.find('tr:last td:first').text();			 
 			 //przewijanie do nowo dodanej kategorii
@@ -72,7 +116,7 @@
 				if ($(this).parents('tr').find('td:nth-child(3) .table-up').is(":hidden")) 
 				{
 					//zmiana dotyczy komórki z limitami, dlatego nie można dokonać zmiany
-					if ($activeCellCollumnNumber==1) 
+					if (($activeCellCollumnNumber==1) && ($option==2)) 
 					{
 						$(this).parents('tr').find('td:nth-child(2)').text($activeMaxLimit);
 						$feedback = "Nie można zmienić limitu ponieważ nie została nadana nowa nazwa dla kategorii"
@@ -90,7 +134,7 @@
 							url: '/Settings/addCategory',
 							data: {
 								categoryName: $newCategoryName,
-								categoryType: 'incomes',
+								categoryType: $categoryType,
 								max: $maxLimit
 								},
 							success: function(res, msg) {
@@ -126,7 +170,7 @@
 						};
 						
 					//zmiana w kolumnie limitów	
-						if ($activeCellCollumnNumber==1) {
+						if (($activeCellCollumnNumber==1)) {
 							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
 							$newCategoryName = $activeCategoryContent;
 							$oldCategoryName = $activeCategoryContent;												
@@ -137,7 +181,7 @@
 								type: 'POST',
 								url: '/Settings/updateCategory',
 								data: {
-									categoryType: 'incomes',
+									categoryType: $categoryType,
 									newCategoryName: $newCategoryName,
 									oldCategoryName: $oldCategoryName,
 									max: $maxLimit
@@ -169,8 +213,11 @@
 			
 				 $.ajax({
 					type: 'POST',
-					url: '/Settings/removeIncomeCategory',
-					data: {category: $category},
+					url: '/Settings/removeCategory',
+					data: {
+						categoryType: $categoryType,
+						category: $category
+						},
 					success: function(res, msg) {
 						res = $.parseJSON(res);
 						if (res.successfullyRemoved)

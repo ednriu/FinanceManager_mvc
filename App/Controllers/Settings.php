@@ -23,41 +23,73 @@ class Settings extends \Core\Controller
     //Expence Categories Settings - redirecting
     public function expenceCategoriesSettingsAction()
     {
-		$expenceCategories = Categories::getexpenceCategoriesForNewexpence($_SESSION['user_id']);
+		$expenceCategories = Categories::getExpenceCategoriesForNewExpence($_SESSION['user_id']);
         View::renderTemplate('Settings/application_settings.html',['option'=>2, 'categories'=>$expenceCategories]);
     }
 	
 	//PayMethod Categories Settings - redirecting
 	public function payMethodSettingsAction()
     {
-        View::renderTemplate('Settings/application_settings.html',['option'=>3]);
+		$payMethodCategories = Categories::getPayMethodCategoriesForNewPayMethod($_SESSION['user_id']);
+        View::renderTemplate('Settings/application_settings.html',['option'=>3, 'categories'=>$payMethodCategories]);
     }	
 
 	
 	//remove income Category
-	public function removeIncomeCategoryAction()
+	public function removeCategoryAction()
     {
 
-		if(isset($_POST['category'])) {
+		if(isset($_POST['category']) && isset($_POST['categoryType'])) {
 			$categoryToBeRemoved=$_POST['category'];
-			$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $categoryToBeRemoved);
+			switch ($_POST['categoryType']) {
+				case "incomes":
+					$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $categoryToBeRemoved);
+					if ($incomeCategories) 
+					{
+						$successfullyRemoved=true;
+						$message="Usunięto wybraną kategorię.";
+					};
+					if (!$incomeCategories) 
+					{
+						$successfullyRemoved=false;
+						$message="Nie usunięto wybranej kategorii z powodu błędu.";
+					};	
+					break;
+				
+				case "expences":
+					$expenceCategories = Categories::removeExpenceCategory($_SESSION['user_id'], $categoryToBeRemoved);
+					if ($expenceCategories) 
+					{
+						$successfullyRemoved=true;
+						$message="Usunięto wybraną kategorię.";
+					};
+					if (!$expenceCategories) 
+					{
+						$successfullyRemoved=false;
+						$message="Nie usunięto wybranej kategorii z powodu błędu.";
+					};	
+					break;
+				
+				case "payMethods":
+					$payMethodCategories = Categories::removePayMethodCategory($_SESSION['user_id'], $categoryToBeRemoved);
+					if ($payMethodCategories) 
+					{
+						$successfullyRemoved=true;
+						$message="Usunięto wybraną kategorię.";
+					};
+					if (!$payMethodCategories) 
+					{
+						$successfullyRemoved=false;
+						$message="Nie usunięto wybranej kategorii z powodu błędu.";
+					};	
+					break;				
+			}
 		  } else {
 			return false;
 		  };
 
-		if ($incomeCategories) 
-		{
-			$successfullyRemoved=true;
-			$message="Usunięto wybraną kategorię.";
-			echo json_encode(array("successfullyRemoved"=>$successfullyRemoved,"message"=>$incomeCategories));
-		};
-		if (!$incomeCategories) 
-		{
-			$successfullyRemoved=false;
-			$message="Nie usunięto wybranej kategorii z powodu błędu.";
-			echo json_encode(array("successfullyRemoved"=>$successfullyRemoved,"message"=>$incomeCategories));
-		};			
 		
+			echo json_encode(array("successfullyRemoved"=>$successfullyRemoved,"message"=>$message));		
 
     
 	}
@@ -114,7 +146,7 @@ class Settings extends \Core\Controller
 						$incomeCategories = Categories::updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
 						if ($incomeCategories) {
 							$isCategoryDoubled=false;
-							$message="Zaktualizowano dane.";
+							$message="Zaktualizowano dane1.";
 						}
 						if (!$incomeCategories) {
 							$isCategoryDoubled=true;
@@ -126,14 +158,13 @@ class Settings extends \Core\Controller
 						$expenceCategories = Categories::updateExpenceCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
 						if ($expenceCategories) {
 							$isCategoryDoubled=false;
-							$message="Zaktualizowano dane.";
+							$message="Zaktualizowano dane2.";
 						}
 						if (!$incomeCategories) {
 							$isCategoryDoubled=true;
 							$message="Istnieje już taka kategoria.";
 						}
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
-						break;
 						break;
 					case "paymethod":
 						break;

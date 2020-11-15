@@ -32,12 +32,16 @@
 
 {% endblock %}
 
-{% block body %}  
+{% block body %} 
+
+	<!-- passing option value to JS-->
+	<script>
+		var $option = {{ option }};
+	</script> 
 
 
 <!-- Finance Manager Content-->
 <div class="container-fluid bg pt-0 mainWindow">	
-	{{option}}
 	<div class="row d-flex justify-content-center">	
 		<!-- Editable table -->
 		<div class="card mt-3 w-30 w-sm-95">
@@ -48,7 +52,7 @@
 				Kategorie Wydatków
 			{% elseif option == 3 %}
 				Sposoby Płatności
-			{% endif %}
+			{% endif %}			
 			
 		  </h3>
 		  <div class="card-body">
@@ -60,7 +64,9 @@
 				<thead>
 				  <tr>
 					<th class="text-center font-weight-bold">Kategoria</th>
-					<th class="text-center font-weight-bold">Maxymalny Limit</th>
+					{% if option == 2 %}
+						<th class="text-center font-weight-bold">Maxymalny Limit</th>
+					{% endif %}					
 					<th></th>
 					<th></th>
 				  </tr>
@@ -70,7 +76,10 @@
 					{% for category in categories %}
 					  <tr>
 						<td class="pt-3-half" contenteditable="true">{{category.name}}</td>
-						<td class="pt-3-half" contenteditable="true">{{category.max}}</td>
+						{% if option == 2 %}
+							<td class="pt-3-half" contenteditable="true">{{category.max}}</td>
+						{% endif %}	
+						
 						<td class="pt-3-half">
 						  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
 								aria-hidden="true"></i></a></span>
@@ -96,8 +105,6 @@
 </div><!-- /.container-fluid-->
 
 	
-
-	
 	<!-- jQuery -->
 	<script type="text/javascript" src="/js/jquery.min.js"></script>
 	<!-- Bootstrap tooltips -->
@@ -114,15 +121,10 @@
 	<script type="text/javascript" src="/js/addons/datatables2.min.js"></script>
 	<!-- Script for Income Categories Table  -->
 	<script type="text/javascript" src="/js/incomeCategoriesTable.js" charset="utf-8"></script>
-	{% if option == 1 %}
-		<!-- Script for Income Categories Table  -->
-		<script type="text/javascript" src="/js/incomeCategoriesTable.js" charset="utf-8"></script>
-	{% elseif option == 2 %}
-		<!-- Script for Expence Categories Table  -->
-		<script type="text/javascript" src="/js/expenceCategoriesTable.js" charset="utf-8"></script>
-	{% elseif option == 3 %}
-		Sposoby Płatności
-	{% endif %}
+
+	<!-- Script for Income Categories Table  -->
+	<script type="text/javascript" src="/js/incomeCategoriesTable.js" charset="utf-8"></script>
+
 	
 	
 	
