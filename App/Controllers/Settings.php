@@ -13,17 +13,25 @@ use \App\Models\Categories;
 class Settings extends \Core\Controller
 {
 
-    /**
-     * Show the signup page
-     *
-     * @return void
-     */
+    //Income Categories Settings - redirecting
     public function incomeCategoriesSettingsAction()
     {
 		$incomeCategories = Categories::getIncomeCategoriesForNewIncome($_SESSION['user_id']);
-        View::renderTemplate('Settings/application_settings.html',['option'=>1, 'incomeCategories'=>$incomeCategories]);
+        View::renderTemplate('Settings/application_settings.html',['option'=>1, 'categories'=>$incomeCategories]);
+    }
+
+    //Expence Categories Settings - redirecting
+    public function expenceCategoriesSettingsAction()
+    {
+		$expenceCategories = Categories::getexpenceCategoriesForNewexpence($_SESSION['user_id']);
+        View::renderTemplate('Settings/application_settings.html',['option'=>2, 'categories'=>$expenceCategories]);
     }
 	
+	//PayMethod Categories Settings - redirecting
+	public function payMethodSettingsAction()
+    {
+        View::renderTemplate('Settings/application_settings.html',['option'=>3]);
+    }	
 
 	
 	//remove income Category
@@ -55,56 +63,86 @@ class Settings extends \Core\Controller
 	}
 	
 	//add income category
-	public function addIncomeCategoryAction()
+	public function addCategoryAction()
 	{
-		if(isset($_POST['categoryName']) && isset($_POST['max'])) {				
+		if(isset($_POST['categoryType']) && isset($_POST['categoryName']) && isset($_POST['max'])) {
 				$categoryToBeAdded=(ucwords(strtolower($_POST['categoryName'])));
 				$maxLimit=$_POST['max'];
-				$incomeCategories = Categories::addNewIncomeCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
-
-					if ($incomeCategories) {
-						$isCategoryDoubled=false;
-						$message="Dodano nową kategorię.";
-						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
-					}
-					if (!$incomeCategories) {
-						$isCategoryDoubled=true;
-						$message="Istnieje już taka kategoria.";
-						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
-					}
-					
-		
-		  } else {
+				switch ($_POST['categoryType']) {
+					case "incomes":
+						$incomeCategories = Categories::addNewIncomeCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
+						if ($incomeCategories) {
+							$isCategoryDoubled=false;
+							$message="Dodano nową kategorię.";
+						}
+						if (!$incomeCategories) {
+							$isCategoryDoubled=true;
+							$message="Istnieje już taka kategoria.";
+						}						
+						break;
+					case "expences":
+						$expenceCategories = Categories::addNewExpenceCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
+						if ($expenceCategories) {
+							$isCategoryDoubled=false;
+							$message="Dodano nową kategorię.";
+						}
+						if (!$expenceCategories) {
+							$isCategoryDoubled=true;
+							$message="Istnieje już taka kategoria.";
+						}
+						break;
+					case "paymethod":
+						//płatności
+						break;
+				}
+				echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));		
+			} else {
 			echo "Błąd Połączenia.";
 
 		  };	
 	}	
 	
 	//add income category
-	public function updateIncomeCategoryAction()
+	public function updateCategoryAction()
 	{
-		if(isset($_POST['newCategoryName']) && isset($_POST['oldCategoryName']) && isset($_POST['max'])) {
-			
+		if(isset($_POST['categoryType']) && isset($_POST['newCategoryName']) && isset($_POST['oldCategoryName']) && isset($_POST['max'])) {			
 				$oldCategoryName=$_POST['oldCategoryName'];
 				$newCategoryName=$_POST['newCategoryName'];
 				$maxLimit=$_POST['max'];
-				$incomeCategories = Categories::updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
-				//$incomeCategories = false;
-					if ($incomeCategories) {
-						$isCategoryDoubled=false;
-						$message="Zaktualizowano dane.";
+				switch ($_POST['categoryType']) {
+					case "incomes":
+						$incomeCategories = Categories::updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
+						if ($incomeCategories) {
+							$isCategoryDoubled=false;
+							$message="Zaktualizowano dane.";
+						}
+						if (!$incomeCategories) {
+							$isCategoryDoubled=true;
+							$message="Istnieje już taka kategoria.";
+						}
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
-					}
-					if (!$incomeCategories) {
-						$isCategoryDoubled=true;
-						$message="Istnieje już taka kategoria.";
+						break;
+					case "expences":
+						$expenceCategories = Categories::updateExpenceCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
+						if ($expenceCategories) {
+							$isCategoryDoubled=false;
+							$message="Zaktualizowano dane.";
+						}
+						if (!$incomeCategories) {
+							$isCategoryDoubled=true;
+							$message="Istnieje już taka kategoria.";
+						}
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
-					}			
-		
+						break;
+						break;
+					case "paymethod":
+						break;
+				}
 		  } else {
 			echo "Błąd Połączenia.";
 
-		  };	
+		  };
+		
 	}
 	
 	//replace income categories ids
@@ -125,15 +163,9 @@ class Settings extends \Core\Controller
 	}
 	
 	
-	    public function expenceCategoriesSettingsAction()
-    {
-        View::renderTemplate('Settings/application_settings.html',['option'=>2]);
-    }
+
 	
-	    public function payMethodSettingsAction()
-    {
-        View::renderTemplate('Settings/application_settings.html',['option'=>3]);
-    }
+
 
 
 }

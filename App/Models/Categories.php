@@ -45,22 +45,6 @@ class Categories extends \Core\Model
         }
 	}
 	
-	//get expence categories for add axpence form - it is without "nieskategoryzowane" category
-	public static function getExpenceCategoriesForNewExpence($userId)
-    {
-		try
-		{
-			$sql = 'SELECT * FROM `expence_categories` WHERE user_Id=:userId AND Name<>"Nieskategoryzowane"';
-			$db = static::getDB();
-			$stmt = $db->prepare($sql);
-			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-			$stmt->execute();
-			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
-			return $results;
-		} catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-	}
 	
 	//get income categories for add axpence form - it is without "nieskategoryzowane" category
 	public static function getIncomeCategoriesForNewIncome($userId)
@@ -77,7 +61,24 @@ class Categories extends \Core\Model
 		} catch (PDOException $e) {
             echo $e->getMessage();
         }
-	}	
+	}
+
+	//get expence categories for add axpence form - it is without "nieskategoryzowane" category
+	public static function getExpenceCategoriesForNewExpence($userId)
+    {
+		try
+		{
+			$sql = 'SELECT * FROM `expence_categories` WHERE user_Id=:userId AND Name<>"Nieskategoryzowane"';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
+			$results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+	}		
 	
 	//get all income categories together with "nieskategoryzowane"
 	public static function getAllIncomeCategories($userId)
@@ -183,6 +184,8 @@ class Categories extends \Core\Model
             return $stmt->execute();
 	}
 	
+
+	
 	//Creates initial income categories for new user
 	public function createIncomeCategoriesForNewUser($userId)
 	{
@@ -244,6 +247,26 @@ class Categories extends \Core\Model
 		return false;
     }
 	
+	//Check whether expence category exists or not
+	private static function expenceCategoryExists($categoryName, $userId)
+    {
+        try 
+		{
+			$sql = 'SELECT * FROM `expence_categories` WHERE name=:categoryName AND user_id=:userId';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
+			$stmt->execute();
+			return $stmt->fetch() !== false;
+		} catch (PDOException $e) 
+		{
+			echo $e->getMessage();
+			return false;
+		}
+		return false;
+    }
+	
 
 	//Adds Income Category for Selected user ID
 	public static function addNewIncomeCategory($userId, $categoryName, $maxLimit)
@@ -255,8 +278,20 @@ class Categories extends \Core\Model
 			} else {
 				$addNewCategories = Categories::addIncomeCategoryForUserId($userId, $categoryName, $maxLimit);				
 				return true;
-			}
-			
+			}			
+	}
+	
+	//Adds Income Category for Selected user ID
+	public static function addNewExpenceCategory($userId, $categoryName, $maxLimit)
+	{
+			$istnieje = Categories:: expenceCategoryExists($categoryName, $userId);
+			if($istnieje)
+			{
+				return false;
+			} else {
+				$addNewCategories = Categories::addExpenceCategoryForUserId($userId, $categoryName, $maxLimit);				
+				return true;
+			}			
 	}
 	
 	
@@ -272,6 +307,32 @@ class Categories extends \Core\Model
 		try
 		{
 			$sql = 'UPDATE `income_categories` SET `name`=:newCategoryName,`max`=:maxLimit WHERE `user_id`=:userId AND `name`=:oldCategoryName';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':oldCategoryName', $oldCategoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':newCategoryName', $newCategoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':maxLimit', $maxLimit, PDO::PARAM_STR);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
+			return $stmt->execute();
+		} catch (PDOException $e) 
+			{
+				echo $e->getMessage();
+			}
+		return false;
+    }
+	
+	//Update Expence Category, returns false when error
+	public static function updateExpenceCategory($oldCategoryName,$newCategoryName,$maxLimit,$userId)
+    {
+		$istnieje = Categories:: expenceCategoryExists($newCategoryName, $userId);
+		if($oldCategoryName!=$newCategoryName){
+			$istnieje = Categories:: expenceCategoryExists($newCategoryName, $userId);
+			if($istnieje) return false;
+		};
+		
+		try
+		{
+			$sql = 'UPDATE `expence_categories` SET `name`=:newCategoryName,`max`=:maxLimit WHERE `user_id`=:userId AND `name`=:oldCategoryName';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':oldCategoryName', $oldCategoryName, PDO::PARAM_STR);

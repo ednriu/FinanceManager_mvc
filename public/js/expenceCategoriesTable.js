@@ -5,7 +5,6 @@
 		const $newCategory = `
 		<tr>
 					<td class="pt-3-half" contenteditable="true">Nowa Kategoria</td>
-					<td class="pt-3-half" contenteditable="true">1000</td>
 					<td class="pt-3-half">
 					  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
 							aria-hidden="true"></i></a></span>
@@ -71,14 +70,7 @@
 				//jeżeli strzałka w górę jest ukryta znaczy, że to jest zmiana nowej kategorii
 				if ($(this).parents('tr').find('td:nth-child(3) .table-up').is(":hidden")) 
 				{
-					//zmiana dotyczy komórki z limitami, dlatego nie można dokonać zmiany
-					if ($activeCellCollumnNumber==1) 
-					{
-						$(this).parents('tr').find('td:nth-child(2)').text($activeMaxLimit);
-						$feedback = "Nie można zmienić limitu ponieważ nie została nadana nowa nazwa dla kategorii"
-						$("#feedback").show().text($feedback).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});						
-					};
-					
+				
 					//zmiana dotyczy zmiany kategorii. Musi być ona różna od "Nowa Kategoria"
 					if ($activeCellCollumnNumber==0) 
 					{					
@@ -87,9 +79,10 @@
 						
 						$.ajax({
 							type: 'POST',
-							url: '/Settings/addIncomeCategory',
+							url: '/Settings/addCategory',
 							data: {
 								categoryName: $newCategoryName,
+								categoryType: 'expences',
 								max: $maxLimit
 								},
 							success: function(res, msg) {
@@ -134,8 +127,9 @@
 					//Wywołanie polecenia AJAX dla obydwu zmian
 							$.ajax({
 								type: 'POST',
-								url: '/Settings/updateIncomeCategory',
+								url: '/Settings/updateCategory',
 								data: {
+									categoryType: 'expences',
 									newCategoryName: $newCategoryName,
 									oldCategoryName: $oldCategoryName,
 									max: $maxLimit

@@ -87,9 +87,10 @@
 						
 						$.ajax({
 							type: 'POST',
-							url: '/Settings/addIncomeCategory',
+							url: '/Settings/addCategory',
 							data: {
 								categoryName: $newCategoryName,
+								categoryType: 'incomes',
 								max: $maxLimit
 								},
 							success: function(res, msg) {
@@ -134,8 +135,9 @@
 					//Wywołanie polecenia AJAX dla obydwu zmian
 							$.ajax({
 								type: 'POST',
-								url: '/Settings/updateIncomeCategory',
+								url: '/Settings/updateCategory',
 								data: {
+									categoryType: 'incomes',
 									newCategoryName: $newCategoryName,
 									oldCategoryName: $oldCategoryName,
 									max: $maxLimit

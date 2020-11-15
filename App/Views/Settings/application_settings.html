@@ -36,15 +36,21 @@
 
 
 <!-- Finance Manager Content-->
-<div class="container-fluid bg pt-0 mainWindow">
-	
-	
-	
-
+<div class="container-fluid bg pt-0 mainWindow">	
+	{{option}}
 	<div class="row d-flex justify-content-center">	
 		<!-- Editable table -->
 		<div class="card mt-3 w-30 w-sm-95">
-		  <h3 id="categoriesHeader" class="card-header text-center font-weight-bold text-uppercase py-4">Kategorie Przychodów</h3>
+		  <h3 id="categoriesHeader" class="card-header text-center font-weight-bold text-uppercase py-4">
+			{% if option == 1 %}
+				Kategorie Przychodów
+			{% elseif option == 2 %}
+				Kategorie Wydatków
+			{% elseif option == 3 %}
+				Sposoby Płatności
+			{% endif %}
+			
+		  </h3>
 		  <div class="card-body">
 				<div id="feedbackLine" class="row d-flex justify-content-center w-100"><div id="feedback" class="alert text-center" role="alert"></div></div>
 				<div id="addButtonLine" class="row d-flex justify-content-end w-100"><span class="table-add float-right"><a href="#!" class="text-success"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span></div>
@@ -61,7 +67,7 @@
 				</thead>
 				
 				<tbody>				
-					{% for category in incomeCategories %}
+					{% for category in categories %}
 					  <tr>
 						<td class="pt-3-half" contenteditable="true">{{category.name}}</td>
 						<td class="pt-3-half" contenteditable="true">{{category.max}}</td>
@@ -108,7 +114,15 @@
 	<script type="text/javascript" src="/js/addons/datatables2.min.js"></script>
 	<!-- Script for Income Categories Table  -->
 	<script type="text/javascript" src="/js/incomeCategoriesTable.js" charset="utf-8"></script>
-
+	{% if option == 1 %}
+		<!-- Script for Income Categories Table  -->
+		<script type="text/javascript" src="/js/incomeCategoriesTable.js" charset="utf-8"></script>
+	{% elseif option == 2 %}
+		<!-- Script for Expence Categories Table  -->
+		<script type="text/javascript" src="/js/expenceCategoriesTable.js" charset="utf-8"></script>
+	{% elseif option == 3 %}
+		Sposoby Płatności
+	{% endif %}
 	
 	
 	
