@@ -24,25 +24,40 @@ class Settings extends \Core\Controller
         View::renderTemplate('Settings/application_settings.html',['option'=>1, 'incomeCategories'=>$incomeCategories]);
     }
 	
+
+	
 	//remove income Category
 	public function removeIncomeCategoryAction()
     {
 
 		if(isset($_POST['category'])) {
 			$categoryToBeRemoved=$_POST['category'];
+			$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $categoryToBeRemoved);
 		  } else {
-			echo "Noooooooob";
-		  }	
+			return false;
+		  };
+
+		if ($incomeCategories) 
+		{
+			$successfullyRemoved=true;
+			$message="Usunięto wybraną kategorię.";
+			echo json_encode(array("successfullyRemoved"=>$successfullyRemoved,"message"=>$incomeCategories));
+		};
+		if (!$incomeCategories) 
+		{
+			$successfullyRemoved=false;
+			$message="Nie usunięto wybranej kategorii z powodu błędu.";
+			echo json_encode(array("successfullyRemoved"=>$successfullyRemoved,"message"=>$incomeCategories));
+		};			
 		
-		$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $categoryToBeRemoved);
+
     
 	}
 	
 	//add income category
 	public function addIncomeCategoryAction()
 	{
-		if(isset($_POST['categoryName']) && isset($_POST['max'])) {
-			
+		if(isset($_POST['categoryName']) && isset($_POST['max'])) {				
 				$categoryToBeAdded=(ucwords(strtolower($_POST['categoryName'])));
 				$maxLimit=$_POST['max'];
 				$incomeCategories = Categories::addNewIncomeCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);

@@ -25,7 +25,8 @@ class Categories extends \Core\Model
         foreach ($data as $key => $value) {
             $this->$key = $value;
         };
-    }
+    }	
+
 	
 	//get all expence categories together with "nieskategoryzowane"
 	public static function getAllExpenceCategories($userId)
@@ -205,13 +206,20 @@ class Categories extends \Core\Model
 	//Removes Income Category for Selected user ID
 	public static function removeIncomeCategory($userId, $categoryName)
 	{
-		$sql = 'DELETE FROM `income_categories` WHERE user_id=:userId AND name=:categoryName';
-                                              
+		try
+		{
+			$sql = 'DELETE FROM `income_categories` WHERE user_id=:userId AND name=:categoryName';                                              
             $db = static::getDB();
             $stmt = $db->prepare($sql);			
 			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
             $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);  			
-			$stmt->execute();
+			return $stmt->execute() !== false;
+		} catch (PDOException $e) 
+		{
+			echo $e->getMessage();
+			return false;
+		}
+		return false;
 	}
 	
 
@@ -231,8 +239,9 @@ class Categories extends \Core\Model
 		} catch (PDOException $e) 
 		{
 			echo $e->getMessage();
+			return false;
 		}
-
+		return false;
     }
 	
 

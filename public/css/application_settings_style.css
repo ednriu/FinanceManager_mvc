@@ -14,8 +14,17 @@ body {
 }
 
 
-#feedbackLine {
-	height: 60px;
+#feedbackLine, #addButtonLine {
+	height: 50px;
+}
+
+/*
+ * Table
+ */
+
+#categoriesHeader{
+	background-color:green;
+	color:yellow;
 }
 
 #table {
@@ -23,6 +32,22 @@ body {
   height:400px;
   overflow-y: scroll;
 }
+
+.table-striped>thead>tr>th {
+   background-color: green;
+   color:yellow;
+   font-size:1,2rem;
+ }
+
+.table-striped>tbody>tr:nth-child(odd)>td {
+   background-color: green;
+   color:yellow;
+ }
+ 
+ .table-striped>tbody>tr:nth-child(even)>td {
+   background-color: red;
+   color:yellow;
+ }
 
 .pt-3-half {
 	padding-top: 1.4rem;
