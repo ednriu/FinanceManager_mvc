@@ -19,7 +19,10 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
 	<!-- Bootstrap core CSS -->
 	<!--<link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+	
 	<!-- MDBootstrap Datatables  -->
+	<link href="/css/addons/datatables.min.css" rel="stylesheet">
+	<!-- MDBootstrap Datatables2  -->
 	<link href="/css/addons/datatables2.min.css" rel="stylesheet">
 
 	<!-- Material Design Bootstrap -->
@@ -35,25 +38,29 @@
 <!-- Finance Manager Content-->
 <div class="container-fluid bg pt-0 mainWindow">
 	
-	<div class="row d-flex justify-content-center">
+	
+	
+
+	<div class="row d-flex justify-content-center">	
 		<!-- Editable table -->
-		<div class="card mt-4 w-50">
+		<div class="card mt-3 w-50">
 		  <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Kategorie Przychodów</h3>
 		  <div class="card-body">
-			<div id="table" class="table-editable">
-
-				  <div id="feedbackLine" class="row d-flex justify-content-center w-100"><div id="feedback" class="alert text-center" role="alert"></div></div>
-				  <div class="row d-flex justify-content-end w-100"><span class="table-add float-right"><a href="#!" class="text-success"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span></div>
+				<div id="feedbackLine" class="row d-flex justify-content-center w-100"><div id="feedback" class="alert text-center" role="alert"></div></div>
+				 <div class="row d-flex justify-content-end w-100"><span class="table-add float-right"><a href="#!" class="text-success"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span></div>
 		  
-			  <table class="table table-bordered table-responsive-md table-striped text-center">
-				<thead>
+			<div id="table">		  
+			  <table class="table table-bordered table-responsive-md table-striped text-center table-hover">
+				<thead class="thead-dark">
 				  <tr>
-					<th class="text-center">Kategoria</th>
-					<th class="text-center">Maxymalny Limit</th>
+					<th class="text-center font-weight-bold">Kategoria</th>
+					<th class="text-center font-weight-bold">Maxymalny Limit</th>
+					<th></th>
+					<th></th>
 				  </tr>
 				</thead>
-				<tbody>
 				
+				<tbody>				
 					{% for category in incomeCategories %}
 					  <tr>
 						<td class="pt-3-half" contenteditable="true">{{category.name}}</td>
@@ -96,6 +103,8 @@
 	<!-- Your custom scripts (optional) -->
 	<script type="text/javascript"></script>
 	<!-- MDBootstrap Datatables  -->
+	<script type="text/javascript" src="/js/addons/datatables.min.js"></script>
+	<!-- MDBootstrap Datatables2  -->
 	<script type="text/javascript" src="/js/addons/datatables2.min.js"></script>
 
 
@@ -134,11 +143,18 @@
 		 $('.table-add').on('click', 'i', () => {
 		   const $clone = $tableID.find('tbody tr').last().clone(true);
 		   newCategory = $tableID.find('tr:last td:first').text();
+
+		   
 		   if ((newCategory !== 'Nowa Kategoria')) {
 			 $('#table table tbody').append($newCategory);
-			 newCategory = $tableID.find('tr:last td:first').text();
+			 newCategory = $tableID.find('tr:last td:first').text();			 
+			 //przewijanie do nowo dodanej kategorii
+			 var elem = $('#table');
+			 var maxScrollTop = elem[0].scrollHeight - elem.outerHeight();
+			 $('#table').scrollTop(maxScrollTop);
+			 //dodanie komunikatu
 			 $feedback = "Proszę nadać nazwę nowej kategorii."
-			 $("#feedback").show().text($feedback).addClass('alert-success').removeClass('alert-danger');
+			 $("#feedback").show().text($feedback).addClass('alert-success').removeClass('alert-danger'); 
 			 //Ponieważ nazwa kategorii musi być zmieniona, skrypt ukrywa przyciski w linijce nowej kategorii oraz przycisk dodania kolejnej
 			 $('.table-add').find('a').hide();
 			 $tableID.find('tr:last .table-up').hide();

@@ -13,18 +13,20 @@ body {
 	background-size: cover !important;
 }
 
-.mainWindow {
-  position: fixed;
-  top: 100;
-  right: 0;
-  overflow:scroll;
-}
 
 #feedbackLine {
 	height: 60px;
 }
 
+#table {
+  display:block;
+  height:400px;
+  overflow-y: scroll;
+}
 
+.pt-3-half {
+	padding-top: 1.4rem;
+}
 
 /*
  * MainWindow
@@ -32,7 +34,7 @@ body {
 
 .mainWindow {
   position: fixed;
-  top: 100;
+  top: 64px;
   right: 0;
   overflow:scroll;
 }
@@ -136,7 +138,7 @@ label.form-check-label{
 	font-size:1rem;
 }
 
-input[type:number]{
+input[type=number]{
 	background-color:red;
 }
 
