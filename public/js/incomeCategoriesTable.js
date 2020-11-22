@@ -22,7 +22,7 @@
 								  class="btn btn-danger btn-rounded btn-sm my-0">Usuń</button></span>
 							</td>
 				</tr>`;
-				$categoryType = "incomes";
+				$categoryType = 'incomes';
 			break;
 		  case 2:
 						$newCategory = `
@@ -40,7 +40,7 @@
 								  class="btn btn-danger btn-rounded btn-sm my-0">Usuń</button></span>
 							</td>
 				</tr>`;
-				$categoryType = "expences";
+				$categoryType = 'expences';
 			break;
 		  case 3:
 						$newCategory = `
@@ -57,7 +57,7 @@
 								  class="btn btn-danger btn-rounded btn-sm my-0">Usuń</button></span>
 							</td>
 				</tr>`;
-				$categoryType = "payMethods";
+				$categoryType = 'payMethods';
 			break;
 		}
 		
@@ -110,8 +110,8 @@
 		//------------------------------------------
 		//Zmiana Danych	w dowolnej komórce	
 		$tableID.on('focusout','tbody tr td',function() {
+			event.stopPropagation();
 			if ($activeCellContent!=$(this).html()){
-
 				//jeżeli strzałka w górę jest ukryta znaczy, że to jest zmiana nowej kategorii
 				if ($(this).parents('tr').find('td:nth-child(3) .table-up').is(":hidden")) 
 				{
@@ -162,7 +162,7 @@
 				//jeżeli strzałka w górę jest widoczna oznacza to zmianę kategori różnej od "Nowa Kategoria"
 				if ($(this).parents('tr').find('td:nth-child(3) .table-up').is(":visible")) 
 				{
-					//zmiana w kolumnie katerogii
+					//zmiana w kolumnie kategorii
 						if ($activeCellCollumnNumber==0) {
 							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());	
 							$newCategoryName = ($(this).parents('tr').find('td:nth-child(1)').html());
@@ -175,7 +175,7 @@
 							$newCategoryName = $activeCategoryContent;
 							$oldCategoryName = $activeCategoryContent;												
 						};
-					
+
 					//Wywołanie polecenia AJAX dla obydwu zmian
 							$.ajax({
 								type: 'POST',
@@ -190,11 +190,11 @@
 								  res = $.parseJSON(res);
 								  if (res.isCategoryDoubled) {
 									$tableID.find('tr:nth-child('+$activeCellRowNumber+') td:nth-child(1)').text($activeCellContent);
-									$("#feedback").show().text(res.message).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});;
+									$("#feedback").show().text(res.message).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
 								  }
 								  else
 								  {
-									$("#feedback").show().text(res.message).addClass('alert-success').removeClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});;
+									$("#feedback").show().text(res.message).addClass('alert-success').removeClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});
 								  };
 								},
 								error : function() {

@@ -336,7 +336,7 @@ class Categories extends \Core\Model
 			}			
 	}
 	
-	//Adds Income Category for Selected user ID
+	//Adds Expence Category for Selected user ID
 	public static function addNewExpenceCategory($userId, $categoryName, $maxLimit)
 	{
 			$istnieje = Categories:: expenceCategoryExists($categoryName, $userId);
@@ -353,7 +353,7 @@ class Categories extends \Core\Model
 	//Update Income Category, returns false when error
 	public static function updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$userId)
     {
-		$istnieje = Categories:: incomeCategoryExists($newCategoryName, $userId);
+		//$istnieje = Categories:: incomeCategoryExists($newCategoryName, $userId);
 		if($oldCategoryName!=$newCategoryName){
 			$istnieje = Categories:: incomeCategoryExists($newCategoryName, $userId);
 			if($istnieje) return false;
@@ -379,7 +379,7 @@ class Categories extends \Core\Model
 	//Update Expence Category, returns false when error
 	public static function updateExpenceCategory($oldCategoryName,$newCategoryName,$maxLimit,$userId)
     {
-		$istnieje = Categories:: expenceCategoryExists($newCategoryName, $userId);
+		//$istnieje = Categories:: expenceCategoryExists($newCategoryName, $userId);
 		if($oldCategoryName!=$newCategoryName){
 			$istnieje = Categories:: expenceCategoryExists($newCategoryName, $userId);
 			if($istnieje) return false;

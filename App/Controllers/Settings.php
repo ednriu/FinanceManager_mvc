@@ -35,7 +35,7 @@ class Settings extends \Core\Controller
     }	
 
 	
-	//remove income Category
+	//remove Category
 	public function removeCategoryAction()
     {
 		if(isset($_POST['category']) && isset($_POST['categoryType'])) {
@@ -133,12 +133,17 @@ class Settings extends \Core\Controller
 	//add income category
 	public function updateCategoryAction()
 	{
-		if(isset($_POST['categoryType']) && isset($_POST['newCategoryName']) && isset($_POST['oldCategoryName']) && isset($_POST['max'])) {			
+		//$isCategoryDoubled = false;
+		//$message = $_POST['max'];
+		//echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
+		
+		/*
+		if(isset($_POST['categoryType']) && isset($_POST['newCategoryName']) && isset($_POST['oldCategoryName']) && isset($_POST['max'])) {	*/		
 				$oldCategoryName=$_POST['oldCategoryName'];
 				$newCategoryName=$_POST['newCategoryName'];
-				$maxLimit=$_POST['max'];
+				$maxLimit=$_POST['max']; 
 				switch ($_POST['categoryType']) {
-					case "incomes":
+					/*case "incomes":
 						$incomeCategories = Categories::updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
 						if ($incomeCategories) {
 							$isCategoryDoubled=false;
@@ -150,25 +155,27 @@ class Settings extends \Core\Controller
 						}
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
 						break;
-					case "expences":
+					*/case "expences": 
 						$expenceCategories = Categories::updateExpenceCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
+
 						if ($expenceCategories) {
 							$isCategoryDoubled=false;
 							$message="Zaktualizowano dane2.";
 						}
-						if (!$incomeCategories) {
+						if (!$expenceCategories) {
 							$isCategoryDoubled=true;
 							$message="Istnieje już taka kategoria.";
 						}
-						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
+						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message)); 
 						break;
 					case "paymethod":
 						break;
-				}
+				}/*
 		  } else {
 			echo "Błąd Połączenia.";
 
 		  };
+		  */
 		
 	}
 	
