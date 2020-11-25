@@ -119,9 +119,18 @@ class Settings extends \Core\Controller
 							$message="Istnieje już taka kategoria.";
 						}
 						break;
-					case "paymethod":
-						//płatności
+					case "payMethods":
+						$payMethodCategories = Categories::addNewPayMethodCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
+						if ($payMethodCategories) {
+							$isCategoryDoubled=false;
+							$message="Dodano nową metodę płatności.";
+						}
+						if (!$payMethodCategories) {
+							$isCategoryDoubled=true;
+							$message="Istnieje już taka metoda płatności.";
+						}
 						break;
+						
 				}
 				echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));		
 			} else {
@@ -133,21 +142,17 @@ class Settings extends \Core\Controller
 	//add income category
 	public function updateCategoryAction()
 	{
-		//$isCategoryDoubled = false;
-		//$message = $_POST['max'];
-		//echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
 		
-		/*
-		if(isset($_POST['categoryType']) && isset($_POST['newCategoryName']) && isset($_POST['oldCategoryName']) && isset($_POST['max'])) {	*/		
+		if(isset($_POST['categoryType']) && isset($_POST['newCategoryName']) && isset($_POST['oldCategoryName']) && isset($_POST['max'])) {			
 				$oldCategoryName=$_POST['oldCategoryName'];
 				$newCategoryName=$_POST['newCategoryName'];
 				$maxLimit=$_POST['max']; 
 				switch ($_POST['categoryType']) {
-					/*case "incomes":
+					case "incomes":
 						$incomeCategories = Categories::updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
 						if ($incomeCategories) {
 							$isCategoryDoubled=false;
-							$message="Zaktualizowano dane1.";
+							$message="Zaktualizowano dane.";
 						}
 						if (!$incomeCategories) {
 							$isCategoryDoubled=true;
@@ -155,12 +160,11 @@ class Settings extends \Core\Controller
 						}
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
 						break;
-					*/case "expences": 
+					case "expences": 
 						$expenceCategories = Categories::updateExpenceCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
-
 						if ($expenceCategories) {
 							$isCategoryDoubled=false;
-							$message="Zaktualizowano dane2.";
+							$message="Zaktualizowano dane.";
 						}
 						if (!$expenceCategories) {
 							$isCategoryDoubled=true;
@@ -169,13 +173,23 @@ class Settings extends \Core\Controller
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message)); 
 						break;
 					case "paymethod":
+						$payMethodCategories = Categories::updatePayMethodCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
+						if ($payMethodCategories) {
+							$isCategoryDoubled=false;
+							$message="Zaktualizowano dane.";
+						}
+						if (!$payMethodCategories) {
+							$isCategoryDoubled=true;
+							$message="Istnieje już taka kategoria.";
+						}
+						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message)); 
 						break;
-				}/*
+				}
 		  } else {
 			echo "Błąd Połączenia.";
 
 		  };
-		  */
+		  
 		
 	}
 	

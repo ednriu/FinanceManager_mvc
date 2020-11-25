@@ -1,16 +1,15 @@
 		const $tableID = $('#table');
 		const $BTN = $('#przycisk');
 		const $EXPORT = $('#export');
-
+		var $numberOfArrowColumn;
 		var $newCategory;
 		var $categoryType;
 		
 		switch($option) {
 		  case 1:
-						$newCategory = `
+				$newCategory = `
 				<tr>
-							<td class="pt-3-half" contenteditable="true">Nowa Kategoria</td>
-							<td class="pt-3-half" contenteditable="true">1000</td>
+							<td class="pt-3-half" contenteditable="true">Nowa Kategoria</td>							
 							<td class="pt-3-half">
 							  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
 									aria-hidden="true"></i></a></span>
@@ -23,9 +22,10 @@
 							</td>
 				</tr>`;
 				$categoryType = 'incomes';
+				$numberOfArrowColumn = 2;
 			break;
 		  case 2:
-						$newCategory = `
+				$newCategory = `
 				<tr>
 							<td class="pt-3-half" contenteditable="true">Nowa Kategoria</td>
 							<td class="pt-3-half" contenteditable="true">1000</td>
@@ -41,9 +41,10 @@
 							</td>
 				</tr>`;
 				$categoryType = 'expences';
+				$numberOfArrowColumn = 3;
 			break;
 		  case 3:
-						$newCategory = `
+				$newCategory = `
 				<tr>
 							<td class="pt-3-half" contenteditable="true">Nowa Metoda</td>
 							<td class="pt-3-half">
@@ -58,6 +59,7 @@
 							</td>
 				</tr>`;
 				$categoryType = 'payMethods';
+				$numberOfArrowColumn = 2;
 			break;
 		}
 		
@@ -66,7 +68,7 @@
 		var $activeCellContent =".";
 		var $activeCategoryContent=".";
 		
-		var newCategory = $tableID.find('tr:last td:first').text(); //czy oby na pewno potrzebne?
+		var lastCategoryName = $tableID.find('tr:last td:first').text(); //czy oby na pewno potrzebne?
 		var activeCellContent;		
 
 
@@ -77,10 +79,10 @@
 		//dodawanie nowej kategori jeśli nie istnieje
 		 $('.table-add').on('click', 'i', () => {
 		   const $clone = $tableID.find('tbody tr').last().clone(true);
-		   newCategory = $tableID.find('tr:last td:first').text();		   
-		   if ((newCategory !== 'Nowa Kategoria') && (newCategory !== 'Nowa Metoda')) {
+		   lastCategoryName = $tableID.find('tr:last td:first').text();		   
+		   if ((lastCategoryName !== 'Nowa Kategoria') && (lastCategoryName !== 'Nowa Metoda')) {
 			 $('#table table tbody').append($newCategory);
-			 newCategory = $tableID.find('tr:last td:first').text();			 
+			 lastCategoryName = $tableID.find('tr:last td:first').text();			 
 			 //przewijanie do nowo dodanej kategorii
 			 var elem = $('#table');
 			 var maxScrollTop = elem[0].scrollHeight - elem.outerHeight();
@@ -113,7 +115,8 @@
 			event.stopPropagation();
 			if ($activeCellContent!=$(this).html()){
 				//jeżeli strzałka w górę jest ukryta znaczy, że to jest zmiana nowej kategorii
-				if ($(this).parents('tr').find('td:nth-child(3) .table-up').is(":hidden")) 
+
+				if ($(this).parents('tr').find('td:nth-child('+$numberOfArrowColumn+') .table-up').is(":hidden")) 
 				{
 					//zmiana dotyczy komórki z limitami, dlatego nie można dokonać zmiany
 					if (($activeCellCollumnNumber==1) && ($option==2)) 
@@ -127,7 +130,17 @@
 					if ($activeCellCollumnNumber==0) 
 					{					
 						$newCategoryName = $(this).html();
-						$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
+						
+						if ($option==2)
+						{
+							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
+						}; 
+						
+						if (($option==1) || ($option==3))
+						{
+							$maxLimit = 0;
+						}; 
+						
 						
 						$.ajax({
 							type: 'POST',
@@ -160,21 +173,30 @@
 				
 				
 				//jeżeli strzałka w górę jest widoczna oznacza to zmianę kategori różnej od "Nowa Kategoria"
-				if ($(this).parents('tr').find('td:nth-child(3) .table-up').is(":visible")) 
+				if ($(this).parents('tr').find('td:nth-child('+$numberOfArrowColumn+') .table-up').is(":visible")) 
 				{
 					//zmiana w kolumnie kategorii
 						if ($activeCellCollumnNumber==0) {
-							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());	
+							if ($option==2)
+							{
+								$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());	
+							};							
+						
 							$newCategoryName = ($(this).parents('tr').find('td:nth-child(1)').html());
 							$oldCategoryName = $activeCellContent;
 						};
 						
 					//zmiana w kolumnie limitów	
-						if (($activeCellCollumnNumber==1)) {
+						if (($activeCellCollumnNumber==1) && ($option==2)) {
 							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
 							$newCategoryName = $activeCategoryContent;
 							$oldCategoryName = $activeCategoryContent;												
 						};
+						
+						if (($option==1) || ($option==3))
+							{
+								$maxLimit = 0;
+							};
 
 					//Wywołanie polecenia AJAX dla obydwu zmian
 							$.ajax({
