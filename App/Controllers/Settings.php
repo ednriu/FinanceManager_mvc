@@ -90,7 +90,7 @@ class Settings extends \Core\Controller
 			echo json_encode(array("successfullyRemoved"=>$successfullyRemoved,"message"=>$message));    
 	}
 	
-	//add income category
+	//add category
 	public function addCategoryAction()
 	{
 		if(isset($_POST['categoryType']) && isset($_POST['categoryName']) && isset($_POST['max'])) {
@@ -139,7 +139,7 @@ class Settings extends \Core\Controller
 		  };	
 	}	
 	
-	//add income category
+	//update category
 	public function updateCategoryAction()
 	{
 		
@@ -172,8 +172,8 @@ class Settings extends \Core\Controller
 						}
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message)); 
 						break;
-					case "paymethod":
-						$payMethodCategories = Categories::updatePayMethodCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
+					case "payMethods":
+						$payMethodCategories = Categories::updatePayMethodCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);						
 						if ($payMethodCategories) {
 							$isCategoryDoubled=false;
 							$message="Zaktualizowano dane.";
@@ -204,9 +204,10 @@ class Settings extends \Core\Controller
 					case "incomes":
 						$firstCategoryId = Categories::getIncomeCategoryId($firstCategoryName,$_SESSION['user_id']);
 						$secondCategoryId = Categories::getIncomeCategoryId($secondCategoryName,$_SESSION['user_id']);
+						echo $secondCategoryName;
 						$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$_SESSION['user_id'], 0);
 						$assignSecondId = Categories::setIncomeCategoryId($secondCategoryName,$_SESSION['user_id'], $firstCategoryId);
-						$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$_SESSION['user_id'], $secondCategoryId);
+						$assignFirstId = Categories::setIncomeCategoryId($firstCategoryName,$_SESSION['user_id'], $secondCategoryId);						
 						echo true;
 						break;
 					case "expences":

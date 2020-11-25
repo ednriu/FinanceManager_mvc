@@ -202,16 +202,15 @@ class Categories extends \Core\Model
 	}
 	
 	//Adds Expences Category for specified userId
-	private static function addPayMethodCategoryForUserId($userId, $payMethodName, $maxLimit)
+	private static function addPayMethodCategoryForUserId($userId, $payMethodName)
 	{
-		$sql = 'INSERT INTO pay_method_categories (name, user_Id, max)
-                    VALUES (:name, :userId, :maxLimit)';
+		$sql = 'INSERT INTO pay_method_categories (name, user_Id)
+                    VALUES (:name, :userId)';
                                               
             $db = static::getDB();
             $stmt = $db->prepare($sql);			
 			$stmt->bindValue(':name', $payMethodName, PDO::PARAM_STR);
-            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-			$stmt->bindValue(':maxLimit', $maxLimit, PDO::PARAM_INT);			
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);			
             return $stmt->execute();
 	}	
 
@@ -383,15 +382,14 @@ class Categories extends \Core\Model
 	}
 	
 	//Adds new Pay Method Category for Selected user ID
-	public static function addNewPayMethodCategory($userId, $categoryName, $maxLimit)
+	public static function addNewPayMethodCategory($userId, $categoryName)
 	{
-			//$istnieje = Categories:: payMethodCategoryExists($categoryName, $userId);
-			$istnieje = true;
+			$istnieje = Categories:: payMethodCategoryExists($categoryName, $userId);
 			if($istnieje)
 			{
 				return false;
 			} else {
-				$addNewCategories = Categories::addPayMethodCategoryForUserId($userId, $categoryName, $maxLimit);				
+				$addNewCategories = Categories::addPayMethodCategoryForUserId($userId, $categoryName);				
 				return true;
 			}			
 	}
@@ -400,7 +398,7 @@ class Categories extends \Core\Model
 	//Update Income Category, returns false when error
 	public static function updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$userId)
     {
-		$istnieje = Categories:: incomeCategoryExists($newCategoryName, $userId);
+		//$istnieje = Categories:: incomeCategoryExists($newCategoryName, $userId);
 		if($oldCategoryName!=$newCategoryName){
 			$istnieje = Categories:: incomeCategoryExists($newCategoryName, $userId);
 			if($istnieje) return false;
@@ -449,6 +447,31 @@ class Categories extends \Core\Model
 		return false;
     }
 	
+	//Update payMethod Category, returns false when error
+	public static function updatePayMethodCategory($oldCategoryName,$newCategoryName,$maxLimit,$userId)
+    {
+		if($oldCategoryName!=$newCategoryName){
+			$istnieje = Categories:: payMethodCategoryExists($newCategoryName, $userId);
+			//$istnieje = false;
+			if($istnieje) return false;
+		};
+		
+		try
+		{
+			$sql = 'UPDATE `pay_method_categories` SET `name`=:newCategoryName WHERE `user_id`=:userId AND `name`=:oldCategoryName';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':oldCategoryName', $oldCategoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':newCategoryName', $newCategoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);		
+			return $stmt->execute();
+		} catch (PDOException $e) 
+			{
+				echo $e->getMessage();
+			}
+		return false;
+    }
+	
 	// gets category_id for selected category Name (incomes)
 	public static function getIncomeCategoryId($categoryName,$userId) {		
 		try
@@ -469,7 +492,7 @@ class Categories extends \Core\Model
 	}
 	
 		// sets category_id for selected category Name (incomes). If error returns false.
-	public static function setIncomeCategoryId($categoryName,$userId, $newId) {		
+	public static function setIncomeCategoryId($categoryName,$userId,$newId) {		
 
 		try
 		{
