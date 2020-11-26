@@ -43,63 +43,46 @@
 <!-- Finance Manager Content-->
 <div class="container-fluid bg pt-0 mainWindow">	
 	<div class="row d-flex justify-content-center">	
-		<!-- Editable table -->
-		<div class="card mt-3 w-30 w-sm-95">
-		  <h3 id="categoriesHeader" class="card-header text-center font-weight-bold text-uppercase py-4">
-			{% if option == 1 %}
-				Kategorie Przychodów
-			{% elseif option == 2 %}
-				Kategorie Wydatków
-			{% elseif option == 3 %}
-				Sposoby Płatności
-			{% endif %}			
-			
-		  </h3>
-		  <div class="card-body">
-				<div id="feedbackLine" class="row d-flex justify-content-center w-100"><div id="feedback" class="alert text-center" role="alert"></div></div>
-				<div id="addButtonLine" class="row d-flex justify-content-end w-100"><span class="table-add float-right"><a href="#!" class="text-success"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span></div>
-		  
-			<div id="table">		  
-			  <table class="table table-responsive-md table-striped text-center table-hover">
-				<thead>
-				  <tr>
-					<th class="text-center font-weight-bold">Kategoria</th>
-					{% if option == 2 %}
-						<th class="text-center font-weight-bold">Maxymalny Limit</th>
-					{% endif %}					
-					<th></th>
-					<th></th>
-				  </tr>
-				</thead>
 				
-				<tbody>				
-					{% for category in categories %}
-					  <tr>
-						<td class="pt-3-half" contenteditable="true">{{category.name}}</td>
-						{% if option == 2 %}
-							<td class="pt-3-half" contenteditable="true">{{category.max}}</td>
-						{% endif %}	
-						
-						<td class="pt-3-half">
-						  <span class="table-up"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-up"
-								aria-hidden="true"></i></a></span>
-						  <span class="table-down"><a href="#!" class="indigo-text"><i class="fas fa-long-arrow-alt-down"
-								aria-hidden="true"></i></a></span>
-						</td>
-						<td>
-						  <span class="table-remove"><button type="button"
-							  class="btn btn-danger btn-rounded btn-sm my-0">Usuń</button></span>
-						</td>
-					  </tr>
-					{% endfor %}
+		
+		
+	<!--Section: Block Content-->
+		<div id="feedbackLine" class="row d-flex justify-content-center w-100"><div id="feedback" class="alert text-center" role="alert"></div></div>
+		
+		<section class="mb-5 text-center bg-light">
 
-						<div id="wynik"></div>
-				</tbody>
-			  </table>
+		  <p>Zmień hasło</p>
+
+		  <form id="passwordChange" action="/Settings/changePassword">
+
+			<div class="md-form md-outline">
+			  <input type="password" id="newPass" class="form-control">
+			  <label data-error="wrong" data-success="right" for="newPass">New password</label>
 			</div>
+
+			<div class="md-form md-outline">
+			  <input type="password" id="newPassConfirm" class="form-control">
+			  <label data-error="wrong" data-success="right" for="newPassConfirm">Confirm password</label>
+			</div>
+
+			<button type="submit" class="btn btn-primary mb-4">Change password</button>
+
+		  </form>
+
+		  <div class="d-flex justify-content-between align-items-center mb-2">
+
+			<u><a href="https://mdbootstrap.com/docs/jquery/admin/auth/login/">Back to Log In</a></u>
+
+			<u><a href="https://mdbootstrap.com/docs/jquery/admin/auth/register/">Register</a></u>
+
 		  </div>
-		</div>
-		<!-- Editable table -->
+
+		</section>
+	<!--Section: Block Content-->
+		
+		
+		
+		
 	</div>
 	
 </div><!-- /.container-fluid-->
@@ -125,10 +108,43 @@
 	<!-- Script for Income Categories Table  -->
 	<script type="text/javascript" src="/js/incomeCategoriesTable.js" charset="utf-8"></script>
 
-	
-	
-	
 
+
+	<script>
+	$(document).ready(function(){
+		$("#passwordChange").on("submit", function(event){
+			event.preventDefault();
+			var $newPassword1 = "ddd";
+			var $newPassword2 = "aaa";
+			$.ajax({
+				type: 'POST',
+				url: '/Settings/changePassword',
+				data: {
+					newPassword1: $newPassword1,
+					newPassword2: $newPassword2
+					},
+				success: function(res, msg) {
+				  res = $.parseJSON(res);
+				  if (res.isCategoryDoubled) {
+					$tableID.find('tr:last td:first').text("Nowa Kategoria");
+					$("#feedback").show().text(res.message).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
+				  }
+				  else
+				  {
+					$("#feedback").show().text(res.message).addClass('alert-success').removeClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});
+					$('.table-add').find('a').show();
+					$tableID.find('tr:last .table-up').show();
+					$tableID.find('tr:last .table-down').show();
+				  };
+				},
+				error : function() {
+					console.log("Wystąpił błąd z połączeniem");
+				}
+			});			
+			alert("działa");
+		});
+	});
+	</script>	
 	
 	<!-- feather icons  -->
 	<script>feather.replace()</script>

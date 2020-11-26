@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\Categories;
+use \App\Models\User;
 
 /**
  * Signup controller
@@ -34,6 +35,19 @@ class Settings extends \Core\Controller
         View::renderTemplate('Settings/application_settings.html',['option'=>3, 'categories'=>$payMethodCategories]);
     }	
 
+	//Password Change - redirecting
+	public function changePasswordRenderAction()
+    {
+		$payMethodCategories = Categories::getPayMethodCategoriesForNewPayMethod($_SESSION['user_id']);
+        View::renderTemplate('Settings/user_settings.html',['option'=>1]);
+    }
+	
+	//User Data Change - redirecting
+	public function changeUserDataRenderAction()
+    {
+		$payMethodCategories = Categories::getPayMethodCategoriesForNewPayMethod($_SESSION['user_id']);
+        View::renderTemplate('Settings/user_settings.html',['option'=>2]);
+    }
 	
 	//remove Category
 	public function removeCategoryAction()
@@ -229,4 +243,17 @@ class Settings extends \Core\Controller
 			};
 		}
 	}
+	
+	//change password	
+	public function changePassword()
+	{
+		$newPassword1 = $_POST['newPassword1'];
+		$newPassword2 = $_POST['newPassword2'];
+		$userData = new User();
+		$userData->updatePassword("abc", $_SESSION['user_id']);		
+		echo json_encode(array("isCategoryDoubled"=>false,"message"=>"tekst"));
+	}
+	
+	
+	
 }
