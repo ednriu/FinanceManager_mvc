@@ -249,9 +249,17 @@ class Settings extends \Core\Controller
 	{
 		$newPassword1 = $_POST['newPassword1'];
 		$newPassword2 = $_POST['newPassword2'];
-		$userData = new User();
-		$userData->updatePassword("abc", $_SESSION['user_id']);		
-		echo json_encode(array("isCategoryDoubled"=>false,"message"=>"tekst"));
+		
+		if ($newPassword1==$newPassword2)
+		{
+			$userData = new User();
+			$userData->updatePassword($newPassword2, $_SESSION['user_id']);		
+			echo json_encode(array("passwordsAreIdentical"=>true,"message"=>"Zmieniono hasło na nowe.", "userData"=>$userData));
+		};
+		if ($newPassword1!=$newPassword2) {
+			echo json_encode(array("passwordsAreIdentical"=>false,"message"=>"Wprowadzone hasła różnią się. Wprowadź takie same hasła."));
+		};
+		
 	}
 	
 	

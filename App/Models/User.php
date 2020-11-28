@@ -123,6 +123,28 @@ class User extends \Core\Model
 		}
     }
 
+   /**
+     * Validates Password Only
+     *
+     * @return void
+     */
+    public function validatePasswordOnly()
+    {		
+        if (strlen($this->newPassword) < 6) {
+            $this->errors["error_password"] = 'hasło powinno zawierać conajmniej 6 znaków';
+        }
+
+        if (preg_match('/.*[a-z]+.*/i', $this->newPassword) == 0) {
+            $this->errors["error_password"] = 'hasło powinno zawierać conajmniej jedną literę';
+        }
+
+        if (preg_match('/.*\d+.*/i', $this->newPassword) == 0) {
+            $this->errors["error_password"] = 'hasło powinno zawierać conajmniej jedną cyfrę';
+        }
+    }
+
+
+
     /**
      * See if a user record already exists with the specified email
      *
@@ -178,14 +200,20 @@ class User extends \Core\Model
 	}
 	
 	public function updatePassword($newPassword, $userId)
-	{			
-		$sql = 'UPDATE `users` SET `password`=:newPassword WHERE `user_id`=:userId';
-        $db = static::getDB();
-		$password_hash = password_hash($newPassword, PASSWORD_DEFAULT);
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(':newPassword', $password_hash, PDO::PARAM_STR);
-        $stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
-        $stmt->execute();
+	{	
+		$this->newPassword = $newPassword;
+		$this->validatePasswordOnly();
+
+        if (empty($this->errors)) {		
+			$sql = 'UPDATE `users` SET `password`=:newPassword WHERE `user_id`=:userId';
+			$db = static::getDB();
+			$password_hash = password_hash($newPassword, PASSWORD_DEFAULT);
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam(':newPassword', $password_hash, PDO::PARAM_STR);
+			$stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
+			$stmt->execute();
+		};
+		return false;
 	}
 
 }
