@@ -1,4 +1,4 @@
-		const $tableID = $('#table');
+		//const $tableID = $('#table');
 		const $BTN = $('#przycisk');
 		const $EXPORT = $('#export');
 		var $numberOfArrowColumn;

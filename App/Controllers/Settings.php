@@ -247,18 +247,23 @@ class Settings extends \Core\Controller
 	//change password	
 	public function changePassword()
 	{
-		$newPassword1 = $_POST['newPassword1'];
-		$newPassword2 = $_POST['newPassword2'];
+		//$newPassword = $_POST['newPassword1'];
+		//$passwordConfirmation = $_POST['newPassword2'];
 		
-		if ($newPassword1==$newPassword2)
-		{
+
 			$userData = new User();
-			$userData->updatePassword($newPassword2, $_SESSION['user_id']);		
-			echo json_encode(array("passwordsAreIdentical"=>true,"message"=>"Zmieniono hasło na nowe.", "userData"=>$userData));
-		};
-		if ($newPassword1!=$newPassword2) {
-			echo json_encode(array("passwordsAreIdentical"=>false,"message"=>"Wprowadzone hasła różnią się. Wprowadź takie same hasła."));
-		};
+			//$userData->updatePassword($newPassword, $passwordConfirmation, $_SESSION['user_id']);	
+			if ($userData->updatePassword($_POST['newPassword1'], $_POST['newPassword2'], $_SESSION['user_id']))
+			{
+				echo json_encode(array("passwordWasChanged"=>true,"message"=>"Zmieniono hasło na nowe."));
+			};
+			if ($userData->updatePassword($_POST['newPassword1'], $_POST['newPassword2'], $_SESSION['user_id'])==false)
+			{
+				$errorText = $userData->errors["password_error"];
+				echo json_encode(array("passwordswasChanged"=>false,"message"=>$errorText));
+			};
+			
+
 		
 	}
 	

@@ -130,17 +130,28 @@ class User extends \Core\Model
      */
     public function validatePasswordOnly()
     {		
+	
+		// Password
+        if ($this->newPassword != $this->passwordConfirmation) {
+            $this->errors["password_error"] = 'Brak weryfiikacji hasła';
+			return false;
+        }
+	
         if (strlen($this->newPassword) < 6) {
-            $this->errors["error_password"] = 'hasło powinno zawierać conajmniej 6 znaków';
+            $this->errors["password_error"] = 'hasło powinno zawierać conajmniej 6 znaków';
+			return false;
         }
 
         if (preg_match('/.*[a-z]+.*/i', $this->newPassword) == 0) {
-            $this->errors["error_password"] = 'hasło powinno zawierać conajmniej jedną literę';
+            $this->errors["password_error"] = 'hasło powinno zawierać conajmniej jedną literę';
+			return false;
         }
 
         if (preg_match('/.*\d+.*/i', $this->newPassword) == 0) {
-            $this->errors["error_password"] = 'hasło powinno zawierać conajmniej jedną cyfrę';
+            $this->errors["password_error"] = 'hasło powinno zawierać conajmniej jedną cyfrę';
+			return false;
         }
+		return true;
     }
 
 
@@ -199,19 +210,20 @@ class User extends \Core\Model
 		return false;
 	}
 	
-	public function updatePassword($newPassword, $userId)
+
+	public function updatePassword($newPassword, $passwordConfirmation, $userId)
 	{	
 		$this->newPassword = $newPassword;
-		$this->validatePasswordOnly();
+		$this->passwordConfirmation = $passwordConfirmation;
 
-        if (empty($this->errors)) {		
+        if ($this->validatePasswordOnly()) {		
 			$sql = 'UPDATE `users` SET `password`=:newPassword WHERE `user_id`=:userId';
 			$db = static::getDB();
 			$password_hash = password_hash($newPassword, PASSWORD_DEFAULT);
 			$stmt = $db->prepare($sql);
 			$stmt->bindParam(':newPassword', $password_hash, PDO::PARAM_STR);
 			$stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
-			$stmt->execute();
+			return $stmt->execute();			
 		};
 		return false;
 	}
