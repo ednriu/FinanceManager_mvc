@@ -227,5 +227,16 @@ class User extends \Core\Model
 		};
 		return false;
 	}
+	
+		public function getUserDataInfo($userId)
+	{		
+			$sql = 'SELECT `name`, `email` FROM `users` WHERE `user_id`=:userId';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
+			$stmt->execute();
+			$this->row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $this;
+	}
 
 }

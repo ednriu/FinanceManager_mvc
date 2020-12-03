@@ -38,15 +38,16 @@ class Settings extends \Core\Controller
 	//Password Change - redirecting
 	public function changePasswordRenderAction()
     {
-		$payMethodCategories = Categories::getPayMethodCategoriesForNewPayMethod($_SESSION['user_id']);
         View::renderTemplate('Settings/user_settings.html',['option'=>1]);
     }
 	
 	//User Data Change - redirecting
 	public function changeUserDataRenderAction()
     {
-		$payMethodCategories = Categories::getPayMethodCategoriesForNewPayMethod($_SESSION['user_id']);
-        View::renderTemplate('Settings/user_settings.html',['option'=>2]);
+		$personalDate = new User();
+		$personalDate->getUserDataInfo($_SESSION['user_id']);
+		var_dump($personalDate);
+        View::renderTemplate('Settings/user_settings.html',['option'=>2, 'personalDate'=>$personalDate]);
     }
 	
 	//remove Category
