@@ -153,6 +153,24 @@ class User extends \Core\Model
         }
 		return true;
     }
+	
+	   /**
+     * Validates Email Only
+     *
+     * @return void
+     */
+    public function validateEmailOnly()    {	
+	    // email address
+        if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
+            $this->errors["email_error"] = 'błędny format adresu email';
+			return false;
+        }
+        if ($this->emailExists($this->email)) {
+            $this->errors["email_error"] = 'adres email istnieje w naszej bazie danych';
+			return false;
+        }
+		return true;
+    }
 
 
 
@@ -210,7 +228,7 @@ class User extends \Core\Model
 		return false;
 	}
 	
-
+	//updates password for $userID.
 	public function updatePassword($newPassword, $passwordConfirmation, $userId)
 	{	
 		$this->newPassword = $newPassword;
@@ -228,15 +246,31 @@ class User extends \Core\Model
 		return false;
 	}
 	
-		public function getUserDataInfo($userId)
+	//gets user name and email for $userId
+	public function getUserDataInfo($userId)
 	{		
 			$sql = 'SELECT `name`, `email` FROM `users` WHERE `user_id`=:userId';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
-			$stmt->execute();
-			$this->row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			return $this;
+			$stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
+        return $stmt->fetch();
+	}
+	
+	//updates user's name and email for $userID.
+	public function updateUserDataInfo($name, $email, $userId)
+	{
+		$this->email = $email;
+        if ($this->validateEmailOnly()) {		
+			$sql = 'UPDATE `users` SET `name`=:name,`email`=:email  WHERE `user_id`=45';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam(':name', $name, PDO::PARAM_STR);
+			$stmt->bindParam(':email', $email, PDO::PARAM_STR);
+			return $stmt->execute();			
+		};
+		return false;
 	}
 
 }

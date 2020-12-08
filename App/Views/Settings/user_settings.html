@@ -47,8 +47,6 @@
 		
 	{% if option == 1 %}
 	<!--Password Change-->
-		<div id="feedbackLine" class="row d-flex justify-content-center w-100"><div id="feedback2" class="alert text-center" role="alert"></div></div>
-		
 		<section class="mb-5 text-center bg-light">
 
 		  <p>Zmień hasło</p>
@@ -79,16 +77,20 @@
 
 	{% if option == 2 %}
 	<!--Other User Settings Change-->
-		<form>
+	
+		<form id="userDataChange" action="/Settings/changePassword">
 		  <div class="form-group">
 			<label for="exampleInputEmail1">Adres Email:</label>
-			<input type="email" class="form-control" id="email" value="abc@wp.pl" aria-describedby="emailHelp"">			
+			<input type="email" class="form-control" id="email" value="{{ personalDate.email }}" aria-describedby="emailHelp"">			
 		  </div>
 		  <div class="form-group">
 			<label for="exampleInputEmail1">Imię:</label>
-			<input type="text" class="form-control" id="nameOfUser" value="{{personalDate.nameOfUser}}" aria-describedby="emailHelp"">			
+			<input type="text" class="form-control" id="nameOfUser" value="{{personalDate.name}}" aria-describedby="emailHelp"">			
 		  </div>
 		  <button type="submit" class="btn btn-primary">Submit</button>
+			<div class="d-flex justify-content-center mb-2">
+				<div id="feedback" class="alert text-center" role="alert"></div>
+			</div>		
 		</form>
 	<!--Other User Settingsd Change-->				
 	{% endif %}			
@@ -138,6 +140,41 @@
 				success: function(res, msg) {
 				  res = $.parseJSON(res);
 				  if (res.passwordWasChanged) {					
+					$("#feedback").show().text(res.message).removeClass('alert-danger').addClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
+				  }
+				  else
+				  {
+					$("#feedback").show().text(res.message).removeClass('alert-success').addClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});					
+				  };
+				},
+				error : function() {
+					console.log("Wystąpił błąd z połączeniem");
+				}
+			});
+		});
+	});
+	</script>
+{% endif %}	
+
+
+{% if option == 2 %}
+<!-- email and name Change Script  -->
+	<script>
+	$(document).ready(function(){
+		$("#userDataChange").on("submit", function(event){
+			event.preventDefault();
+			var $name = $('#nameOfUser').val();
+			var $email = $('#email').val();
+			$.ajax({
+				type: 'POST',
+				url: '/Settings/changeUserPersonalData',
+				data: {
+					name: $name,
+					email: $email
+					},
+				success: function(res, msg) {
+				  res = $.parseJSON(res);
+				  if (res.dataWasChanged) {					
 					$("#feedback").show().text(res.message).removeClass('alert-danger').addClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
 				  }
 				  else

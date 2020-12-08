@@ -45,9 +45,7 @@ class Settings extends \Core\Controller
 	public function changeUserDataRenderAction()
     {
 		$personalDate = new User();
-		$personalDate->getUserDataInfo($_SESSION['user_id']);
-		var_dump($personalDate);
-        View::renderTemplate('Settings/user_settings.html',['option'=>2, 'personalDate'=>$personalDate]);
+        View::renderTemplate('Settings/user_settings.html',['option'=>2, 'personalDate'=>$personalDate->getUserDataInfo($_SESSION['user_id'])]);
     }
 	
 	//remove Category
@@ -248,12 +246,7 @@ class Settings extends \Core\Controller
 	//change password	
 	public function changePassword()
 	{
-		//$newPassword = $_POST['newPassword1'];
-		//$passwordConfirmation = $_POST['newPassword2'];
-		
-
 			$userData = new User();
-			//$userData->updatePassword($newPassword, $passwordConfirmation, $_SESSION['user_id']);	
 			if ($userData->updatePassword($_POST['newPassword1'], $_POST['newPassword2'], $_SESSION['user_id']))
 			{
 				echo json_encode(array("passwordWasChanged"=>true,"message"=>"Zmieniono hasło na nowe."));
@@ -261,11 +254,23 @@ class Settings extends \Core\Controller
 			if ($userData->updatePassword($_POST['newPassword1'], $_POST['newPassword2'], $_SESSION['user_id'])==false)
 			{
 				$errorText = $userData->errors["password_error"];
-				echo json_encode(array("passwordswasChanged"=>false,"message"=>$errorText));
+				echo json_encode(array("passwordWasChanged"=>false,"message"=>$errorText));
+			};		
+	}
+	
+	//change user personal data	
+	public function changeUserPersonalData()
+	{
+			$userData = new User();
+			if ($userData->updateUserDataInfo($_POST['name'], $_POST['email'], $_SESSION['user_id']))
+			{
+				echo json_encode(array("dataWasChanged"=>true,"message"=>"Zmieniono hasło na nowe."));
 			};
-			
-
-		
+			if ($userData->updateUserDataInfo($_POST['name'], $_POST['email'], $_SESSION['user_id'])==false)
+			{
+				$errorText = $userData->errors["email_error"];
+				echo json_encode(array("dataWasChanged"=>false,"message"=>$errorText));
+			};		
 	}
 	
 	
