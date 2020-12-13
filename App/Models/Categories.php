@@ -85,7 +85,7 @@ class Categories extends \Core\Model
     {
 		try
 		{
-			$sql = 'SELECT * FROM `pay_method_categories` WHERE user_Id=:userId AND Name<>"Nieskategoryzowane"';
+			$sql = 'SELECT * FROM `pay_method_categories` WHERE user_Id=:userId AND pay_method_name<>"Nieskategoryzowane"';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
@@ -530,7 +530,7 @@ class Categories extends \Core\Model
 		return false;
 	}
 	
-		// sets category_id for selected category Name (expences). If error returns false.
+	// sets category_id for selected category Name (expences). If error returns false.
 	public static function setExpenceCategoryId($categoryName,$userId, $newId) {
 		try
 		{
@@ -568,7 +568,7 @@ class Categories extends \Core\Model
 		return false;
 	}
 	
-		// sets category_id for selected category Name (payMethod). If error returns false.
+	// sets category_id for selected category Name (payMethod). If error returns false.
 	public static function setPayMethodCategoryId($categoryName,$userId, $newId) {
 		try
 		{
@@ -586,6 +586,8 @@ class Categories extends \Core\Model
         }
 		return false;
 	}
+	
+
 
 	
 }

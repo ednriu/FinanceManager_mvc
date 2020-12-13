@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\Categories;
 use \App\Models\User;
+use \App\Models\Operations;
 
 /**
  * Signup controller
@@ -56,6 +57,8 @@ class Settings extends \Core\Controller
 			
 			switch ($_POST['categoryType']) {
 				case "incomes":
+					$categoryID = Categories::getIncomeCategoryId($categoryToBeRemoved,$_SESSION['user_id']);
+					$incomes = Operations::setNoCategoryForIncomesWithGivenCategoryNumber($categoryID);
 					$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $categoryToBeRemoved);
 					if ($incomeCategories) 
 					{
@@ -70,6 +73,8 @@ class Settings extends \Core\Controller
 					break;
 				
 				case "expences":
+					$categoryID = Categories::getExpenceCategoryId($categoryToBeRemoved,$_SESSION['user_id']);
+					$expences = Operations::setNoCategoryForExpencesWithGivenCategoryNumber($categoryID);
 					$expenceCategories = Categories::removeExpenceCategory($_SESSION['user_id'], $categoryToBeRemoved);
 					if ($expenceCategories) 
 					{
@@ -84,6 +89,8 @@ class Settings extends \Core\Controller
 					break;
 				
 				case "payMethods":
+					$categoryID = Categories::getPayMethodCategoryId($categoryToBeRemoved,$_SESSION['user_id']);
+					$expences = Operations::setNoCategoryForPayMethodCategoriesWithGivenCategoryNumber($categoryID);
 					$payMethodCategories = Categories::removePayMethodCategory($_SESSION['user_id'], $categoryToBeRemoved);
 					if ($payMethodCategories) 
 					{

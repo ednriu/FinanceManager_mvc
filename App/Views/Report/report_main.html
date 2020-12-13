@@ -224,7 +224,7 @@
 													  <td>{{expence.date}}</td>
 													  <td>{{expence.ammount}}</td>
 													  <td>{{expence.name}}</td>	
-													  <td>{{expence.pay_method}}</td>													  
+													  <td>{{expence.pay_method_name}}</td>													  
 													  <td>{{expence.comment}}</td>
 													  <td><a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
 															<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
@@ -379,9 +379,9 @@
 									 <label for="radios">Forma płatności:</label>
 											{% for payMethodCategory in payMethodCategories %}
 												<div class="form-check">
-												  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios1" value="Gotowka">
+												  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios1" value={{ payMethodCategory.category_id }}>
 												  <label for="gridRadios1" class="form-check-label" for="radios">
-													{{ payMethodCategory.name }}
+													{{ payMethodCategory.pay_method_name }}
 												  </label>
 												</div>
 											{% endfor %}

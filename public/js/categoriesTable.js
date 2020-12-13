@@ -113,6 +113,7 @@
 		//Zmiana Danych	w dowolnej komórce	
 		$tableID.on('focusout','tbody tr td',function() {
 			event.stopPropagation();
+			event.preventDefault();
 			if ($activeCellContent!=$(this).html()){
 				//jeżeli strzałka w górę jest ukryta znaczy, że to jest zmiana nowej kategorii
 
