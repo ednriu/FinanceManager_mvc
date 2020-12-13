@@ -58,9 +58,6 @@ body {
  */
 
 .mainWindow {
-  position: fixed;
-  top: 64px;
-  right: 0;
   overflow:scroll;
 }
 
@@ -157,6 +154,10 @@ h5.modal-title{
 
 .modal label{
 	font-size:1.4rem;
+}
+
+button.primary{
+  background:red;
 }
 
 label.form-check-label{

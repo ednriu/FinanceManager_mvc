@@ -165,10 +165,6 @@ class User extends \Core\Model
             $this->errors["email_error"] = 'błędny format adresu email';
 			return false;
         }
-        if ($this->emailExists($this->email)) {
-            $this->errors["email_error"] = 'adres email istnieje w naszej bazie danych';
-			return false;
-        }
 		return true;
     }
 
