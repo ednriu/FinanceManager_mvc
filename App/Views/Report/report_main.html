@@ -377,24 +377,14 @@
 							<!--PayMethod -->
 							  <div class="form-group">
 									 <label for="radios">Forma płatności:</label>
-											<div class="form-check">
-											  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios1" value="Gotowka">
-											  <label for="gridRadios1" class="form-check-label" for="radios">
-												Gotówka
-											  </label>
-											</div>
-											<div class="form-check">
-											  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios2" value="KartaPlatnicza">
-											  <label for="gridRadios2" class="form-check-label" for="radios">
-												Karta Płatnicza
-											  </label>
-											</div>
-											<div class="form-check">
-											  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios3" value="KartaDebetowa">
-											  <label for="gridRadios3" class="form-check-label" for="radios">
-												Karta Debetowa
-											  </label>
-											</div>
+											{% for payMethodCategory in payMethodCategories %}
+												<div class="form-check">
+												  <input class="form-check-input" type="radio" name="payMethod" id="gridRadios1" value="Gotowka">
+												  <label for="gridRadios1" class="form-check-label" for="radios">
+													{{ payMethodCategory.name }}
+												  </label>
+												</div>
+											{% endfor %}
 									{% if expenceToBeAdded.expenceErrors['error_payMethod'] is not empty %}
 										<div class="alert alert-warning mt-1 my-1 py-0" role="alert">{{ expenceToBeAdded.expenceErrors['error_payMethod'] }}</div>
 									{% endif %}	

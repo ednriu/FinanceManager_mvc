@@ -95,7 +95,8 @@ class Main extends \Core\Controller
     {
 		$expenceForm = true;
 		$expenceCategories = Categories::getExpenceCategoriesForNewExpence($_SESSION['user_id']);
-        View::renderTemplate('Report/report_main.html',['expenceFormVisible'=>$expenceForm, 'expenceCategories'=>$expenceCategories]);
+		$payMethodCategories = Categories::getPayMethodCategoriesForNewPayMethod($_SESSION['user_id']);
+        View::renderTemplate('Report/report_main.html',['expenceFormVisible'=>$expenceForm, 'expenceCategories'=>$expenceCategories, 'payMethodCategories'=>$payMethodCategories]);
     }	
 	
 	
