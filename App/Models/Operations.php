@@ -217,7 +217,7 @@ class Operations extends \Core\Model
 		}
 			try
 			{
-				$sql = "SELECT * FROM expences, expence_categories, pay_method_categories WHERE expences.pay_method_category_id = pay_method_categories.category_id AND expences.category_id=expence_categories.category_id AND expences.user_id=:userId AND expences.date BETWEEN :startDate AND :endDate";				
+				$sql = "SELECT * FROM expences, expence_categories, pay_method_categories WHERE expences.category_id=expence_categories.category_id AND pay_method_categories.category_id=expences.pay_method_category_id AND expences.user_id=:userId AND expences.date BETWEEN :startDate AND :endDate";				
 				$db = static::getDB();
 				$stmt = $db->prepare($sql);
 				$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
@@ -343,13 +343,14 @@ class Operations extends \Core\Model
 		return $daneWykresuWydatkow;
 	}
 	
-	// sets category_id=0 for all incomes where the category_ID is as an argument
-	public static function setNoCategoryForIncomesWithGivenCategoryNumber($categoryID) {
+	// sets new category Id for given category (incomes)
+	public static function setNewCategoryIdForIncomes($categoryID, $newCategoryId) {
 		try
 		{
-			$sql = 'UPDATE `incomes` SET `category_id`=0 WHERE `category_id`=:categoryId';
+			$sql = 'UPDATE `incomes` SET `category_id`=:newCategoryId WHERE `category_id`=:categoryId';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':newCategoryId', $newCategoryId, PDO::PARAM_STR);
 			$stmt->bindValue(':categoryId', $categoryID, PDO::PARAM_STR);
 			$stmt->execute();
 			return true;
@@ -360,13 +361,14 @@ class Operations extends \Core\Model
 		return false;
 	}
 	
-	// sets category_id=0 for all expences where the category_ID is as an argument
-	public static function setNoCategoryForExpencesWithGivenCategoryNumber($categoryID) {
+	// sets new category Id for given category (expences)
+	public static function setNewCategoryIdForExpences($categoryID, $newCategoryId) {
 		try
 		{
-			$sql = 'UPDATE `expences` SET `category_id`=0 WHERE `category_id`=:categoryId';
+			$sql = 'UPDATE `expences` SET `category_id`=:newCategoryId WHERE `category_id`=:categoryId';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':newCategoryId', $newCategoryId, PDO::PARAM_STR);
 			$stmt->bindValue(':categoryId', $categoryID, PDO::PARAM_STR);
 			$stmt->execute();
 			return true;
@@ -378,12 +380,13 @@ class Operations extends \Core\Model
 	}
 	
 	// sets category_id=0 for all pay method categories where the category_ID is as an argument
-	public static function setNoCategoryForPayMethodCategoriesWithGivenCategoryNumber($categoryID) {
+	public static function setNewPayMethodCategoryIdForExpences($categoryID, $newCategoryId) {
 		try
 		{
-			$sql = 'UPDATE `expences` SET `category_id`=0 WHERE `category_id`=:categoryId';
+			$sql = 'UPDATE `expences` SET `pay_method_category_id`=:newCategoryId WHERE `pay_method_category_id`=:categoryId';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':newCategoryId', $newCategoryId, PDO::PARAM_STR);
 			$stmt->bindValue(':categoryId', $categoryID, PDO::PARAM_STR);
 			$stmt->execute();
 			return true;

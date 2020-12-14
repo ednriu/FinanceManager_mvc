@@ -58,7 +58,8 @@ class Settings extends \Core\Controller
 			switch ($_POST['categoryType']) {
 				case "incomes":
 					$categoryID = Categories::getIncomeCategoryId($categoryToBeRemoved,$_SESSION['user_id']);
-					$incomes = Operations::setNoCategoryForIncomesWithGivenCategoryNumber($categoryID);
+					$notCategorizedCategoryId = Categories::getIncomeNotCategorizedCategoryId($_SESSION['user_id']);
+					$incomes = Operations::setNewCategoryIdForIncomes($categoryID, $notCategorizedCategoryId);
 					$incomeCategories = Categories::removeIncomeCategory($_SESSION['user_id'], $categoryToBeRemoved);
 					if ($incomeCategories) 
 					{
@@ -74,7 +75,8 @@ class Settings extends \Core\Controller
 				
 				case "expences":
 					$categoryID = Categories::getExpenceCategoryId($categoryToBeRemoved,$_SESSION['user_id']);
-					$expences = Operations::setNoCategoryForExpencesWithGivenCategoryNumber($categoryID);
+					$notCategorizedCategoryId = Categories::getExpenceNotCategorizedCategoryId($_SESSION['user_id']);
+					$expences = Operations::setNewCategoryIdForExpences($categoryID, $notCategorizedCategoryId);
 					$expenceCategories = Categories::removeExpenceCategory($_SESSION['user_id'], $categoryToBeRemoved);
 					if ($expenceCategories) 
 					{
@@ -90,7 +92,8 @@ class Settings extends \Core\Controller
 				
 				case "payMethods":
 					$categoryID = Categories::getPayMethodCategoryId($categoryToBeRemoved,$_SESSION['user_id']);
-					$expences = Operations::setNoCategoryForPayMethodCategoriesWithGivenCategoryNumber($categoryID);
+					$notCategorizedCategoryId = Categories::getPayMethodNotCategorizedCategoryId($_SESSION['user_id']);
+					$expences = Operations::setNewPayMethodCategoryIdForExpences($categoryID, $notCategorizedCategoryId);
 					$payMethodCategories = Categories::removePayMethodCategory($_SESSION['user_id'], $categoryToBeRemoved);
 					if ($payMethodCategories) 
 					{

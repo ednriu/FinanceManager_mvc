@@ -204,7 +204,7 @@ class Categories extends \Core\Model
 	//Adds Expences Category for specified userId
 	private static function addPayMethodCategoryForUserId($userId, $payMethodName)
 	{
-		$sql = 'INSERT INTO pay_method_categories (name, user_Id)
+		$sql = 'INSERT INTO pay_method_categories (pay_method_name, user_Id)
                     VALUES (:name, :userId)';
                                               
             $db = static::getDB();
@@ -232,6 +232,16 @@ class Categories extends \Core\Model
 		foreach ($initIncomeCategories as $value)
 		{
 			$addNewCategories = Categories::addExpenceCategoryForUserId($userId, $value, 1000);
+		}
+	}
+	
+	//Creates initial pay method categories for new user
+	public function createPayMethodCategoriesForNewUser($userId)
+	{
+		$initPayMethodCategories = array(0=>"Nieskategoryzowane", 1=>"Gotówka", 2=>"Karta", 3=>"Przelew");
+		foreach ($initPayMethodCategories as $value)
+		{
+			$addNewCategories = Categories::addPayMethodCategoryForUserId($userId, $value);
 		}
 	}
 	
@@ -278,7 +288,7 @@ class Categories extends \Core\Model
 	{
 		try
 		{
-			$sql = 'DELETE FROM `pay_method_categories` WHERE user_id=:userId AND name=:categoryName';                                              
+			$sql = 'DELETE FROM `pay_method_categories` WHERE user_id=:userId AND pay_method_name=:categoryName';                                              
             $db = static::getDB();
             $stmt = $db->prepare($sql);			
 			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
@@ -339,7 +349,7 @@ class Categories extends \Core\Model
     {
         try 
 		{
-			$sql = 'SELECT * FROM `pay_method_categories` WHERE name=:categoryName AND user_id=:userId';
+			$sql = 'SELECT * FROM `pay_method_categories` WHERE pay_method_name=:categoryName AND user_id=:userId';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
@@ -491,6 +501,24 @@ class Categories extends \Core\Model
 		return false;
 	}
 	
+	// gets category_id for user_ID where category name = "nieskategoryzowane" (incomes)
+	public static function getIncomeNotCategorizedCategoryId($userId) {		
+		try
+		{
+			$sql = 'SELECT `category_id` FROM `income_categories` WHERE `name`="Nieskategoryzowane" AND `user_id`=:userId';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
+			$results=$stmt->fetchColumn();
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+			return false;
+        }
+		return false;
+	}
+	
 		// sets category_id for selected category Name (incomes). If error returns false.
 	public static function setIncomeCategoryId($categoryName,$userId,$newId) {		
 
@@ -530,6 +558,24 @@ class Categories extends \Core\Model
 		return false;
 	}
 	
+	// gets category_id for user_ID where category name = "nieskategoryzowane" (expences)
+	public static function getExpenceNotCategorizedCategoryId($userId) {		
+		try
+		{
+			$sql = 'SELECT `category_id` FROM `expence_categories` WHERE `name`="Nieskategoryzowane" AND `user_id`=:userId';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
+			$results=$stmt->fetchColumn();
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+			return false;
+        }
+		return false;
+	}
+	
 	// sets category_id for selected category Name (expences). If error returns false.
 	public static function setExpenceCategoryId($categoryName,$userId, $newId) {
 		try
@@ -553,10 +599,28 @@ class Categories extends \Core\Model
 	public static function getPayMethodCategoryId($categoryName,$userId) {		
 		try
 		{
-			$sql = 'SELECT `category_id` FROM `pay_method_categories` WHERE `name`=:categoryName AND `user_id`=:userId';
+			$sql = 'SELECT `category_id` FROM `pay_method_categories` WHERE `pay_method_name`=:categoryName AND `user_id`=:userId';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+			$stmt->execute();
+			$results=$stmt->fetchColumn();
+			return $results;
+		} catch (PDOException $e) {
+            echo $e->getMessage();
+			return false;
+        }
+		return false;
+	}
+	
+	// gets category_id for user_ID where category name = "nieskategoryzowane" (payMethods)
+	public static function getPayMethodNotCategorizedCategoryId($userId) {		
+		try
+		{
+			$sql = 'SELECT `category_id` FROM `pay_method_categories` WHERE `pay_method_name`="Nieskategoryzowane" AND `user_id`=:userId';
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
 			$stmt->execute();
 			$results=$stmt->fetchColumn();
@@ -572,7 +636,7 @@ class Categories extends \Core\Model
 	public static function setPayMethodCategoryId($categoryName,$userId, $newId) {
 		try
 		{
-			$sql = 'UPDATE `pay_method_categories` SET `category_id`=:newId WHERE `user_id`=:userId AND `name`=:categoryName';
+			$sql = 'UPDATE `pay_method_categories` SET `category_id`=:newId WHERE `user_id`=:userId AND `pay_method_name`=:categoryName';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
