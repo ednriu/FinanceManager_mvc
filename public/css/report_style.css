@@ -13,24 +13,20 @@ body {
 	background-size: cover !important;
 }
 
-
-
 /*
  * GTable With Data
  */
-.inc-exp-area{
-	background-color: rgba(240, 233, 216, 0.7);
-	text-align:center;
-	padding:1rem;
-	border-radius: 10px;
-	height:550px;
-}
+
+table.table td {
+	text-align: center; 
+	color:black;
+}  
 
 table.table td a {
 	cursor: pointer;
 	display: inline-block;
 	margin: 0 2px;
-	min-width: 10px;
+	min-width: 10px;	
 }   
 
 table.table td a.edit {
@@ -51,6 +47,24 @@ table.table .form-control {
 }
 table.table .form-control.error {
 	border-color: #f50000;
+}
+
+table.table {
+	background-color:#9c8d5f;
+}
+
+table.table th {
+	background-color:#383821;
+}
+
+h1.table-header {
+	color:#f2f2bf;	
+}
+
+div.operations {
+	background-color:#507f8f;
+	border-radius: 10px;
+	width:min-content;
 }
 
 

@@ -272,6 +272,7 @@ class Settings extends \Core\Controller
 	public function changeUserPersonalData()
 	{
 			$userData = new User();
+			
 			if ($userData->updateUserDataInfo($_POST['name'], $_POST['email'], $_SESSION['user_id']))
 			{
 				echo json_encode(array("dataWasChanged"=>true,"message"=>"Dane użytkownika zostały zmienione."));

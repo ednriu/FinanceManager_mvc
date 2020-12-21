@@ -38,6 +38,7 @@ class Signup extends \Core\Controller
 			$newCategories = new Categories();
 			$newCategories->createIncomeCategoriesForNewUser($signedUserId->user_id);
 			$newCategories->createExpenceCategoriesForNewUser($signedUserId->user_id);
+			$newCategories->createPayMethodCategoriesForNewUser($signedUserId->user_id);
             $this->redirect('/Signup/Success');
         } else {
 

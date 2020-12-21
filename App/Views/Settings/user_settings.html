@@ -59,15 +59,15 @@
 					<div class="modal-body">			
 						<div class="md-form md-outline">
 						  <input type="password" id="newPass" class="form-control">
-						  <label data-error="wrong" data-success="right" for="newPass">New password</label>
+						  <label data-error="wrong" data-success="right" for="newPass">Nowe Hasło</label>
 						</div>
 
 						<div class="md-form md-outline">
 						  <input type="password" id="newPassConfirm" class="form-control">
-						  <label data-error="wrong" data-success="right" for="newPassConfirm">Confirm password</label>
+						  <label data-error="wrong" data-success="right" for="newPassConfirm">Potwierdź Hasło</label>
 						</div>
-						<div class="row d-flex justify-content-center mb-2">
-							<div id="feedback" class="alert text-center" role="alert"></div>
+						<div class="row d-flex justify-content-center mb-2 pt-2">
+							<div id="feedback1" class="alert text-center" role="alert"></div>
 						</div>					
 					</div>
 				  <div class="modal-footer">
@@ -102,8 +102,8 @@
 							<label for="exampleInputEmail1">Imię:</label>
 							<input type="text" class="form-control" id="nameOfUser" value="{{personalDate.name}}">			
 						</div>
-						<div class="d-flex justify-content-center mb-2">
-							<div id="feedback" class="alert text-center" role="alert"></div>
+						<div class="d-flex justify-content-center mb-2 pt-2">
+							<div id="feedback2" class="alert text-center" role="alert"></div>
 						</div>			
 					</div>
 				  <div class="modal-footer">
@@ -151,8 +151,7 @@
 	<script type="text/javascript" src="/js/addons/datatables.min.js"></script>
 	<!-- MDBootstrap Datatables2  -->
 	<script type="text/javascript" src="/js/addons/datatables2.min.js"></script>
-	<!-- Script for Income Categories Table  -->
-	<script type="text/javascript" src="/js/incomeCategoriesTable.js" charset="utf-8"></script>
+
 
 	<!-- Script for Income Categories Table  -->
 	<script type="text/javascript" src="/js/incomeCategoriesTable.js" charset="utf-8"></script>
@@ -175,11 +174,11 @@
 				success: function(res, msg) {
 				  res = $.parseJSON(res);
 				  if (res.passwordWasChanged) {					
-					$("#feedback").show().text(res.message).removeClass('alert-danger').addClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
+					$("#feedback1").show().text(res.message).removeClass('alert-danger').addClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n(); window.location.replace('/Main/showReportAllRange');});
 				  }
 				  else
 				  {
-					$("#feedback").show().text(res.message).removeClass('alert-success').addClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});					
+					$("#feedback1").show().text(res.message).removeClass('alert-success').addClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});					
 				  };
 				},
 				error : function() {
@@ -210,11 +209,11 @@
 				success: function(res, msg) {
 				  res = $.parseJSON(res);
 				  if (res.dataWasChanged) {					
-					$("#feedback").show().text('aa').removeClass('alert-danger').addClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
+					$("#feedback2").show().text(res.message).removeClass('alert-danger').addClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n(); window.location.replace('/Main/showReportAllRange');});
 				  }
 				  else
 				  {
-					$("#feedback").show().text('bb').removeClass('alert-success').addClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n();});					
+					$("#feedback2").show().text(res.message).removeClass('alert-success').addClass('alert-danger').delay(3000).queue(function(n) {$(this).hide(); n(); });					
 				  };
 				},
 				error : function() {
