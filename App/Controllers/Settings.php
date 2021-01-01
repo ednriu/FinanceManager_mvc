@@ -275,6 +275,7 @@ class Settings extends \Core\Controller
 			
 			if ($userData->updateUserDataInfo($_POST['name'], $_POST['email'], $_SESSION['user_id']))
 			{
+				$_SESSION['name'] = $_POST['name'];
 				echo json_encode(array("dataWasChanged"=>true,"message"=>"Dane użytkownika zostały zmienione."));
 			};
 			if ($userData->updateUserDataInfo($_POST['name'], $_POST['email'], $_SESSION['user_id'])==false)

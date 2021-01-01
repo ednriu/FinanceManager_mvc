@@ -97,6 +97,13 @@ class Main extends \Core\Controller
 		$expenceCategories = Categories::getExpenceCategoriesForNewExpence($_SESSION['user_id']);
 		$payMethodCategories = Categories::getPayMethodCategoriesForNewPayMethod($_SESSION['user_id']);
         View::renderTemplate('Report/report_main.html',['expenceFormVisible'=>$expenceForm, 'expenceCategories'=>$expenceCategories, 'payMethodCategories'=>$payMethodCategories]);
+    }
+
+	//Shows Modal with the range of data for the report
+	public function selectRangeOfDataFormAction()
+    {
+		$selectRangeOfDataForm = true;
+        View::renderTemplate('Report/report_main.html',['selectRangeOfDataFormVisible'=>$selectRangeOfDataForm]);
     }	
 	
 	

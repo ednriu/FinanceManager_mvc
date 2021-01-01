@@ -1,6 +1,3 @@
-body {
-  padding-top: 4rem;
-}
 .starter-template {
   padding: 3rem 1.5rem;
   text-align: center;
@@ -58,13 +55,18 @@ table.table th {
 }
 
 h1.table-header {
-	color:#f2f2bf;	
+	color:#f2f2bf;
+	text-align:center;	
 }
 
-div.operations {
+.operations {
 	background-color:#507f8f;
-	border-radius: 10px;
-	width:min-content;
+	border-radius: 20px;
+}
+
+.graph {
+	background-color:#668099;
+	border-radius: 20px;
 }
 
 
@@ -73,8 +75,8 @@ div.operations {
  */
 
 .mainWindow {
-  position: fixed;
-  top: 100;
+  position:fixed;
+  top:5.5rem;
   right: 0;
   overflow:scroll;
 }
@@ -86,11 +88,11 @@ div.operations {
 
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 5.5rem;
   bottom: 0;
   left: 0;
   z-index: 100; /* Behind the navbar */
-  padding: 48px 0 0; /* Height of navbar */
+  padding: 0 0 0; /* Height of navbar */
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
@@ -149,6 +151,12 @@ div.operations {
  * TOP Navbar Horizontal
  */
 
+.navbar  {
+  height:5.5rem;  
+}
+
+
+
 .navbar .navbar-toggler {
   top: .25rem;
   right: 1rem;  
@@ -186,15 +194,6 @@ div.operations {
 	border-radius:5px;
 }
 
-.navbar .search-btn{
-	display:inline-block;
-	height:2.5rem;
-}
-
-.navbar .search-input{
-	display:inline-block;
-	height:2.5rem;
-}
 
 .dropdown-item{
 	color:#FAF70C !important;
@@ -204,14 +203,22 @@ div.operations {
 	letter-spacing:0.1rem !important;
 }
 
+.login-information {
+	background: #1d507d;
+	color:#FAF70C;
+	font-size:1.2rem;
+	border-radius:5px;
+	padding:5px;
+}
 
 
 /*
  * Modals for Adding Expences and Incomes
  */
 
-.modal{
+.modal {
 	color: #0521B3;
+	position:relative;
 }
 
 .modal-header{
@@ -354,9 +361,4 @@ p.balance{
 	.bg{
 		background-size: 300%;
 	}
-	body{
-		padding-top:3rem;		
-	}
-	
-
 }
