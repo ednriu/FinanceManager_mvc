@@ -64,12 +64,12 @@
 		}
 		
 
-		//poniższe wartości ustawiane są jako "." ponieważ jeśli używkonik nie kliknął nic, to program nie ma do czego porównywać kategori
+		//poniższe wartości ustawiane są jako "." ponieważ jeśli użytkownik nie kliknął nic, to program nie ma do czego porównywać kategori
 		var $activeCellContent =".";
 		var $activeCategoryContent=".";
 		
 		var lastCategoryName = $tableID.find('tr:last td:first').text(); //czy oby na pewno potrzebne?
-		var activeCellContent;		
+		//var activeCellContent;		
 
 
 
@@ -113,7 +113,7 @@
 		//Zmiana Danych	w dowolnej komórce	
 		$tableID.on('focusout','tbody tr td',function() {
 			event.stopPropagation();
-			event.preventDefault();
+			//event.preventDefault();
 			if ($activeCellContent!=$(this).html()){
 				//jeżeli strzałka w górę jest ukryta znaczy, że to jest zmiana nowej kategorii
 
@@ -130,11 +130,11 @@
 					//zmiana dotyczy zmiany kategorii. Musi być ona różna od "Nowa Kategoria"
 					if ($activeCellCollumnNumber==0) 
 					{					
-						$newCategoryName = $(this).html();
+						$newCategoryName = $(this).html().replace(/(<([^>]+)>)/ig,"");
 						
 						if ($option==2)
 						{
-							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
+							$maxLimit = $(this).parents('tr').find('td:nth-child(2)').html().replace(/(<([^>]+)>)/ig,"");
 						}; 
 						
 						if (($option==1) || ($option==3))
@@ -180,16 +180,16 @@
 						if ($activeCellCollumnNumber==0) {
 							if ($option==2)
 							{
-								$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());	
+								$maxLimit = $(this).parents('tr').find('td:nth-child(2)').html().replace(/(<([^>]+)>)/ig,"");	
 							};							
 						
-							$newCategoryName = ($(this).parents('tr').find('td:nth-child(1)').html());
+							$newCategoryName = $(this).parents('tr').find('td:nth-child(1)').html().replace(/(<([^>]+)>)/ig,"");
 							$oldCategoryName = $activeCellContent;
 						};
 						
 					//zmiana w kolumnie limitów	
 						if (($activeCellCollumnNumber==1) && ($option==2)) {
-							$maxLimit = ($(this).parents('tr').find('td:nth-child(2)').html());
+							$maxLimit = $(this).parents('tr').find('td:nth-child(2)').html().replace(/(<([^>]+)>)/ig,"");
 							$newCategoryName = $activeCategoryContent;
 							$oldCategoryName = $activeCategoryContent;												
 						};

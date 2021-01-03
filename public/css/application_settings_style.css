@@ -22,31 +22,35 @@ body {
  * Table
  */
 
+#settings-panel {
+	border-radius:20px;
+}	
+
 #categoriesHeader{
-	background-color:green;
-	color:yellow;
+	background-color:jquery#19109c;
+	color:#ECEDF3;
 }
 
 #table {
   display:block;
   height:400px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .table-striped>thead>tr>th {
-   background-color: green;
-   color:yellow;
+   background-color: #00045C;
+   color:#ECEDF3;
    font-size:1,2rem;
  }
 
 .table-striped>tbody>tr:nth-child(odd)>td {
-   background-color: green;
-   color:yellow;
+   background-color: #BABCE8;
+   color:#080D8D;
  }
  
  .table-striped>tbody>tr:nth-child(even)>td {
-   background-color: red;
-   color:yellow;
+   background-color: #A3A6F1;
+   color:#080D8D;
  }
 
 .pt-3-half {
@@ -58,7 +62,7 @@ body {
  */
 
 .mainWindow {
-  overflow:scroll;
+  overflow-y:auto;
 }
 
 
@@ -132,7 +136,7 @@ body {
 }
 
 .modal-header{
-	background-color:#0b1570;
+	background-color:#19109c;
 	color:white;
 }
 
@@ -248,7 +252,13 @@ p.balance{
  }
  
 
- 
+.login-information {
+	background: #1d507d;
+	color:#FAF70C;
+	font-size:1.2rem;
+	border-radius:5px;
+	padding:5px;
+} 
 
 
 

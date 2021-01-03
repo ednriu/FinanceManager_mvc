@@ -1,4 +1,4 @@
-{% extends 'base_report.html' %}
+{% extends 'base_settings.html' %}
 
 {% block title %}Moje Finanse{% endblock %}
 
@@ -17,8 +17,6 @@
 	
 	<!-- Google Fonts Roboto -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
-	<!-- Bootstrap core CSS -->
-	<!--<link rel="stylesheet" href="/css/bootstrap.min.css"> -->
 	
 	<!-- MDBootstrap Datatables  -->
 	<link href="/css/addons/datatables.min.css" rel="stylesheet">
@@ -44,7 +42,7 @@
 <div class="container-fluid bg pt-5 sticky-top mainWindow">	
 	<div class="row d-flex justify-content-center">	
 		<!-- Editable table -->
-		<div class="card mt-3 w-30 w-sm-95">
+		<div id="settings-panel" class="card mt-3 w-30 w-sm-95">
 		  <h3 id="categoriesHeader" class="card-header text-center font-weight-bold text-uppercase py-4">
 			{% if option == 1 %}
 				Kategorie Przychodów
@@ -63,7 +61,7 @@
 			  <table class="table table-responsive-md table-striped text-center table-hover">
 				<thead>
 				  <tr>
-					<th class="text-center font-weight-bold">Kategoria</th>
+					<th class="text-center font-weight-bold">Nazwa</th>
 					{% if option == 2 %}
 						<th class="text-center font-weight-bold">Maxymalny Limit</th>
 					{% endif %}					

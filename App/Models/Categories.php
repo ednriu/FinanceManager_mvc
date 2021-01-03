@@ -468,7 +468,7 @@ class Categories extends \Core\Model
 		
 		try
 		{
-			$sql = 'UPDATE `pay_method_categories` SET `name`=:newCategoryName WHERE `user_id`=:userId AND `name`=:oldCategoryName';
+			$sql = 'UPDATE `pay_method_categories` SET `pay_method_name`=:newCategoryName WHERE `user_id`=:userId AND `pay_method_name`=:oldCategoryName';
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
 			$stmt->bindValue(':oldCategoryName', $oldCategoryName, PDO::PARAM_STR);

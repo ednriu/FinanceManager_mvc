@@ -170,7 +170,17 @@ class Settings extends \Core\Controller
 				$oldCategoryName=$_POST['oldCategoryName'];
 				$newCategoryName=$_POST['newCategoryName'];
 				$maxLimit=$_POST['max']; 
+				
+				//if the $maxLimit is not number the error and message is returned.
+				if(!is_numeric($maxLimit)) {
+					$isCategoryDoubled=true;
+					$message="Wartość limitu musi być liczbą.";
+					echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
+					return 0;
+				};
+				
 				switch ($_POST['categoryType']) {
+					//INCOMES
 					case "incomes":
 						$incomeCategories = Categories::updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
 						if ($incomeCategories) {
@@ -183,6 +193,7 @@ class Settings extends \Core\Controller
 						}
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
 						break;
+					//EXPENCES
 					case "expences": 
 						$expenceCategories = Categories::updateExpenceCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
 						if ($expenceCategories) {
@@ -195,6 +206,7 @@ class Settings extends \Core\Controller
 						}
 						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message)); 
 						break;
+					//PAYMETHODS
 					case "payMethods":
 						$payMethodCategories = Categories::updatePayMethodCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);						
 						if ($payMethodCategories) {
