@@ -119,43 +119,55 @@ class Settings extends \Core\Controller
 		if(isset($_POST['categoryType']) && isset($_POST['categoryName']) && isset($_POST['max'])) {
 				$categoryToBeAdded=(ucwords(strtolower($_POST['categoryName'])));
 				$maxLimit=$_POST['max'];
+				
+				//if the $maxLimit is not number the error and message is returned.
+				if(!is_numeric($maxLimit)) {
+					$isCategoryError=true;
+					$message="Wartość limitu musi być liczbą.";
+					echo json_encode(array("isCategoryError"=>$isCategoryError,"message"=>$message));
+					return 0;
+				};
+				
 				switch ($_POST['categoryType']) {
+					//INCOMES
 					case "incomes":
 						$incomeCategories = Categories::addNewIncomeCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
 						if ($incomeCategories) {
-							$isCategoryDoubled=false;
+							$isCategoryError=false;
 							$message="Dodano nową kategorię.";
 						}
 						if (!$incomeCategories) {
-							$isCategoryDoubled=true;
+							$isCategoryError=true;
 							$message="Istnieje już taka kategoria.";
 						}						
 						break;
+					//EXPENCES
 					case "expences":
 						$expenceCategories = Categories::addNewExpenceCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
 						if ($expenceCategories) {
-							$isCategoryDoubled=false;
+							$isCategoryError=false;
 							$message="Dodano nową kategorię.";
 						}
 						if (!$expenceCategories) {
-							$isCategoryDoubled=true;
+							$isCategoryError=true;
 							$message="Istnieje już taka kategoria.";
 						}
 						break;
+					//PAYMETHODS
 					case "payMethods":
 						$payMethodCategories = Categories::addNewPayMethodCategory($_SESSION['user_id'], $categoryToBeAdded, $maxLimit);
 						if ($payMethodCategories) {
-							$isCategoryDoubled=false;
+							$isCategoryError=false;
 							$message="Dodano nową metodę płatności.";
 						}
 						if (!$payMethodCategories) {
-							$isCategoryDoubled=true;
+							$isCategoryError=true;
 							$message="Istnieje już taka metoda płatności.";
 						}
 						break;
 						
 				}
-				echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));		
+				echo json_encode(array("isCategoryError"=>$isCategoryError,"message"=>$message));		
 			} else {
 			echo "Błąd Połączenia.";
 
@@ -173,9 +185,9 @@ class Settings extends \Core\Controller
 				
 				//if the $maxLimit is not number the error and message is returned.
 				if(!is_numeric($maxLimit)) {
-					$isCategoryDoubled=true;
+					$isCategoryError=true;
 					$message="Wartość limitu musi być liczbą.";
-					echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
+					echo json_encode(array("isCategoryError"=>$isCategoryError,"message"=>$message));
 					return 0;
 				};
 				
@@ -184,40 +196,40 @@ class Settings extends \Core\Controller
 					case "incomes":
 						$incomeCategories = Categories::updateIncomeCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
 						if ($incomeCategories) {
-							$isCategoryDoubled=false;
+							$isCategoryError=false;
 							$message="Zaktualizowano dane.";
 						}
 						if (!$incomeCategories) {
-							$isCategoryDoubled=true;
+							$isCategoryError=true;
 							$message="Istnieje już taka kategoria.";
 						}
-						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message));
+						echo json_encode(array("isCategoryError"=>$isCategoryError,"message"=>$message));
 						break;
 					//EXPENCES
 					case "expences": 
 						$expenceCategories = Categories::updateExpenceCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);
 						if ($expenceCategories) {
-							$isCategoryDoubled=false;
+							$isCategoryError=false;
 							$message="Zaktualizowano dane.";
 						}
 						if (!$expenceCategories) {
-							$isCategoryDoubled=true;
+							$isCategoryError=true;
 							$message="Istnieje już taka kategoria.";
 						}
-						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message)); 
+						echo json_encode(array("isCategoryError"=>$isCategoryError,"message"=>$message)); 
 						break;
 					//PAYMETHODS
 					case "payMethods":
 						$payMethodCategories = Categories::updatePayMethodCategory($oldCategoryName,$newCategoryName,$maxLimit,$_SESSION['user_id']);						
 						if ($payMethodCategories) {
-							$isCategoryDoubled=false;
+							$isCategoryError=false;
 							$message="Zaktualizowano dane.";
 						}
 						if (!$payMethodCategories) {
-							$isCategoryDoubled=true;
+							$isCategoryError=true;
 							$message="Istnieje już taka kategoria.";
 						}
-						echo json_encode(array("isCategoryDoubled"=>$isCategoryDoubled,"message"=>$message)); 
+						echo json_encode(array("isCategoryError"=>$isCategoryError,"message"=>$message)); 
 						break;
 				}
 		  } else {

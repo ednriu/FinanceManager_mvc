@@ -153,7 +153,7 @@
 								},
 							success: function(res, msg) {
 							  res = $.parseJSON(res);
-							  if (res.isCategoryDoubled) {
+							  if (res.isCategoryError) {
 								$tableID.find('tr:last td:first').text("Nowa Kategoria");
 								$("#feedback").show().text(res.message).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
 							  }
@@ -211,7 +211,7 @@
 									},
 								success: function(res, msg) {
 								  res = $.parseJSON(res);
-								  if (res.isCategoryDoubled) {
+								  if (res.isCategoryError) {
 									$tableID.find('tr:nth-child('+$activeCellRowNumber+') td:nth-child(1)').text($activeCellContent);
 									$("#feedback").show().text(res.message).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
 								  }
