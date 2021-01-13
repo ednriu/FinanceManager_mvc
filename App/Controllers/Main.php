@@ -154,7 +154,7 @@ class Main extends \Core\Controller
 				parent::redirect('/Main/showReportAllRange'); //potrzeba dodać do URL parametr raportu
 			} else {
 				$incomeFormVisible = true;
-				$incomeCategoriesForUser = Categories::getIncomeCategories($_SESSION['user_id']);
+				$incomeCategoriesForUser = Categories::getIncomeCategoriesForNewIncome($_SESSION['user_id']);
 				View::renderTemplate('Report/report_main.html',['incomeFormVisible'=>$incomeFormVisible, 'incomeToBeAdded'=>$incomeToBeAdded, 'incomeCategories'=>$incomeCategoriesForUser, 'selectedCategoryId'=>$selectedCategoryId]);
 			}
 	}
@@ -171,8 +171,9 @@ class Main extends \Core\Controller
 				parent::redirect('/Main/showReportAllRange'); 
 			} else {
 				$expenceFormVisible = true;
-				$expenceCategoriesForUser = Categories::getExpenceCategories($_SESSION['user_id']);
-				View::renderTemplate('Report/report_main.html',['expenceFormVisible'=>$expenceFormVisible, 'expenceToBeAdded'=>$expenceToBeAdded, 'expenceCategories'=>$expenceCategoriesForUser, 'selectedCategoryId'=>$selectedCategoryId]);
+				$expenceCategoriesForUser = Categories::getExpenceCategoriesForNewExpence($_SESSION['user_id']);
+				$payMethodsForUser = Categories::getPayMethodCategoriesForNewPayMethod($_SESSION['user_id']);
+				View::renderTemplate('Report/report_main.html',['expenceFormVisible'=>$expenceFormVisible, 'expenceToBeAdded'=>$expenceToBeAdded, 'expenceCategories'=>$expenceCategoriesForUser, 'selectedCategoryId'=>$selectedCategoryId, 'payMethodCategories'=>$payMethodsForUser]);
 			}
 	}
 	

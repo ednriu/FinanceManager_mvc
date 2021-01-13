@@ -7,6 +7,7 @@
 
 
 
+
 /*Log-in form*/
 .form-logowanie{
 	background-color:#F1F9D2;
@@ -93,7 +94,7 @@
 	overflow-y: auto;
 }
 
-@media only screen and (max-width: 678px){
+@media only screen and (max-width: 900px){
 	.bg{
 		background-size: 300%;
 	}	

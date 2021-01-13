@@ -68,7 +68,7 @@
 				backgroundColor: "rgba(240, 233, 216, 0)",
 				
 				title: {
-					text: "Przychody"
+					text: "Wydatki"
 				},
 				subtitles: [{
 					text: ""
@@ -90,7 +90,7 @@
 				backgroundColor: "rgba(240, 233, 216, 0)",
 
 				title: {
-					text: "Wydatki"
+					text: "Przychody"
 				},
 				subtitles: [{
 					text: ""
@@ -202,7 +202,7 @@
 			
 			
 				<!--Tabela przychodów-->
-				<div class="row mt-3 pt-5 pb-2 d-flex justify-content-center">
+				<div class="row mt-3 pt-3 pb-2 d-flex justify-content-center">
 						<div class="col-lg-8">
 							<div class="row d-flex justify-content-center operations mx-1 p-3 text-wrap">
 								<div class="d-block"><h1 class="pb-2 table-header">Przychody {% if feedback == true %} {{ feedback }} {% endif %}</h1></div>
@@ -240,7 +240,7 @@
 						</div>
 							
 						<!--Wykres Przychodów-->
-						<div class="col-lg-4">
+						<div class="col-lg-4 align-self-center">
 							<div class="row d-flex justify-content-center graph mx-1 p-3 mt-3 mt-sm-3 mt-md-3 mt-lg-0">
 								<div id="chartContainer_przychody" style="position: relative; height:40vh; width:70vh;">
 									<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -251,7 +251,7 @@
 				<!--Koniec Tabeli przychodów-->	
 
 				<!--Tabela wydatków-->
-				<div class="row mt-3 pt-5 pb-2 mb-5 d-flex justify-content-center">
+				<div class="row mt-3 pt-3 pb-2 mb-5 d-flex justify-content-center">
 					<div class="col-lg-8 mb-5">
 						<div class="row d-flex justify-content-center operations mx-1 p-3 text-wrap">
 							<div class="d-block"><h1 class="pb-2 table-header">Wydatki {% if feedback == true %} {{ feedback }} {% endif %}</h1></div>
@@ -291,7 +291,7 @@
 						</div>
 					</div>
 					<!--Wykres wydatków-->
-					<div class="col-lg-4">
+					<div class="col-lg-4 align-self-center mb-5">
 						<div class="row d-flex justify-content-center graph mx-1 p-3 mt-3 mt-sm-3 mt-md-3 mt-lg-0">
 							<div id="chartContainer_wydatki" style="style=position: relative; height:40vh; width:70vh;"><script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script></div>
 						</div>
@@ -301,7 +301,7 @@
 				{% endif %}
 
 				<!-- Modal Add INCOME -->
-					<div class="modal bd-example-modal-sm mb-5" id="modalIncome" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="modalIncome" aria-hidden="true">
+					<div class="modal bd-example-modal-sm pb-3 mb-5" id="modalIncome" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="modalIncome" aria-hidden="true">
 					  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
 						<div class="modal-content">
 						  <div class="modal-header">

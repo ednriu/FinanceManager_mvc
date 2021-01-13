@@ -23,6 +23,7 @@ class Login extends \Core\Controller
         View::renderTemplate('Login/New.html');
     }
 
+
     /**
      * Sign up a new user
      *

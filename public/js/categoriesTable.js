@@ -101,12 +101,12 @@
 		//Zapisanie danych do zmiennych z klikniętej komórki
 		$tableID.on('click','tbody tr td',function() {
 			$activeCellContent = $(this).html();
-			$activeCellCollumnNumber = $(this).index();
+			//$activeCellCollumnNumber = $(this).index();
 			$activeCellRowNumber = parseInt($(this).closest("tr").index()+1);
-			if ($activeCellCollumnNumber==1) {
-					$activeCategoryContent = $(this).parents('tr').find('td:first').html();
+			//if ($activeCellCollumnNumber==1) {
+					//$activeCategoryContent = $(this).parents('tr').find('td:first').html();
 					$activeMaxLimit = $(this).parents('tr').find('td:nth-child(2)').html();
-				};
+				//};
 		});
 		
 		//------------------------------------------
@@ -119,14 +119,7 @@
 
 				if ($(this).parents('tr').find('td:nth-child('+$numberOfArrowColumn+') .table-up').is(":hidden")) 
 				{
-					//zmiana dotyczy komórki z limitami, dlatego nie można dokonać zmiany
-					if (($activeCellCollumnNumber==1) && ($option==2)) 
-					{
-						$(this).parents('tr').find('td:nth-child(2)').text($activeMaxLimit);
-						$feedback = "Nie można zmienić limitu ponieważ nie została nadana nowa nazwa dla kategorii"
-						$("#feedback").show().text($feedback).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});						
-					};
-					
+					$activeCellCollumnNumber = $(this).index();
 					//zmiana dotyczy zmiany kategorii. Musi być ona różna od "Nowa Kategoria"
 					if ($activeCellCollumnNumber==0) 
 					{					
@@ -176,6 +169,7 @@
 				//jeżeli strzałka w górę jest widoczna oznacza to zmianę kategori różnej od "Nowa Kategoria"
 				if ($(this).parents('tr').find('td:nth-child('+$numberOfArrowColumn+') .table-up').is(":visible")) 
 				{
+					$activeCellCollumnNumber = $(this).index();
 					//zmiana w kolumnie kategorii
 						if ($activeCellCollumnNumber==0) {
 							if ($option==2)
@@ -188,8 +182,9 @@
 						};
 						
 					//zmiana w kolumnie limitów	
-						if (($activeCellCollumnNumber==1) && ($option==2)) {
+						if (($activeCellCollumnNumber==1) && ($option==2)) {;
 							$maxLimit = $(this).parents('tr').find('td:nth-child(2)').html().replace(/(<([^>]+)>)/ig,"");
+							$activeCategoryContent = $(this).parents('tr').find('td:first').html();
 							$newCategoryName = $activeCategoryContent;
 							$oldCategoryName = $activeCategoryContent;												
 						};
@@ -198,6 +193,7 @@
 							{
 								$maxLimit = 0;
 							};
+
 
 					//Wywołanie polecenia AJAX dla obydwu zmian
 							$.ajax({
@@ -212,7 +208,9 @@
 								success: function(res, msg) {
 								  res = $.parseJSON(res);
 								  if (res.isCategoryError) {
-									$tableID.find('tr:nth-child('+$activeCellRowNumber+') td:nth-child(1)').text($activeCellContent);
+
+									$tableID.find('tr:nth-child('+$activeCellRowNumber+') td:nth-child(1)').text($oldCategoryName);
+									if ($option==2) {$tableID.find('tr:nth-child('+$activeCellRowNumber+') td:nth-child(2)').text($activeMaxLimit);};
 									$("#feedback").show().text(res.message).addClass('alert-danger').removeClass('alert-success').delay(3000).queue(function(n) {$(this).hide(); n();});
 								  }
 								  else

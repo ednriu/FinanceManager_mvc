@@ -21,4 +21,6 @@ class Home extends \Core\Controller
     {
         View::renderTemplate('Home/Index.html');
     }
+
+	
 }
